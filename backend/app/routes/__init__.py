@@ -11,6 +11,7 @@ from .authorities import authorities_bp
 from .health import health_bp
 from .incidents import incidents_bp
 from .map import map_bp
+from .media import media_bp
 from .projects import projects_bp
 from .reports import reports_bp
 
@@ -22,5 +23,6 @@ api_v1.register_blueprint(reports_bp)
 api_v1.register_blueprint(incidents_bp)
 api_v1.register_blueprint(authorities_bp)
 api_v1.register_blueprint(projects_bp)
+api_v1.register_blueprint(media_bp)
 
 __all__ = ["api_v1"]

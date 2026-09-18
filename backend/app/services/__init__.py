@@ -4,8 +4,10 @@ from . import (
     authority_service,
     geolocation_service,
     incident_service,
+    media_service,
     project_service,
     report_service,
+    storage_service,
 )
 
 __all__ = [
@@ -13,6 +15,8 @@ __all__ = [
     "authority_service",
     "geolocation_service",
     "incident_service",
+    "media_service",
     "project_service",
     "report_service",
+    "storage_service",
 ]

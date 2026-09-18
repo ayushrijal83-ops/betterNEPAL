@@ -16,6 +16,7 @@ from .base import BaseModel, UtcDateTime
 from .role import Role, user_roles
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .media_attachment import MediaAttachment
     from .progress_update import ProgressUpdate
     from .project import Project
     from .incident import Incident
@@ -55,6 +56,9 @@ class User(BaseModel):
     )
     progress_updates: Mapped[list["ProgressUpdate"]] = relationship(
         back_populates="author", passive_deletes="all"
+    )
+    media_attachments: Mapped[list["MediaAttachment"]] = relationship(
+        back_populates="uploader", passive_deletes="all"
     )
 
     @validates("email")
