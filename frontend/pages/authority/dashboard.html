@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authority Dashboard — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Authority Dashboard</h1>
+            <p class="page-subtitle">Incoming reports, active incidents, and monitored projects</p>
+          </div>
+          <a href="incidents.html" class="btn btn-danger">View All Incidents</a>
+        </div>
+
+        <div class="grid grid-4 gap-md" id="auth-stats"></div>
+
+        <div class="auth-layout mt-lg">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Active Incidents</h2>
+                <a href="incidents.html" class="text-sm">View all →</a>
+              </div>
+              <div class="incident-list" id="active-incidents"></div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Tracked Projects</h2>
+                <a href="projects.html" class="text-sm">View all →</a>
+              </div>
+              <div class="project-grid" id="tracked-projects"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">National Alert Center</h2>
+              </div>
+              <div id="alert-list"></div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Quick Actions</h2>
+              </div>
+              <div class="flex flex-col gap-sm">
+                <a href="reports.html" class="btn btn-outline">Review Reports</a>
+                <a href="incidents.html" class="btn btn-outline">Verify Incidents</a>
+                <a href="projects.html" class="btn btn-outline">Monitor Projects</a>
+                <a href="map.html" class="btn btn-outline">Open Map</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script src="../../js/incidents.js"></script>
+  <script src="../../js/projects.js"></script>
+  <script src="../../js/alerts.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    renderStats("auth-stats", [
+      { value: "326",  label: "Active Reports" },
+      { value: "23",   label: "Critical Incidents" },
+      { value: "61",   label: "Active Projects" },
+      { value: "84",   label: "Damaged Roads" },
+    ]);
+
+    renderIncidentList("active-incidents", getIncidents().slice(0, 3));
+    renderProjectGrid("tracked-projects", getProjects().slice(0, 2));
+    renderAlertList("alert-list", getAlerts());
+  </script>
+</body>
+</html>

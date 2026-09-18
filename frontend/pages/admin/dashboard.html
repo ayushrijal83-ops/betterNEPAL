@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">System Admin Dashboard</h1>
+            <p class="page-subtitle">National platform oversight — reports, incidents, projects, users</p>
+          </div>
+        </div>
+
+        <div class="grid grid-4 gap-md" id="admin-stats"></div>
+
+        <div class="auth-layout mt-lg">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Latest Incidents</h2>
+                <a href="incidents.html" class="text-sm">View all →</a>
+              </div>
+              <div class="incident-list" id="admin-incidents"></div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Active Projects</h2>
+                <a href="projects.html" class="text-sm">View all →</a>
+              </div>
+              <div class="project-grid" id="admin-projects"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">System Health</h2>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">API</span>
+                <span class="budget-value"><span class="badge badge-success">Healthy</span></span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Database</span>
+                <span class="budget-value"><span class="badge badge-success">Healthy</span></span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">AI Services</span>
+                <span class="budget-value"><span class="badge badge-warning">Degraded</span></span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Map Tiles</span>
+                <span class="budget-value"><span class="badge badge-success">Healthy</span></span>
+              </div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Quick Actions</h2>
+              </div>
+              <div class="flex flex-col gap-sm">
+                <a href="users.html" class="btn btn-outline">Manage Users</a>
+                <a href="authorities.html" class="btn btn-outline">Manage Authorities</a>
+                <a href="departments.html" class="btn btn-outline">Departments</a>
+                <a href="system.html" class="btn btn-outline">System Settings</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script src="../../js/incidents.js"></script>
+  <script src="../../js/projects.js"></script>
+  <script src="../../js/alerts.js"></script>
+  <script>
+    const role = requireRole("admin");
+    mountShell(role);
+
+    renderStats("admin-stats", [
+      { value: "18,426", label: "Total Reports" },
+      { value: "1,248",  label: "Active Projects" },
+      { value: "12,318", label: "Registered Users" },
+      { value: "77",     label: "Districts" },
+    ]);
+
+    renderIncidentList("admin-incidents", getIncidents().slice(0, 3));
+    renderProjectGrid("admin-projects", getProjects().slice(0, 2));
+  </script>
+</body>
+</html>

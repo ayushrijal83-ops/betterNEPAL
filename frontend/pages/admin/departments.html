@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Departments — Admin — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Departments</h1>
+            <p class="page-subtitle">Categorised government departments</p>
+          </div>
+          <button class="btn btn-primary">+ Add Department</button>
+        </div>
+
+        <div class="project-grid" id="dept-grid"></div>
+
+        <div class="card mt-lg">
+          <div class="card-header"><h2 class="card-title">All Departments</h2></div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Province</th>
+                <th>Active Assignments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>DOR</td><td>Department of Roads</td><td>Roads & Bridges</td><td>All</td><td>128</td></tr>
+              <tr><td>DDMC</td><td>District Disaster Management Committee</td><td>Disaster</td><td>All</td><td>42</td></tr>
+              <tr><td>NEA</td><td>Nepal Electricity Authority</td><td>Electricity</td><td>All</td><td>87</td></tr>
+              <tr><td>DWSS</td><td>Department of Water Supply & Sewerage</td><td>Water</td><td>All</td><td>56</td></tr>
+              <tr><td>FLOOD</td><td>Flood Forecasting & Early Warning</td><td>Flood</td><td>All</td><td>23</td></tr>
+              <tr><td>DNPWC</td><td>Dept. of National Parks & Wildlife Conservation</td><td>Conservation</td><td>All</td><td>14</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script>
+    const role = requireRole("admin");
+    mountShell(role);
+
+    const departments = [
+      { name: "Department of Roads", category: "Roads & Bridges", open: 128, progress: 62 },
+      { name: "District Disaster Management Committee", category: "Disaster", open: 42, progress: 48 },
+      { name: "Nepal Electricity Authority", category: "Electricity", open: 87, progress: 74 },
+      { name: "Water Supply & Sewerage", category: "Water", open: 56, progress: 55 },
+    ];
+
+    document.getElementById("dept-grid").innerHTML = departments
+      .map(
+        (d) => `
+      <div class="project-card">
+        <div class="project-name">${d.name}</div>
+        <div class="project-meta">${d.category}</div>
+        <div class="project-progress">
+          <span>Open assignments</span>
+          <span>${d.open}</span>
+        </div>
+        <div class="project-progress">
+          <span>Avg. resolution progress</span>
+          <span>${d.progress}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${d.progress}%"></div>
+        </div>
+      </div>`
+      )
+      .join("");
+  </script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+{
+  "_meta": {
+    "dataset": "nepal_districts_reference",
+    "description": "Nepal's 77 districts and their province, transcribed from the Better Nepal research files. Names and province assignment only - this dataset carries no boundary geometry and no official administrative codes.",
+    "source": "Better_Nepal_FULL_77_District_Contact_Database.txt",
+    "source_type": "research_reference",
+    "source_url": null,
+    "extracted_on": "2026-09-18",
+    "cross_checked_against": "BETTER_NEPAL_Rivers_Roads_7_Provinces_77_Districts.docx",
+    "cross_check_result": "Both source files independently list the same 77 district names with identical province assignment; no discrepancies found.",
+    "verification_status": "reference_only",
+    "contains_geometry": false,
+    "contains_official_codes": false,
+    "province_counts": {
+      "Koshi": 14,
+      "Madhesh": 8,
+      "Bagmati": 13,
+      "Gandaki": 11,
+      "Lumbini": 12,
+      "Karnali": 10,
+      "Sudurpashchim": 9
+    },
+    "notes": "Marked reference_only, not official_source: appearing in the project research files is not evidence of publication by an authoritative government dataset. Boundary geometry and official district codes must come from an authoritative spatial dataset - see app/data/README.md."
+  },
+  "districts": [
+    {
+      "name": "Bhojpur",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Dhankuta",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Ilam",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Jhapa",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Khotang",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Morang",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Okhaldhunga",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Panchthar",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Sankhuwasabha",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Solukhumbu",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Sunsari",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Taplejung",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Terhathum",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Udayapur",
+      "name_ne": null,
+      "province": "Koshi",
+      "code": null
+    },
+    {
+      "name": "Bara",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Dhanusha",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Mahottari",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Parsa",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Rautahat",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Saptari",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Sarlahi",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Siraha",
+      "name_ne": null,
+      "province": "Madhesh",
+      "code": null
+    },
+    {
+      "name": "Bhaktapur",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Chitwan",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Dhading",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Dolakha",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Kathmandu",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Kavrepalanchok",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Lalitpur",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Makwanpur",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Nuwakot",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Ramechhap",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Rasuwa",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Sindhuli",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Sindhupalchok",
+      "name_ne": null,
+      "province": "Bagmati",
+      "code": null
+    },
+    {
+      "name": "Baglung",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Gorkha",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Kaski",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Lamjung",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Manang",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Mustang",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Myagdi",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Nawalpur",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Parbat",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Syangja",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Tanahun",
+      "name_ne": null,
+      "province": "Gandaki",
+      "code": null
+    },
+    {
+      "name": "Arghakhanchi",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Banke",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Bardiya",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Dang",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Gulmi",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Kapilvastu",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Nawalparasi West",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Palpa",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Pyuthan",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Rolpa",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Rukum East",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Rupandehi",
+      "name_ne": null,
+      "province": "Lumbini",
+      "code": null
+    },
+    {
+      "name": "Dailekh",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Dolpa",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Humla",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Jajarkot",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Jumla",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Kalikot",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Mugu",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Rukum West",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Salyan",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Surkhet",
+      "name_ne": null,
+      "province": "Karnali",
+      "code": null
+    },
+    {
+      "name": "Achham",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Baitadi",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Bajhang",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Bajura",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Dadeldhura",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Darchula",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Doti",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Kailali",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    },
+    {
+      "name": "Kanchanpur",
+      "name_ne": null,
+      "province": "Sudurpashchim",
+      "code": null
+    }
+  ]
+}

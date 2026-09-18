@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Progress Update — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Submit Progress Update</h1>
+            <p class="page-subtitle">Project: Bridge Repair — Trail #104</p>
+          </div>
+          <a href="dashboard.html" class="btn btn-outline">← Back</a>
+        </div>
+
+        <div class="form-layout">
+          <form id="progress-form">
+            <div class="card">
+              <div class="card-header"><h2 class="card-title">Update Details</h2></div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Project</label>
+                  <select class="form-select">
+                    <option>Bridge Repair — Trail #104</option>
+                    <option>Trail Clearance — Manang Landslide</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Current phase</label>
+                  <input class="form-input" type="text" value="Structural Framework" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Overall progress</label>
+                <div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div>
+                <div class="flex justify-between mt-sm text-sm text-muted">
+                  <span>Low</span><span><strong>64%</strong></span><span>High</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Work completed since last update</label>
+                <textarea class="form-textarea">Completed casting of ground floor columns. Laid reinforcement for first floor slab (Zone B). Installation of electrical conduits in progress.</textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Materials used</label>
+                <textarea class="form-textarea">8 tons TMT Steel (Fe 500D), 110 cubic meters Concrete (M25), 45 bags Cement, Electrical conduits.</textarea>
+              </div>
+
+              <div class="form-actions">
+                <a href="dashboard.html" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Submit Update</button>
+              </div>
+            </div>
+          </form>
+
+          <aside>
+            <div class="ai-panel">
+              <div class="ai-panel-header">
+                <span class="ai-badge">AI</span>
+                AI-Assisted Construction Review
+              </div>
+              <div class="confidence-circle"><span>88%</span></div>
+              <p class="text-center text-sm" style="color:#3730a3;font-weight:600;">Confidence</p>
+              <p class="text-sm mt-md">
+                <strong>88% Confidence</strong> — AI analysis of evidence and logs.
+              </p>
+              <p class="text-sm text-muted mt-sm">
+                High alignment with project plan and visual evidence.
+              </p>
+              <div class="ai-result-row mt-md">
+                <span class="ai-result-label">Geo-tagged evidence</span>
+                <span class="ai-result-value">Verified</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    const role = requireRole("contractor");
+    mountShell(role);
+
+    document.getElementById("progress-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Progress update submitted. (wire to API later)");
+      window.location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

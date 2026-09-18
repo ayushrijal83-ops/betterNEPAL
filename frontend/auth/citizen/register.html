@@ -1,0 +1,8 @@
+<script>
+  document.getElementById("register-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    setRole("citizen");
+    sessionStorage.setItem("bn_flash", "Account created");
+    window.location.href = "../../pages/citizen/dashboard.html";
+  });
+</script>

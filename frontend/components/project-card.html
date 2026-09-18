@@ -1,0 +1,18 @@
+<!-- Project card template. Used by js/projects.js -> renderProjectCard() -->
+<a href="project-details.html?id={{id}}" class="project-card">
+  <div class="project-name">{{name}}</div>
+  <div class="project-meta">{{contractor}} • {{location}}</div>
+
+  <div class="project-progress">
+    <span>Progress</span>
+    <span>{{progress}}%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" style="width: {{progress}}%"></div>
+  </div>
+
+  <div class="flex justify-between mt-md">
+    <span class="text-sm text-muted">{{status}}</span>
+    <span class="text-sm"><strong>{{budget}}</strong></span>
+  </div>
+</a>

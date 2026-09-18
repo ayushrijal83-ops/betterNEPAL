@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trekking Routes — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Trekking Routes</h1>
+            <p class="page-subtitle">Reported condition of trails and infrastructure</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Region</th>
+                <th>Open Reports</th>
+                <th>Last Update</th>
+                <th>Reported Condition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Annapurna Base Camp Trail</td><td>Gandaki</td><td>7</td><td>24 Oct 2026</td>
+                <td><span class="badge badge-critical">Bridge damaged</span></td>
+              </tr>
+              <tr>
+                <td>Manaslu Circuit</td><td>Gandaki</td><td>3</td><td>23 Oct 2026</td>
+                <td><span class="badge badge-warning">Trail partial</span></td>
+              </tr>
+              <tr>
+                <td>Everest Base Camp</td><td>Koshi</td><td>2</td><td>20 Oct 2026</td>
+                <td><span class="badge badge-success">Open</span></td>
+              </tr>
+              <tr>
+                <td>Langtang Valley</td><td>Bagmati</td><td>0</td><td>15 Oct 2026</td>
+                <td><span class="badge badge-success">Open</span></td>
+              </tr>
+              <tr>
+                <td>Upper Mustang</td><td>Gandaki</td><td>1</td><td>12 Oct 2026</td>
+                <td><span class="badge badge-info">Waste accumulation</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    const role = requireRole("guide");
+    mountShell(role);
+  </script>
+</body>
+</html>

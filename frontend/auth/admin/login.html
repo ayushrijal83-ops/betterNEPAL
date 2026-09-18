@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <style>
+    .auth-wrap { min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#0b1f3a 0%,#000 100%);padding:var(--space-lg); }
+    .auth-card { background:var(--bn-white);border-radius:var(--radius-lg);padding:var(--space-2xl);
+      width:100%;max-width:440px;box-shadow:var(--shadow-lg); }
+    .auth-brand { display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-lg); }
+    .auth-brand-logo { width:44px;height:44px;background:#374151;color:var(--bn-white);
+      border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px; }
+    .auth-title { font-size:var(--font-size-xl);font-weight:700;color:var(--bn-navy); }
+    .auth-sub { color:var(--bn-text-light);font-size:var(--font-size-sm);margin-bottom:var(--space-lg); }
+    .secure-note { background:#fee2e2;color:#991b1b;font-size:var(--font-size-xs);
+      padding:8px 12px;border-radius:var(--radius-md);margin-bottom:var(--space-md); }
+    .auth-back { display:inline-block;margin-top:var(--space-md);font-size:var(--font-size-xs);color:var(--bn-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">NP</div>
+        <div>
+          <div class="auth-title">Better Nepal</div>
+          <div class="auth-sub">System Admin Portal</div>
+        </div>
+      </div>
+
+      <div class="secure-note">Super-admin access. All actions are logged and audited.</div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Admin username</label>
+          <input class="form-input" type="text" value="sysadmin" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" value="demo1234" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">2FA code</label>
+          <input class="form-input" type="text" placeholder="6-digit code" />
+        </div>
+        <button class="btn btn-primary btn-lg" style="width:100%" type="submit">Sign in</button>
+      </form>
+
+      <a href="../../index.html" class="auth-back">← Back to home</a>
+    </div>
+  </div>
+
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      setRole("admin");
+      sessionStorage.setItem("bn_flash", "Signed in successfully");
+      window.location.href = "../../pages/admin/dashboard.html";
+    });
+  </script>
+</body>
+</html>

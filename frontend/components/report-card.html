@@ -1,0 +1,13 @@
+<!-- Report row template. Replace placeholders when rendering.
+     Used by js/reports.js -> reportRow() -->
+<tr>
+  <td>#{{id}}</td>
+  <td>{{title}}</td>
+  <td>{{category}}</td>
+  <td>{{severity}}</td>
+  <td><span class="badge {{badgeClass}}">{{status}}</span></td>
+  <td>{{date}}</td>
+  <td class="actions">
+    <a href="report-details.html?id={{id}}" class="btn btn-sm btn-outline">View</a>
+  </td>
+</tr>

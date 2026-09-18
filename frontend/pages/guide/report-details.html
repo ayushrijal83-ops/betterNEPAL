@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Details — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="report-title">Report Details</h1>
+            <p class="page-subtitle" id="report-id-line">Loading…</p>
+          </div>
+          <a href="my-reports.html" class="btn btn-outline">← My Reports</a>
+        </div>
+
+        <div class="details-layout">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Report Media</h2>
+                <span id="status-badge"></span>
+              </div>
+
+              <div class="report-media">
+                <img id="report-image" alt="Report media" />
+              </div>
+
+              <div class="meta-row">
+                <div class="meta-item">
+                  <span class="meta-label">Type</span>
+                  <span class="meta-value" id="meta-type">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Severity</span>
+                  <span class="meta-value" id="meta-severity">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Location</span>
+                  <span class="meta-value" id="meta-location">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Coordinates</span>
+                  <span class="meta-value" id="meta-coords">—</span>
+                </div>
+              </div>
+
+              <p class="text-muted" id="report-description"></p>
+
+              <p class="text-sm text-muted mt-md">
+                <strong>Reporter:</strong> <span id="report-reporter"></span>
+              </p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Progress Timeline</h2>
+              </div>
+              <div id="timeline-container"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="ai-panel">
+              <div class="ai-panel-header">
+                <span class="ai-badge">AI</span>
+                AI-Assisted Analysis
+              </div>
+
+              <div class="confidence-circle"><span id="conf-value">—</span></div>
+              <p class="text-center text-sm" style="color:#3730a3;font-weight:600;">
+                Confidence Rating
+              </p>
+
+              <div class="ai-result-row mt-md">
+                <span class="ai-result-label">Classification</span>
+                <span class="ai-result-value" id="ai-class">—</span>
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Hazard</span>
+                <span class="ai-result-value" id="ai-hazard">—</span>
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Department</span>
+                <span class="ai-result-value" id="ai-dept">—</span>
+              </div>
+
+              <p class="text-sm text-muted mt-sm">
+                AI-assisted assessment — human verification required.
+              </p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Status</h2>
+              </div>
+              <p class="text-sm">
+                <strong>Current:</strong> <span id="status-text">—</span>
+              </p>
+              <p class="text-sm text-muted mt-sm">
+                Reports are processed by AI, verified by the responsible authority, and
+                then converted into tracked projects.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script>
+    const role = requireRole("guide");
+    mountShell(role);
+
+    const params = new URLSearchParams(window.location.search);
+    const report = getReportById(params.get("id") || "BNP1098");
+
+    document.getElementById("report-title").textContent = report.title;
+    document.getElementById("report-id-line").textContent =
+      `#${report.id} • ${formatDate(report.date)} • ${report.location}`;
+    document.getElementById("status-badge").innerHTML = statusBadge(report.status);
+
+    document.getElementById("report-image").src = report.image || "";
+    document.getElementById("meta-type").textContent = report.category;
+    document.getElementById("meta-severity").textContent = report.severity;
+    document.getElementById("meta-location").textContent = report.location;
+    document.getElementById("meta-coords").textContent = report.coordinates;
+    document.getElementById("report-description").textContent = report.description;
+    document.getElementById("report-reporter").textContent = report.reporter;
+
+    document.getElementById("timeline-container").innerHTML = renderTimeline(report.timeline);
+
+    document.getElementById("conf-value").textContent =
+      Math.round((report.ai.confidence || 0) * 100) + "%";
+    document.getElementById("ai-class").textContent = report.ai.classification;
+    document.getElementById("ai-hazard").textContent = report.ai.hazard;
+    document.getElementById("ai-dept").textContent = report.ai.department;
+
+    document.getElementById("status-text").innerHTML = statusBadge(report.status);
+  </script>
+</body>
+</html>

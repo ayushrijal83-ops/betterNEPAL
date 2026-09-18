@@ -1,0 +1,108 @@
+/* ---------- Global responsive behaviour ---------- */
+
+/* Large desktop down to 1200 */
+@media (max-width: 1200px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tablet (<= 1000) */
+@media (max-width: 1000px) {
+  .details-layout,
+  .form-layout,
+  .auth-layout,
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Small tablet / large phone (<= 900) */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .app-main {
+    margin-left: 0;
+  }
+  .sidebar-toggle {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-search {
+    max-width: none;
+  }
+  #nepal-map { height: 460px; }
+  .page-title { font-size: var(--font-size-xl); }
+}
+
+/* Phone (<= 700) */
+@media (max-width: 700px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row { grid-template-columns: 1fr; }
+
+  .meta-row { grid-template-columns: repeat(2, 1fr); }
+
+  .app-content { padding: var(--space-md); }
+
+  .card { padding: var(--space-md); }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar {
+    padding: 0 var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .navbar-alert span {
+    display: none;
+  }
+
+  .severity-options { grid-template-columns: 1fr; }
+
+  .details-layout,
+  .form-layout,
+  .auth-layout,
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  #nepal-map { height: 380px; }
+
+  .page-title { font-size: var(--font-size-lg); }
+  .stat-card .stat-value { font-size: var(--font-size-2xl); }
+}
+
+/* Small phone (<= 480) */
+@media (max-width: 480px) {
+  .sidebar { width: 240px; }
+  .card-header { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+  .form-actions { flex-direction: column; }
+  .form-actions .btn { width: 100%; }
+}
+
+/* Print — hide chrome */
+@media print {
+  .sidebar,
+  .navbar,
+  .sidebar-toggle,
+  .btn { display: none !important; }
+  .app-main { margin-left: 0; }
+}
