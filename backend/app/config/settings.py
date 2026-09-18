@@ -76,6 +76,16 @@ class BaseConfig:
 
     UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "") or str(BACKEND_DIR / "uploads")
 
+    # --- AI ---------------------------------------------------------------
+    # Absent by design in development and test: every AI entry point degrades
+    # to a clear "not configured" response rather than failing at import, so
+    # the platform runs perfectly well with no LLM provider at all.
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+    GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
+    AI_REQUEST_TIMEOUT_SECONDS = int(os.environ.get("AI_REQUEST_TIMEOUT_SECONDS", "30"))
+    # Metres to search when looking for duplicate reports.
+    AI_DUPLICATE_RADIUS_METRES = int(os.environ.get("AI_DUPLICATE_RADIUS_METRES", "100"))
+
     SQLALCHEMY_DATABASE_URI = _postgres_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}

@@ -26,7 +26,7 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import CheckConstraint, Float, ForeignKey, Index, String, Text
+from sqlalchemy import JSON, CheckConstraint, Float, ForeignKey, Index, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..gis.types import DEFAULT_SRID, GeometryColumn
@@ -96,7 +96,29 @@ class Report(BaseModel):
         index=True,
     )
 
+    # What the AI *suggested*, never what the platform concluded. Kept beside
+    # the human-set `category` rather than overwriting it: the project's rule is
+    # that AI understands, the database decides and humans verify, so an
+    # automated guess must stay visibly separate from the record of fact.
+    # JSON here renders as JSONB on PostgreSQL and as text on SQLite.
+    ai_metadata: Mapped[dict | None] = mapped_column(JSON)
+
+    # Set by a human acting on a duplicate suggestion, never by the AI itself.
+    # SET NULL: deleting a master report must not destroy the reports that were
+    # folded into it - they revert to standing on their own.
+    duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("reports.id", ondelete="SET NULL", name="fk_reports_duplicate_of_id"),
+        index=True,
+    )
+
     reporter: Mapped["User"] = relationship(back_populates="reports")
+    # Self-referential: remote_side names the "one" end of the many-to-one.
+    duplicate_of: Mapped["Report | None"] = relationship(
+        "Report", remote_side="Report.id", back_populates="duplicates"
+    )
+    duplicates: Mapped[list["Report"]] = relationship(
+        "Report", back_populates="duplicate_of", passive_deletes="all"
+    )
     district: Mapped["District | None"] = relationship(back_populates="reports")
     municipality: Mapped["Municipality | None"] = relationship(back_populates="reports")
     incident: Mapped["Incident | None"] = relationship(back_populates="reports")
@@ -104,6 +126,12 @@ class Report(BaseModel):
     __table_args__ = (
         # Defence in depth: the API validates coordinates, and so does the
         # database, so a direct SQL insert cannot store an impossible point.
+        # A report cannot be a duplicate of itself; that would make the
+        # duplicate chain a cycle and every traversal of it an infinite loop.
+        CheckConstraint(
+            "duplicate_of_id IS NULL OR duplicate_of_id <> id",
+            name="ck_reports_not_self_duplicate",
+        ),
         CheckConstraint(
             "latitude >= -90 AND latitude <= 90", name="ck_reports_latitude_range"
         ),
@@ -144,6 +172,11 @@ class Report(BaseModel):
             ),
             "municipality": self.municipality.name if self.municipality else None,
             "incident_id": str(self.incident_id) if self.incident_id else None,
+            "duplicate_of_id": (
+                str(self.duplicate_of_id) if self.duplicate_of_id else None
+            ),
+            "is_duplicate": self.duplicate_of_id is not None,
+            "ai_metadata": self.ai_metadata,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }

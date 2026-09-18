@@ -13,5 +13,12 @@ GeoAlchemy2==0.20.0
 PyJWT==2.14.0
 argon2-cffi==25.1.0
 
+# ai
+# NOTE: google-generativeai is deprecated upstream (the repo is now named
+# deprecated-generative-ai-python) in favour of the google-genai SDK. Pinned
+# here because it is what this phase was specified against; app/services/
+# ai_service.py isolates it behind BaseAIService so replacing it is one class.
+google-generativeai==0.8.6
+
 # dev / test
 pytest==8.4.2
