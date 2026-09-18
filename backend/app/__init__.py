@@ -30,6 +30,7 @@ def create_app(config_name: str | None = None) -> Flask:
     _register_database(app)
     _register_blueprints(app)
     _register_error_handlers(app)
+    _register_cli(app)
     _configure_logging(app)
 
     return app
@@ -53,6 +54,13 @@ def _register_database(app: Flask) -> None:
     db.init_app(app)
     # Absolute path so `flask db ...` behaves the same from any working directory.
     migrate.init_app(app, db, directory=str(MIGRATIONS_DIR))
+
+
+def _register_cli(app: Flask) -> None:
+    """Attach `flask seed ...` commands."""
+    from .seed import register_seed_commands
+
+    register_seed_commands(app)
 
 
 def _register_blueprints(app: Flask) -> None:

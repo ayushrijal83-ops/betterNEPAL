@@ -8,5 +8,9 @@ Flask-Migrate==4.1.0
 SQLAlchemy==2.0.54
 psycopg2-binary==2.9.13
 
+# authentication
+PyJWT==2.14.0
+argon2-cffi==25.1.0
+
 # dev / test
 pytest==8.4.2
