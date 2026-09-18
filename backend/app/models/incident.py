@@ -12,22 +12,24 @@ Coordinates follow the Phase 5 dual strategy: authoritative ``latitude`` and
 ``longitude`` floats that work on any backend, plus a ``location`` PostGIS point
 derived from them for spatial indexing. See ``app/models/report.py`` for why.
 
-This phase deliberately stops at verification. Nothing here assigns an
-authority, a department or a contractor - that is Phase 7.
+Phase 7 added ``authority_id``: who owns fixing this. Contractors, projects
+and budgets remain out of scope (Phase 8).
 """
 from __future__ import annotations
 
 import uuid
+from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import CheckConstraint, Float, ForeignKey, Index, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..gis.types import DEFAULT_SRID, GeometryColumn
-from .base import BaseModel
+from .base import BaseModel, UtcDateTime
 from .enums import IncidentSeverity, IncidentStatus, ReportCategory, enum_column
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .authority import Authority
     from .district import District
     from .municipality import Municipality
     from .report import Report
@@ -73,6 +75,23 @@ class Incident(BaseModel):
     longitude: Mapped[float] = mapped_column(Float, nullable=False)
     location = mapped_column(GeometryColumn("POINT", DEFAULT_SRID), nullable=True)
 
+    # Who owns fixing this. NULL until a human routes it; see Phase 7.
+    # SET NULL on delete: removing an authority record must not destroy the
+    # incident, which exists independently of who was assigned to it.
+    authority_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey(
+            "authorities.id", ondelete="SET NULL", name="fk_incidents_authority_id"
+        ),
+        index=True,
+    )
+    # Accountability for the routing decision itself, kept separate from the
+    # verifier: confirming a problem and choosing its owner are different acts.
+    assigned_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT", name="fk_incidents_assigned_by_id"),
+        index=True,
+    )
+    assigned_at: Mapped[datetime | None] = mapped_column(UtcDateTime)
+
     # Who confirmed this was real. Kept because verification is an accountable
     # act; RESTRICT so that record cannot be erased by deleting the account.
     verified_by_id: Mapped[uuid.UUID | None] = mapped_column(
@@ -83,7 +102,13 @@ class Incident(BaseModel):
     municipality: Mapped["Municipality | None"] = relationship(
         back_populates="incidents"
     )
-    verified_by: Mapped["User | None"] = relationship(back_populates="verified_incidents")
+    verified_by: Mapped["User | None"] = relationship(
+        foreign_keys=[verified_by_id], back_populates="verified_incidents"
+    )
+    authority: Mapped["Authority | None"] = relationship(back_populates="incidents")
+    assigned_by: Mapped["User | None"] = relationship(
+        foreign_keys=[assigned_by_id], back_populates="assigned_incidents"
+    )
 
     # No cascade: unlinking is Phase 6's job, deletion is nobody's. Deleting an
     # incident that still holds reports is refused by the RESTRICT-free
@@ -137,6 +162,17 @@ class Incident(BaseModel):
             ),
             "municipality": self.municipality.name if self.municipality else None,
             "report_count": self.report_count,
+            "authority_id": str(self.authority_id) if self.authority_id else None,
+            "authority": self.authority.to_dict() if self.authority else None,
+            "assigned_at": self.assigned_at.isoformat() if self.assigned_at else None,
+            "assigned_by": (
+                {
+                    "id": str(self.assigned_by_id),
+                    "full_name": self.assigned_by.full_name if self.assigned_by else None,
+                }
+                if self.assigned_by_id
+                else None
+            ),
             "verified_by": (
                 {
                     "id": str(self.verified_by_id),

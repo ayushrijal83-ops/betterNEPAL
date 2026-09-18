@@ -38,6 +38,7 @@ from .base import BaseModel
 from .provenance import ProvenanceMixin, verification_status_constraint
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .authority import Authority
     from .incident import Incident
     from .municipality import Municipality
     from .report import Report
@@ -66,6 +67,9 @@ class District(BaseModel, ProvenanceMixin):
         back_populates="district", passive_deletes="all"
     )
     incidents: Mapped[list["Incident"]] = relationship(
+        back_populates="district", passive_deletes="all"
+    )
+    authorities: Mapped[list["Authority"]] = relationship(
         back_populates="district", passive_deletes="all"
     )
 

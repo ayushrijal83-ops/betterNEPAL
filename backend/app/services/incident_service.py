@@ -98,6 +98,8 @@ def _incident_query():
         selectinload(Incident.municipality),
         selectinload(Incident.verified_by),
         selectinload(Incident.reports),
+        selectinload(Incident.authority),
+        selectinload(Incident.assigned_by),
     )
 
 
@@ -406,6 +408,84 @@ def find_nearby_reports_for_incident(
     return result
 
 
+# --- authority routing -----------------------------------------------------
+
+
+def assign_incident_to_authority(
+    incident_id: Any, authority_id: Any, assigned_by_user_id: Any = None
+) -> Incident:
+    """Route an incident to the authority responsible for fixing it.
+
+    An OPEN incident moves to IN_PROGRESS: having an owner *is* the work
+    starting, and leaving it OPEN would make the dashboard understate how much
+    is actually in hand. An incident already further along keeps its status -
+    reassignment is a correction, not a reset.
+
+    No automatic routing happens here or anywhere else; a human chose this
+    authority and the choice is recorded against them. See
+    ``authority_service.suggest_authorities`` for the ranking aid.
+    """
+    from ..models.authority import Authority
+    from ..models.base import utcnow
+
+    incident = get_incident_by_id(incident_id)
+
+    if incident.status == IncidentStatus.CLOSED:
+        raise ApiError(
+            "A closed incident cannot be assigned to an authority.",
+            status=409,
+            code="incident_closed",
+        )
+
+    authority = db.session.get(
+        Authority, _parse_uuid(authority_id, "authority_id")
+    )
+    if authority is None:
+        raise ApiError("Authority not found.", status=404, code="authority_not_found")
+
+    incident.authority_id = authority.id
+    incident.assigned_at = utcnow()
+    if assigned_by_user_id is not None:
+        incident.assigned_by_id = _parse_uuid(assigned_by_user_id, "user_id")
+
+    if incident.status == IncidentStatus.OPEN:
+        incident.status = IncidentStatus.IN_PROGRESS
+
+    db.session.commit()
+    return get_incident_by_id(incident.id)
+
+
+def unassign_incident(incident_id: Any) -> Incident:
+    """Remove the authority assignment, returning the incident to OPEN.
+
+    Routing is a human judgement and humans misroute; without this an incident
+    sent to the wrong office would be stuck showing false progress.
+    """
+    incident = get_incident_by_id(incident_id)
+
+    if incident.authority_id is None:
+        raise ApiError(
+            "This incident is not assigned to an authority.",
+            status=409,
+            code="incident_not_assigned",
+        )
+    if incident.status == IncidentStatus.CLOSED:
+        raise ApiError(
+            "A closed incident cannot be unassigned.",
+            status=409,
+            code="incident_closed",
+        )
+
+    incident.authority_id = None
+    incident.assigned_at = None
+    incident.assigned_by_id = None
+    if incident.status == IncidentStatus.IN_PROGRESS:
+        incident.status = IncidentStatus.OPEN
+
+    db.session.commit()
+    return get_incident_by_id(incident.id)
+
+
 # --- listing ---------------------------------------------------------------
 
 
@@ -446,6 +526,7 @@ def get_incidents(filters: dict[str, Any] | None = None) -> dict[str, Any]:
     for key, column in (
         ("district_id", Incident.district_id),
         ("municipality_id", Incident.municipality_id),
+        ("authority_id", Incident.authority_id),
     ):
         value = filters.get(key)
         if value:
@@ -554,6 +635,12 @@ def get_incident_statistics() -> dict[str, Any]:
         },
         "linked_reports": db.session.scalar(
             select(func.count()).select_from(Report).where(Report.incident_id.isnot(None))
+        )
+        or 0,
+        "unassigned": db.session.scalar(
+            select(func.count())
+            .select_from(Incident)
+            .where(Incident.authority_id.is_(None))
         )
         or 0,
     }

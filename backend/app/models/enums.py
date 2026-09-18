@@ -69,6 +69,33 @@ class IncidentStatus(str, enum.Enum):
     CLOSED = "closed"
 
 
+class GovernmentLevel(str, enum.Enum):
+    """Which tier of government owns a responsibility.
+
+    Nepal's federal restructuring split infrastructure ownership three ways -
+    national highways to the federal Department of Roads, provincial roads to
+    the provinces, local roads to municipalities - and the project's research
+    files describe exactly that split. ``UTILITY`` covers service providers
+    that are not a tier of government at all (NEA, water boards), which is why
+    it sits alongside rather than inside the others.
+    """
+
+    FEDERAL = "federal"
+    PROVINCIAL = "provincial"
+    LOCAL = "local"
+    UTILITY = "utility"
+
+
+class AuthorityType(str, enum.Enum):
+    """What kind of body this is, independent of its tier."""
+
+    DEPARTMENT_OF_ROADS = "department_of_roads"
+    MUNICIPAL_OFFICE = "municipal_office"
+    WATER_AUTHORITY = "water_authority"
+    ELECTRICITY_AUTHORITY = "electricity_authority"
+    OTHER = "other"
+
+
 def enum_column(enum_class: type[enum.Enum], name: str) -> SAEnum:
     """Map an enum to VARCHAR + a named CHECK constraint.
 

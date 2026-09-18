@@ -374,3 +374,153 @@ def validate_incident_update(payload: Any) -> dict[str, Any]:
 
     errors.raise_if_any()
     return {"status": status, "severity": severity}
+
+
+# --- authorities -----------------------------------------------------------
+
+AUTHORITY_NAME_MIN_LENGTH = 3
+AUTHORITY_NAME_MAX_LENGTH = 150
+CONTACT_EMAIL_MAX_LENGTH = 120
+CONTACT_PHONE_MAX_LENGTH = 50
+
+# Sentinel distinguishing "key absent" from "key present and null". Clearing a
+# stale phone number needs the latter; a plain `.get()` cannot tell them apart.
+UNSET = object()
+
+
+def _validate_contact_email(data: dict[str, Any], errors: ValidationErrors):
+    if "contact_email" not in data:
+        return UNSET
+    raw = data.get("contact_email")
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return None
+    value = raw.strip() if isinstance(raw, str) else ""
+    if len(value) > CONTACT_EMAIL_MAX_LENGTH:
+        errors.add(
+            "contact_email",
+            f"contact_email must be at most {CONTACT_EMAIL_MAX_LENGTH} characters.",
+        )
+        return None
+    if not EMAIL_PATTERN.match(value):
+        errors.add("contact_email", "contact_email is not a valid address.")
+        return None
+    return value.lower()
+
+
+def _validate_contact_phone(data: dict[str, Any], errors: ValidationErrors):
+    if "contact_phone" not in data:
+        return UNSET
+    raw = data.get("contact_phone")
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return None
+    value = raw.strip() if isinstance(raw, str) else ""
+    if len(value) > CONTACT_PHONE_MAX_LENGTH:
+        errors.add(
+            "contact_phone",
+            f"contact_phone must be at most {CONTACT_PHONE_MAX_LENGTH} characters.",
+        )
+        return None
+    if not PHONE_PATTERN.match(value):
+        errors.add("contact_phone", "contact_phone is not a valid number.")
+        return None
+    return value
+
+
+def validate_authority_creation(payload: Any) -> dict[str, Any]:
+    """Validate a new authority.
+
+    ``district_id`` is optional: a genuinely national body has no district, and
+    requiring one would mean inventing a fact.
+    """
+    from ..models.enums import AuthorityType, GovernmentLevel
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    name = _as_text(data, "name")
+    if not name:
+        errors.add("name", "name is required.")
+    elif not (AUTHORITY_NAME_MIN_LENGTH <= len(name) <= AUTHORITY_NAME_MAX_LENGTH):
+        errors.add(
+            "name",
+            f"name must be between {AUTHORITY_NAME_MIN_LENGTH} and "
+            f"{AUTHORITY_NAME_MAX_LENGTH} characters.",
+        )
+
+    level = validate_enum_field(data.get("level"), GovernmentLevel, errors, "level")
+    authority_type = validate_enum_field(data.get("type"), AuthorityType, errors, "type")
+
+    contact_email = _validate_contact_email(data, errors)
+    contact_phone = _validate_contact_phone(data, errors)
+
+    errors.raise_if_any()
+    return {
+        "name": name,
+        "level": level,
+        "type": authority_type,
+        "contact_email": None if contact_email is UNSET else contact_email,
+        "contact_phone": None if contact_phone is UNSET else contact_phone,
+        "district_id": _as_text(data, "district_id") or None,
+    }
+
+
+def validate_authority_update(payload: Any) -> dict[str, Any]:
+    """Validate a partial authority update.
+
+    Only keys actually present are returned, so an update never silently
+    blanks a field the caller did not mention.
+    """
+    from ..models.enums import AuthorityType, GovernmentLevel
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+    result: dict[str, Any] = {}
+
+    if "name" in data:
+        name = _as_text(data, "name")
+        if not (AUTHORITY_NAME_MIN_LENGTH <= len(name) <= AUTHORITY_NAME_MAX_LENGTH):
+            errors.add(
+                "name",
+                f"name must be between {AUTHORITY_NAME_MIN_LENGTH} and "
+                f"{AUTHORITY_NAME_MAX_LENGTH} characters.",
+            )
+        else:
+            result["name"] = name
+
+    if "level" in data:
+        result["level"] = validate_enum_field(
+            data.get("level"), GovernmentLevel, errors, "level"
+        )
+    if "type" in data:
+        result["type"] = validate_enum_field(
+            data.get("type"), AuthorityType, errors, "type"
+        )
+
+    contact_email = _validate_contact_email(data, errors)
+    if contact_email is not UNSET:
+        result["contact_email"] = contact_email
+    contact_phone = _validate_contact_phone(data, errors)
+    if contact_phone is not UNSET:
+        result["contact_phone"] = contact_phone
+
+    if "district_id" in data:
+        result["district_id"] = _as_text(data, "district_id") or None
+
+    if not result:
+        errors.add("body", "Provide at least one field to update.")
+
+    errors.raise_if_any()
+    return result
+
+
+def validate_assignment(payload: Any) -> str:
+    """Validate a request to assign an incident to an authority."""
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    authority_id = _as_text(data, "authority_id")
+    if not authority_id:
+        errors.add("authority_id", "authority_id is required.")
+
+    errors.raise_if_any()
+    return authority_id

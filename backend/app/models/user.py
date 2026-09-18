@@ -39,7 +39,14 @@ class User(BaseModel):
         back_populates="reporter", passive_deletes="all"
     )
     verified_incidents: Mapped[list["Incident"]] = relationship(
-        back_populates="verified_by", passive_deletes="all"
+        foreign_keys="Incident.verified_by_id",
+        back_populates="verified_by",
+        passive_deletes="all",
+    )
+    assigned_incidents: Mapped[list["Incident"]] = relationship(
+        foreign_keys="Incident.assigned_by_id",
+        back_populates="assigned_by",
+        passive_deletes="all",
     )
 
     @validates("email")

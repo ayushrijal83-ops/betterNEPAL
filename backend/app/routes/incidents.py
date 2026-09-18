@@ -17,6 +17,7 @@ from ..utils.decorators import require_roles
 from ..utils.helpers import ApiError, success_response
 from ..utils.permissions import current_user
 from ..utils.validators import (
+    validate_assignment,
     validate_incident_from_report,
     validate_incident_update,
     validate_link_report,
@@ -65,6 +66,30 @@ def unlink_report(incident_id: str):
     return success_response({"report": incident_service.unlink_report(report.id).to_dict()})
 
 
+@incidents_bp.post("/<incident_id>/assign")
+@require_roles(ROLE_AUTHORITY, ROLE_ADMIN)
+def assign_incident(incident_id: str):
+    """Route an incident to the authority responsible for fixing it.
+
+    An OPEN incident becomes IN_PROGRESS - having an owner is the work
+    starting. The assigner is taken from the access token, so the record of who
+    made the routing decision cannot be forged.
+    """
+    authority_id = validate_assignment(request.get_json(silent=True))
+    incident = incident_service.assign_incident_to_authority(
+        incident_id, authority_id, assigned_by_user_id=current_user().id
+    )
+    return success_response({"incident": incident.to_dict(include_reports=True)})
+
+
+@incidents_bp.post("/<incident_id>/unassign")
+@require_roles(ROLE_AUTHORITY, ROLE_ADMIN)
+def unassign_incident(incident_id: str):
+    """Undo a misrouted assignment, returning the incident to OPEN."""
+    incident = incident_service.unassign_incident(incident_id)
+    return success_response({"incident": incident.to_dict(include_reports=True)})
+
+
 @incidents_bp.get("")
 def list_incidents():
     """List incidents, newest first. Public.
@@ -80,6 +105,7 @@ def list_incidents():
                 "category": request.args.get("category"),
                 "district_id": request.args.get("district_id"),
                 "municipality_id": request.args.get("municipality_id"),
+                "authority_id": request.args.get("authority_id"),
                 "page": request.args.get("page"),
                 "per_page": request.args.get("per_page"),
             }
