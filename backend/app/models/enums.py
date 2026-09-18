@@ -96,6 +96,42 @@ class AuthorityType(str, enum.Enum):
     OTHER = "other"
 
 
+class ProjectStatus(str, enum.Enum):
+    """Lifecycle of commissioned work.
+
+    ``COMPLETED`` and ``CANCELLED`` are both terminal. Work that restarts after
+    either is a new project, so the original's ledger keeps meaning what it
+    said at the time.
+    """
+
+    PLANNED = "planned"
+    ACTIVE = "active"
+    ON_HOLD = "on_hold"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
+
+
+class MediaType(str, enum.Enum):
+    """Broad class of an attachment, derived from its verified content type."""
+
+    IMAGE = "image"
+    DOCUMENT = "document"
+
+
+class EntityType(str, enum.Enum):
+    """What an attachment is evidence for.
+
+    Attachments reference their target by ``(entity_type, entity_id)`` rather
+    than by four nullable foreign keys. See ``app/models/media_attachment.py``
+    for what that buys and what it costs.
+    """
+
+    REPORT = "report"
+    INCIDENT = "incident"
+    PROJECT = "project"
+    PROGRESS_UPDATE = "progress_update"
+
+
 def enum_column(enum_class: type[enum.Enum], name: str) -> SAEnum:
     """Map an enum to VARCHAR + a named CHECK constraint.
 

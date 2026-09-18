@@ -63,8 +63,28 @@ class BaseConfig:
     SECRET_KEY = os.environ.get("SECRET_KEY", "")
     CORS_ORIGINS = _split_origins(os.environ.get("CORS_ORIGINS", ""))
 
-    # Werkzeug rejects larger bodies before they reach a view.
-    MAX_CONTENT_LENGTH = 10 * 1024 * 1024
+    # --- Uploads ----------------------------------------------------------
+    # The limit that matters to a user is the file's own size.
+    MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+
+    # Werkzeug rejects larger bodies before they reach a view, so this sits
+    # deliberately above MAX_UPLOAD_BYTES: a request carrying a 10MB file also
+    # carries multipart boundaries and headers, and if the two limits were
+    # equal an exactly-at-limit upload would die as an opaque 413 instead of
+    # reaching the validator that can explain what was wrong.
+    MAX_CONTENT_LENGTH = MAX_UPLOAD_BYTES + (2 * 1024 * 1024)
+
+    UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "") or str(BACKEND_DIR / "uploads")
+
+    # --- AI ---------------------------------------------------------------
+    # Absent by design in development and test: every AI entry point degrades
+    # to a clear "not configured" response rather than failing at import, so
+    # the platform runs perfectly well with no LLM provider at all.
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+    GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
+    AI_REQUEST_TIMEOUT_SECONDS = int(os.environ.get("AI_REQUEST_TIMEOUT_SECONDS", "30"))
+    # Metres to search when looking for duplicate reports.
+    AI_DUPLICATE_RADIUS_METRES = int(os.environ.get("AI_DUPLICATE_RADIUS_METRES", "100"))
 
     SQLALCHEMY_DATABASE_URI = _postgres_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -11,11 +11,17 @@ from .enums import (
     GovernmentLevel,
     IncidentSeverity,
     IncidentStatus,
+    EntityType,
+    MediaType,
+    ProjectStatus,
     ReportCategory,
     ReportStatus,
 )
+from .media_attachment import MediaAttachment
 from .incident import Incident
 from .municipality import MUNICIPALITY_TYPES, Municipality
+from .progress_update import ProgressUpdate
+from .project import Project
 from .refresh_token import RefreshToken
 from .report import Report
 from .role import (
@@ -39,6 +45,9 @@ __all__ = [
     "BaseModel",
     "DEFAULT_ROLE",
     "District",
+    "EntityType",
+    "MediaAttachment",
+    "MediaType",
     "GovernmentLevel",
     "Incident",
     "IncidentSeverity",
@@ -52,6 +61,9 @@ __all__ = [
     "ROLE_DESCRIPTIONS",
     "ROLE_NAMES",
     "ROLE_TREKKING_GUIDE",
+    "ProgressUpdate",
+    "Project",
+    "ProjectStatus",
     "RefreshToken",
     "Report",
     "ReportCategory",
