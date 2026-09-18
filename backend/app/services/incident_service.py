@@ -37,6 +37,7 @@ from sqlalchemy.orm import selectinload
 
 from ..extensions import db
 from ..gis.location import Coordinates
+from ..models.base import utcnow
 from ..models.enums import (
     IncidentSeverity,
     IncidentStatus,
@@ -426,7 +427,6 @@ def assign_incident_to_authority(
     ``authority_service.suggest_authorities`` for the ranking aid.
     """
     from ..models.authority import Authority
-    from ..models.base import utcnow
 
     incident = get_incident_by_id(incident_id)
 
@@ -594,6 +594,12 @@ def update_incident_status(
                 },
             )
         incident.status = status
+        # Keep the resolution timestamp truthful in both directions: work that
+        # turns out not to be finished must not keep a completion date.
+        if status == IncidentStatus.RESOLVED:
+            incident.resolved_at = utcnow()
+        elif incident.resolved_at is not None:
+            incident.resolved_at = None
 
     if severity is not None:
         incident.severity = severity

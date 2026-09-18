@@ -7,6 +7,7 @@ incidents, ...) are added here as their phases land.
 from flask import Blueprint
 
 from .ai import ai_bp
+from .analytics import analytics_bp
 from .auth import auth_bp
 from .authorities import authorities_bp
 from .health import health_bp
@@ -26,5 +27,6 @@ api_v1.register_blueprint(authorities_bp)
 api_v1.register_blueprint(projects_bp)
 api_v1.register_blueprint(media_bp)
 api_v1.register_blueprint(ai_bp)
+api_v1.register_blueprint(analytics_bp)
 
 __all__ = ["api_v1"]

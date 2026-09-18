@@ -18,6 +18,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from ..extensions import db
+from ..models.base import utcnow
 from ..models.enums import ProjectStatus, enum_values, parse_enum
 from ..models.progress_update import ProgressUpdate
 from ..models.project import Project
@@ -255,6 +256,10 @@ def _resolve_linked_incident(project: Project) -> str | None:
         return f"incident_{incident.status.value}"
 
     incident.status = IncidentStatus.RESOLVED
+    # The work finishing is what resolved it, so date it from the project
+    # rather than from now - a completion recorded late should not inflate the
+    # measured resolution time.
+    incident.resolved_at = utcnow()
     return None
 
 

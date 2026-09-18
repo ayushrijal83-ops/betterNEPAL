@@ -93,6 +93,15 @@ class Incident(BaseModel):
     )
     assigned_at: Mapped[datetime | None] = mapped_column(UtcDateTime)
 
+    # When the problem was actually declared fixed. Stamped by the service on
+    # the transition into RESOLVED and cleared if it moves back out.
+    #
+    # This exists because `updated_at` cannot answer "how long did this take":
+    # it moves whenever anything on the row changes, so a severity correction
+    # months later would silently rewrite the resolution time. Without a column
+    # of its own the metric would have to be fabricated.
+    resolved_at: Mapped[datetime | None] = mapped_column(UtcDateTime, index=True)
+
     # Who confirmed this was real. Kept because verification is an accountable
     # act; RESTRICT so that record cannot be erased by deleting the account.
     verified_by_id: Mapped[uuid.UUID | None] = mapped_column(
@@ -171,6 +180,7 @@ class Incident(BaseModel):
             "authority_id": str(self.authority_id) if self.authority_id else None,
             "authority": self.authority.to_dict() if self.authority else None,
             "assigned_at": self.assigned_at.isoformat() if self.assigned_at else None,
+            "resolved_at": self.resolved_at.isoformat() if self.resolved_at else None,
             "assigned_by": (
                 {
                     "id": str(self.assigned_by_id),

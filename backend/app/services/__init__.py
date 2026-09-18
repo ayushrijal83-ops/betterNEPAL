@@ -1,6 +1,7 @@
 """Service layer: business logic used by route handlers."""
 from . import (
     ai_service,
+    analytics_service,
     auth_service,
     authority_service,
     geolocation_service,
@@ -14,6 +15,7 @@ from . import (
 
 __all__ = [
     "ai_service",
+    "analytics_service",
     "auth_service",
     "authority_service",
     "geolocation_service",
