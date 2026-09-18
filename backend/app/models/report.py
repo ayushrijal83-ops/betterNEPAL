@@ -35,6 +35,7 @@ from .enums import ReportCategory, ReportStatus, enum_column
 
 if TYPE_CHECKING:  # pragma: no cover
     from .district import District
+    from .incident import Incident
     from .municipality import Municipality
     from .user import User
 
@@ -82,9 +83,23 @@ class Report(BaseModel):
     # Derived from the floats by the service layer. PostGIS only.
     location = mapped_column(GeometryColumn("POINT", DEFAULT_SRID), nullable=True)
 
+    # Set when a human verifies this report and promotes or attaches it to an
+    # Incident. NULL means "not yet verified", which is most reports.
+    # SET NULL on delete: removing an incident must not destroy the citizen
+    # submissions that evidenced it - they fall back to unlinked.
+    incident_id: Mapped[uuid.UUID | None] = mapped_column(
+        # Named explicitly: an anonymous constraint added by ALTER TABLE cannot
+        # be dropped by a generated downgrade, which Alembic warns about.
+        ForeignKey(
+            "incidents.id", ondelete="SET NULL", name="fk_reports_incident_id"
+        ),
+        index=True,
+    )
+
     reporter: Mapped["User"] = relationship(back_populates="reports")
     district: Mapped["District | None"] = relationship(back_populates="reports")
     municipality: Mapped["Municipality | None"] = relationship(back_populates="reports")
+    incident: Mapped["Incident | None"] = relationship(back_populates="reports")
 
     __table_args__ = (
         # Defence in depth: the API validates coordinates, and so does the
@@ -128,6 +143,7 @@ class Report(BaseModel):
                 str(self.municipality_id) if self.municipality_id else None
             ),
             "municipality": self.municipality.name if self.municipality else None,
+            "incident_id": str(self.incident_id) if self.incident_id else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }

@@ -47,6 +47,28 @@ class ReportCategory(str, enum.Enum):
     OTHER = "other"
 
 
+class IncidentSeverity(str, enum.Enum):
+    """How urgent a verified incident is.
+
+    Set by the verifying human, not inferred: severity drives who gets woken
+    up, and a wrong guess is worse than an explicit judgement.
+    """
+
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+class IncidentStatus(str, enum.Enum):
+    """Lifecycle of a verified incident, from confirmed to finished."""
+
+    OPEN = "open"
+    IN_PROGRESS = "in_progress"
+    RESOLVED = "resolved"
+    CLOSED = "closed"
+
+
 def enum_column(enum_class: type[enum.Enum], name: str) -> SAEnum:
     """Map an enum to VARCHAR + a named CHECK constraint.
 

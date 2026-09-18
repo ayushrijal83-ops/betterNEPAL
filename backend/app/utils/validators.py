@@ -288,3 +288,89 @@ def validate_status_update(payload: Any) -> Any:
     status = validate_enum_field(data.get("status"), ReportStatus, errors, "status")
     errors.raise_if_any()
     return status
+
+
+# --- incidents -------------------------------------------------------------
+
+INCIDENT_TITLE_MIN_LENGTH = 5
+INCIDENT_TITLE_MAX_LENGTH = 150
+
+
+def validate_incident_from_report(payload: Any) -> dict[str, Any]:
+    """Validate a promotion request.
+
+    Only ``report_id`` and the verifier's judgement are read. Category,
+    coordinates and administrative area are inherited from the report by the
+    service, so a caller cannot make an incident disagree with its evidence.
+    """
+    from ..models.enums import IncidentSeverity
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    report_id = _as_text(data, "report_id")
+    if not report_id:
+        errors.add("report_id", "report_id is required.")
+
+    severity = validate_enum_field(
+        data.get("severity"), IncidentSeverity, errors, "severity", required=False
+    )
+
+    title = _as_text(data, "title") or None
+    if title and not (INCIDENT_TITLE_MIN_LENGTH <= len(title) <= INCIDENT_TITLE_MAX_LENGTH):
+        errors.add(
+            "title",
+            f"title must be between {INCIDENT_TITLE_MIN_LENGTH} and "
+            f"{INCIDENT_TITLE_MAX_LENGTH} characters.",
+        )
+
+    description = _as_text(data, "description") or None
+    if description and len(description) < DESCRIPTION_MIN_LENGTH:
+        errors.add(
+            "description",
+            f"description must be at least {DESCRIPTION_MIN_LENGTH} characters.",
+        )
+
+    errors.raise_if_any()
+    return {
+        "report_id": report_id,
+        "severity": severity,
+        "title": title,
+        "description": description,
+    }
+
+
+def validate_link_report(payload: Any) -> str:
+    """Validate a request to attach a report to an existing incident."""
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    report_id = _as_text(data, "report_id")
+    if not report_id:
+        errors.add("report_id", "report_id is required.")
+
+    errors.raise_if_any()
+    return report_id
+
+
+def validate_incident_update(payload: Any) -> dict[str, Any]:
+    """Validate a status/severity change.
+
+    Both fields are optional individually, but the service rejects a body that
+    carries neither - an update that updates nothing is a client bug worth
+    surfacing.
+    """
+    from ..models.enums import IncidentSeverity, IncidentStatus
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    status = validate_enum_field(
+        data.get("status"), IncidentStatus, errors, "status", required=False
+    )
+    severity = validate_enum_field(
+        data.get("severity"), IncidentSeverity, errors, "severity", required=False
+    )
+
+    errors.raise_if_any()
+    return {"status": status, "severity": severity}

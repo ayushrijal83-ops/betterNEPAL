@@ -16,6 +16,7 @@ from .base import BaseModel, UtcDateTime
 from .role import Role, user_roles
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .incident import Incident
     from .report import Report
 
 
@@ -36,6 +37,9 @@ class User(BaseModel):
     # on reports.reporter_id refuses to delete a user who has filed any.
     reports: Mapped[list["Report"]] = relationship(
         back_populates="reporter", passive_deletes="all"
+    )
+    verified_incidents: Mapped[list["Incident"]] = relationship(
+        back_populates="verified_by", passive_deletes="all"
     )
 
     @validates("email")
