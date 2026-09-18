@@ -132,31 +132,57 @@
     const role = requireRole("guide");
     mountShell(role);
 
-    const params = new URLSearchParams(window.location.search);
-    const report = getReportById(params.get("id") || "BNP1098");
+    const reportId = new URLSearchParams(window.location.search).get("id");
+    const root = document.querySelector(".page-content") || document.body;
 
-    document.getElementById("report-title").textContent = report.title;
-    document.getElementById("report-id-line").textContent =
-      `#${report.id} • ${formatDate(report.date)} • ${report.location}`;
-    document.getElementById("status-badge").innerHTML = statusBadge(report.status);
+    (async () => {
+      if (!reportId) {
+        showToast("No report selected.", "error");
+        return;
+      }
+      try {
+        const report = await fetchReport(reportId);
 
-    document.getElementById("report-image").src = report.image || "";
-    document.getElementById("meta-type").textContent = report.category;
-    document.getElementById("meta-severity").textContent = report.severity;
-    document.getElementById("meta-location").textContent = report.location;
-    document.getElementById("meta-coords").textContent = report.coordinates;
-    document.getElementById("report-description").textContent = report.description;
-    document.getElementById("report-reporter").textContent = report.reporter;
+        // Fill any element the page marks with data-field.
+        const fields = {
+          title: report.title,
+          description: report.description,
+          category: humanise(report.category),
+          district: report.district || "Location pending",
+          created: formatDate(report.created_at),
+          id: String(report.id).slice(0, 8),
+        };
+        Object.entries(fields).forEach(([key, value]) => {
+          root.querySelectorAll(`[data-field="${key}"]`).forEach((el) => {
+            el.textContent = value;
+          });
+        });
 
-    document.getElementById("timeline-container").innerHTML = renderTimeline(report.timeline);
+        root.querySelectorAll("[data-field=status]").forEach((el) => {
+          el.innerHTML = statusBadge(report.status);
+        });
 
-    document.getElementById("conf-value").textContent =
-      Math.round((report.ai.confidence || 0) * 100) + "%";
-    document.getElementById("ai-class").textContent = report.ai.classification;
-    document.getElementById("ai-hazard").textContent = report.ai.hazard;
-    document.getElementById("ai-dept").textContent = report.ai.department;
+        const timelineEl = document.getElementById("report-timeline");
+        if (timelineEl) timelineEl.innerHTML = reportTimeline(report);
 
-    document.getElementById("status-text").innerHTML = statusBadge(report.status);
+        const mediaEl = document.getElementById("report-media");
+        if (mediaEl) {
+          const media = await fetchReportMedia(report.id);
+          mediaEl.innerHTML = media.length
+            ? media
+                .map(
+                  (m) =>
+                    `<a href="${API_BASE_URL.replace("/api/v1", "")}${m.url}" target="_blank" rel="noopener">${escapeHtml(
+                      m.original_filename
+                    )}</a>`
+                )
+                .join("<br>")
+            : '<div class="empty-text">No evidence attached.</div>';
+        }
+      } catch (error) {
+        reportApiError(error, "Could not load this report.");
+      }
+    })();
   </script>
 </body>
 </html>

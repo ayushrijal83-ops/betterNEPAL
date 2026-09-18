@@ -48,6 +48,7 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
@@ -56,9 +57,15 @@
   <script>
     const role = requireRole("admin");
     mountShell(role);
-
-    renderProjectGrid("project-grid", getProjects());
-    renderProjectsTable("projects-body", getProjects());
+    (async () => {
+      try {
+        const projects = await fetchProjects({ per_page: 100 });
+        renderProjectGrid("project-grid", projects, "../authority/project-details.html");
+        renderProjectsTable("projects-body", projects, "../authority/project-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load projects.");
+      }
+    })();
   </script>
 </body>
 </html>

@@ -57,9 +57,7 @@
   <script>
     const role = requireRole("guide");
     mountShell(role);
-
-    const reports = Object.values(MOCK_REPORTS);
-    renderReportsTable("reports-body", reports);
+    bootstrapMyReports("reports-body", "report-details.html");
   </script>
 </body>
 </html>

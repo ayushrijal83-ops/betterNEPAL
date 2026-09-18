@@ -54,7 +54,7 @@
   <script>
     const role = requireRole("citizen");
     mountShell(role);
-    renderReportsTable("reports-body", Object.values(MOCK_REPORTS));
+    bootstrapMyReports("reports-body", "report-details.html");
   </script>
 </body>
 </html>

@@ -1,5 +1,101 @@
 // js/dashboard.js
 
+// ---------------------------------------------------------------------------
+// Analytics loaders
+// ---------------------------------------------------------------------------
+// Every figure below comes from /analytics, which aggregates in SQL. Nothing
+// here fetches a list and counts its length: that would be wrong the moment
+// the list is paginated, and it is the difference between one query and
+// thousands.
+
+// Headline metrics. Public, so this works signed out too.
+async function fetchOverview() {
+  return apiGet("/analytics/overview", { auth: false });
+}
+
+// Per-authority resolution timing and backlog. Authority/admin only.
+async function fetchAuthorityPerformance(authorityId) {
+  const data = await apiGet(
+    `/analytics/authorities/performance${queryString({ authority_id: authorityId })}`
+  );
+  return data.authorities || [];
+}
+
+async function fetchCategoryDistribution() {
+  return apiGet("/analytics/categories", { auth: false });
+}
+
+async function fetchDistrictSummary() {
+  const data = await apiGet("/analytics/map/districts", { auth: false });
+  return data.districts || [];
+}
+
+// Load the admin stat row from real aggregates.
+async function bootstrapOverviewStats(containerId) {
+  renderLoading(containerId, "Loading metrics…");
+  try {
+    const overview = await fetchOverview();
+    renderStats(containerId, [
+      { value: overview.reports.total, label: "Total reports" },
+      { value: overview.incidents.active, label: "Active incidents" },
+      { value: overview.projects.active, label: "Active projects" },
+      { value: overview.authorities.total, label: "Authorities" },
+    ]);
+    return overview;
+  } catch (error) {
+    renderError(containerId, reportApiError(error, "Could not load metrics."));
+    return null;
+  }
+}
+
+// Authority performance table. `resolution.average_days` is null when nothing
+// could be timed, and that is rendered as "—" rather than as 0 - a zero here
+// would read as "resolved instantly" instead of "no data".
+async function bootstrapAuthorityPerformance(containerId) {
+  renderLoading(containerId, "Loading authority performance…");
+  try {
+    const rows = await fetchAuthorityPerformance();
+    if (!rows.length) {
+      renderEmpty(containerId, "No authorities yet", "Register an authority to see performance.");
+      return [];
+    }
+
+    const el = document.getElementById(containerId);
+    el.innerHTML = `
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Authority</th><th>Assigned</th><th>Backlog</th>
+            <th>Resolved</th><th>Avg. days</th><th>Active projects</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map((row) => {
+              const avg = row.resolution.average_days;
+              const unmeasured = row.resolution.unmeasured_count
+                ? ` <span class="text-muted">(${row.resolution.unmeasured_count} untimed)</span>`
+                : "";
+              return `
+            <tr>
+              <td>${escapeHtml(row.authority_name)}</td>
+              <td>${row.assigned_incidents}</td>
+              <td>${row.backlog}</td>
+              <td>${row.resolved_incidents}</td>
+              <td>${avg === null ? "—" : avg}${unmeasured}</td>
+              <td>${row.active_projects}</td>
+            </tr>`;
+            })
+            .join("")}
+        </tbody>
+      </table>`;
+    return rows;
+  } catch (error) {
+    renderError(containerId, reportApiError(error, "Could not load performance data."));
+    return [];
+  }
+}
+
 // Renders stat cards into a container
 function renderStats(containerId, stats) {
   const el = document.getElementById(containerId);

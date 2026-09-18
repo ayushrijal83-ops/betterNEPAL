@@ -1,8 +1,114 @@
-<script>
-  document.getElementById("register-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    setRole("guide");
-    sessionStorage.setItem("bn_flash", "Guide account created");
-    window.location.href = "../../pages/guide/dashboard.html";
-  });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Registration — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <style>
+    .auth-wrap {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--bn-navy) 0%, var(--bn-blue) 100%);
+      padding: var(--space-lg);
+    }
+    .auth-card {
+      background: var(--bn-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl);
+      width: 100%; max-width: 420px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-brand { display:flex; align-items:center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+    .auth-brand-logo {
+      width:44px;height:44px;background:var(--bn-red);color:var(--bn-white);
+      border-radius: var(--radius-md); display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:18px;
+    }
+    .auth-title { font-size: var(--font-size-xl); font-weight:700; color: var(--bn-navy); }
+    .auth-sub   { color: var(--bn-text-light); font-size: var(--font-size-sm); margin-bottom: var(--space-lg); }
+    .auth-footer { margin-top: var(--space-lg); text-align: center; font-size: var(--font-size-sm); color: var(--bn-text-light); }
+    .auth-back { display:inline-block; margin-top: var(--space-md); font-size: var(--font-size-xs); color: var(--bn-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">NP</div>
+        <div>
+          <div class="auth-title">Better Nepal</div>
+          <div class="auth-sub">Trekking Guide Portal</div>
+        </div>
+      </div>
+
+      <div class="alert alert-info" style="margin-bottom:var(--space-lg)">Registering creates a <strong>citizen</strong> account. Guide access is granted by an administrator once your registration is verified.</div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="full-name">Full name</label>
+          <input class="form-input" type="text" id="full-name" autocomplete="name" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" autocomplete="email" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone <span class="text-muted">(optional)</span></label>
+          <input class="form-input" type="tel" id="phone" autocomplete="tel" placeholder="+977 98XXXXXXXX" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-input" type="password" id="password" autocomplete="new-password"
+                 minlength="8" required />
+          <div class="form-hint">At least 8 characters.</div>
+        </div>
+        <button class="btn btn-primary btn-lg" style="width:100%" type="submit">Create account</button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+      <a href="../../index.html" class="auth-back">&larr; Back to home</a>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    const form = document.getElementById("register-form");
+    const submitBtn = form.querySelector("button[type=submit]");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Creating account\u2026";
+
+      try {
+        await register({
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("password").value,
+          fullName: document.getElementById("full-name").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+        });
+        sessionStorage.setItem("bn_flash", "Account created");
+        // Public registration always creates a CITIZEN account: the backend
+        // fixes the role server-side and ignores anything sent in the body.
+        // Landing anywhere else would be a lie about what was granted.
+        window.location.href = "../../pages/citizen/dashboard.html";
+      } catch (error) {
+        reportApiError(error, "Could not create the account.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>

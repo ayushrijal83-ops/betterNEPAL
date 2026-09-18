@@ -48,11 +48,11 @@
       <form id="login-form">
         <div class="form-group">
           <label class="form-label">Email</label>
-          <input class="form-input" type="email" id="email" value="citizen@betternepal.gov.np" required />
+          <input class="form-input" type="email" id="email" autocomplete="username" required />
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input class="form-input" type="password" id="password" value="demo1234" required />
+          <input class="form-input" type="password" id="password" autocomplete="current-password" required />
         </div>
         <button class="btn btn-primary btn-lg" style="width:100%" type="submit">Sign in</button>
       </form>
@@ -64,15 +64,40 @@
     </div>
   </div>
 
+  <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/auth.js"></script>
   <script>
-  document.getElementById("login-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    setRole("citizen");
-    sessionStorage.setItem("bn_flash", "Signed in successfully");
-    window.location.href = "../../pages/citizen/dashboard.html";
-  });
-</script>
+    // Already signed in on this portal? Skip the form.
+    if (TokenStore.isSignedIn() && localStorage.getItem("bn_role") === "citizen") {
+      window.location.replace("../../pages/citizen/dashboard.html");
+    }
+
+    const form = document.getElementById("login-form");
+    const submitBtn = form.querySelector("button[type=submit]");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing in…";
+
+      try {
+        await login(
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value,
+          "citizen"
+        );
+        sessionStorage.setItem("bn_flash", "Signed in successfully");
+        window.location.href = "../../pages/citizen/dashboard.html";
+      } catch (error) {
+        reportApiError(error, "Could not sign in.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
+    });
+  </script>
 </body>
 </html>

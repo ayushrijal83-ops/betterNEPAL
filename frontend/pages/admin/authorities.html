@@ -45,6 +45,7 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
@@ -52,8 +53,7 @@
   <script>
     const role = requireRole("admin");
     mountShell(role);
-
-    renderAuthoritiesTable("authorities-body", getAuthorities());
+    bootstrapAuthoritiesPage("authorities-body");
   </script>
 </body>
 </html>

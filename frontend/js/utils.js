@@ -17,10 +17,22 @@ function setRole(role) {
 }
 
 function getUser() {
-  const name = localStorage.getItem("bn_user_name") || "Sanjal Neupane";
+  // Read the real session. The placeholder shows only in the moment before
+  // /auth/me returns, so a signed-in user never sees another person's name
+  // baked into the markup.
+  const stored =
+    typeof TokenStore !== "undefined" && TokenStore.getUser ? TokenStore.getUser() : null;
+  const name = (stored && stored.full_name) || "Signing in…";
   return {
     name,
-    initials: name.split(" ").map((n) => n[0]).join("").slice(0, 2),
+    email: (stored && stored.email) || "",
+    roles: (stored && stored.roles) || [],
+    initials: name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase(),
   };
 }
 
@@ -137,12 +149,19 @@ async function openModal({ title, bodyHtml, confirmText = "Confirm", cancelText 
 
   const wrapper = document.createElement("div");
   wrapper.className = "modal-backdrop";
-  wrapper.innerHTML = tpl && tpl.includes("modal-title")
-    ? tpl
-        .replace("{{title}}", escapeHtml(title))
-        .replace("{{body}}", bodyHtml)
-        .replace("{{confirmText}}", escapeHtml(confirmText))
-        .replace("{{cancelText}}", escapeHtml(cancelText))
+  // Strip the template's leading comment before substituting. It lists the
+  // placeholder names verbatim, and String.replace with a string pattern
+  // replaces only the FIRST match - which was the one inside the comment, so
+  // every modal rendered a literal "{{title}}". Global regexes, and no comment
+  // to trip over.
+  const body = (tpl || "").replace(/<!--[\s\S]*?-->/g, "");
+
+  wrapper.innerHTML = body.includes("modal-title")
+    ? body
+        .replace(/\{\{\s*title\s*\}\}/g, escapeHtml(title))
+        .replace(/\{\{\s*body\s*\}\}/g, bodyHtml)
+        .replace(/\{\{\s*confirmText\s*\}\}/g, escapeHtml(confirmText))
+        .replace(/\{\{\s*cancelText\s*\}\}/g, escapeHtml(cancelText))
     : `
       <div class="modal">
         <div class="modal-header">

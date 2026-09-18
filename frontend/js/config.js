@@ -1,6 +1,99 @@
 // js/config.js
 
-const API_URL = "http://localhost:8000/api";
+// ---------------------------------------------------------------------------
+// API location
+// ---------------------------------------------------------------------------
+// When Flask serves these files itself (development convenience, see
+// app/__init__.py) the frontend and API share an origin, so a relative path
+// works and no CORS round trip is needed. Opened from a separate dev server
+// (live-server, http-server) we fall back to the Flask default port.
+const API_ORIGIN =
+  window.location.port === "5000" || window.location.protocol === "file:"
+    ? ""
+    : "http://localhost:5000";
+
+const API_BASE_URL = API_ORIGIN + "/api/v1";
+
+// Kept for backwards compatibility with any page still referencing it.
+const API_URL = API_BASE_URL;
+
+// ---------------------------------------------------------------------------
+// Role names
+// ---------------------------------------------------------------------------
+// The UI calls the trekking-guide role "guide"; the backend calls it
+// "trekking_guide". Every other role matches. Translating in one place keeps
+// the mismatch from leaking into page code, where it would silently produce
+// failed permission checks that look like login bugs.
+const ROLE_TO_API = {
+  citizen: "citizen",
+  guide: "trekking_guide",
+  authority: "authority",
+  contractor: "contractor",
+  admin: "admin",
+};
+
+const ROLE_FROM_API = Object.fromEntries(
+  Object.entries(ROLE_TO_API).map(([ui, api]) => [api, ui])
+);
+
+function toApiRole(uiRole) {
+  return ROLE_TO_API[uiRole] || uiRole;
+}
+
+function toUiRole(apiRole) {
+  return ROLE_FROM_API[apiRole] || apiRole;
+}
+
+// ---------------------------------------------------------------------------
+// Report categories
+// ---------------------------------------------------------------------------
+// These mirror the backend ReportCategory enum exactly, deliberately. The
+// prototype previously offered bridge / trail / sanitation / environment,
+// which have no backend equivalent - mapping them client-side would have meant
+// silently filing a damaged bridge as something else, so the stored category
+// would no longer mean what the citizen chose. Restoring them is a backend
+// change (add to ReportCategory + a migration), not a frontend one.
+const REPORT_CATEGORIES = [
+  { value: "road_damage", label: "Road damage" },
+  { value: "water_leak", label: "Water leak / supply" },
+  { value: "waste_management", label: "Waste management" },
+  { value: "electricity", label: "Electricity" },
+  { value: "public_property", label: "Public property" },
+  { value: "natural_disaster", label: "Landslide / natural hazard" },
+  { value: "other", label: "Other" },
+];
+
+// Backend status value -> CSS badge class used by components.css.
+const STATUS_BADGE = {
+  submitted: "badge-info",
+  under_review: "badge-warning",
+  verified_as_incident: "badge-critical",
+  rejected: "badge-neutral",
+  open: "badge-critical",
+  in_progress: "badge-warning",
+  resolved: "badge-success",
+  closed: "badge-neutral",
+  planned: "badge-info",
+  active: "badge-warning",
+  on_hold: "badge-neutral",
+  completed: "badge-success",
+  cancelled: "badge-neutral",
+};
+
+// Incident severity -> the marker-pin classes already defined in map.css.
+const SEVERITY_PIN = {
+  critical: "critical",
+  high: "warning",
+  medium: "info",
+  low: "success",
+};
+
+function humanise(value) {
+  if (!value) return "";
+  return String(value)
+    .replace(/_/g, " ")
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
 
 const NAV_ITEMS = {
   citizen: [

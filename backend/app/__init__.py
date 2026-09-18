@@ -29,11 +29,50 @@ def create_app(config_name: str | None = None) -> Flask:
     _register_extensions(app)
     _register_database(app)
     _register_blueprints(app)
+    _register_frontend(app)
     _register_error_handlers(app)
     _register_cli(app)
     _configure_logging(app)
 
     return app
+
+
+def _register_frontend(app: Flask) -> None:
+    """Serve ../frontend in development only.
+
+    Convenience, not deployment. Flask's development server is single-threaded
+    and does no caching or compression, so in production a real web server
+    sits in front of these files - which is why this is gated on DEBUG rather
+    than simply always on.
+
+    The benefit of having it is that the frontend and API then share an origin,
+    so the browser makes no preflight request and CORS stops being something
+    that has to be right before anything works at all.
+    """
+    if not app.config.get("DEBUG"):
+        return
+
+    frontend_dir = BACKEND_DIR.parent / "frontend"
+    if not frontend_dir.is_dir():
+        return
+
+    from flask import send_from_directory
+
+    @app.get("/")
+    def _frontend_index():
+        return send_from_directory(frontend_dir, "index.html")
+
+    @app.get("/<path:filename>")
+    def _frontend_file(filename: str):
+        """Serve a frontend file.
+
+        ``send_from_directory`` rejects any path that escapes the directory, so
+        a request for ``../backend/.env`` is refused rather than served.
+        """
+        target = frontend_dir / filename
+        if target.is_dir():
+            filename = f"{filename.rstrip('/')}/index.html"
+        return send_from_directory(frontend_dir, filename)
 
 
 def _register_extensions(app: Flask) -> None:

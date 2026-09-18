@@ -48,21 +48,31 @@
 
   <script src="js/config.js"></script>
   <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/dashboard.js"></script>
   <script>
-  const role = getRole();
-  mountShell(role);
+    // The landing page is public: no requireRole, no shell. A visitor who has
+    // never signed in should still see the national picture, which is the
+    // whole argument for the analytics endpoints being unauthenticated.
+    renderSkeletonList("national-stats", 1);
 
-  renderSkeletonList("national-stats", 1);
-  setTimeout(() => {
-    renderStats("national-stats", [
-      { value: "18,426", label: "Citizen Reports" },
-      { value: "4,281",  label: "Active Issues" },
-      { value: "1,248",  label: "Active Projects" },
-      { value: "9,842",  label: "Verified Resolutions" },
-    ]);
-  }, 250);
-</script>
+    (async () => {
+      try {
+        const overview = await fetchOverview();
+        renderStats("national-stats", [
+          { value: overview.reports.total, label: "Citizen Reports" },
+          { value: overview.incidents.active, label: "Active Issues" },
+          { value: overview.projects.active, label: "Active Projects" },
+          { value: overview.incidents.resolved, label: "Verified Resolutions" },
+        ]);
+      } catch (error) {
+        // No toast. A visitor who cannot reach the API does not need a popup
+        // about it on a landing page; the panel itself says enough.
+        console.error(error);
+        renderError("national-stats", "Live figures are unavailable right now.");
+      }
+    })();
+  </script>
 </body>
 </html>

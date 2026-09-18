@@ -161,53 +161,151 @@
     const role = requireRole("guide");
     mountShell(role);
 
-    // Fill category options
     document.getElementById("category").innerHTML = renderCategoryOptions();
-    document.getElementById("category").value = "bridge";
 
-    // Upload zone
+    // ---- evidence ----
+    // The file is held until the report exists: media attaches to a record by
+    // id, so there is nothing to attach it to until POST /reports returns.
+    let selectedFile = null;
+
     const uploadZone = document.getElementById("upload-zone");
     const photoInput = document.getElementById("photo-input");
+
     uploadZone.addEventListener("click", () => photoInput.click());
     photoInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
+
+      // Reject here as well as server-side, so a 10MB holiday photo fails
+      // instantly rather than after a long upload.
+      if (file.size > 10 * 1024 * 1024) {
+        showToast("Photos must be 10MB or smaller.", "error");
+        photoInput.value = "";
+        return;
+      }
+
+      selectedFile = file;
       const reader = new FileReader();
       reader.onload = (ev) => {
         uploadZone.classList.add("has-image");
-        uploadZone.innerHTML = `<img src="${ev.target.result}" alt="upload" />`;
+        uploadZone.innerHTML = `<img src="${ev.target.result}" alt="Selected evidence" />`;
       };
       reader.readAsDataURL(file);
     });
 
-    // Severity selection styling
+    // ---- location ----
+    // Coordinates are the only thing the backend accepts; district and
+    // municipality are resolved server-side from them, so the text field is a
+    // human landmark note and never used to place the report.
+    let coordinates = null;
+    const locationInput = document.getElementById("location");
+
+    function showCoordinates() {
+      if (!coordinates) return;
+      locationInput.value =
+        coordinates.lat.toFixed(5) + ", " + coordinates.lng.toFixed(5);
+      locationInput.dataset.located = "true";
+    }
+
+    async function useDeviceLocation() {
+      locationInput.placeholder = "Locating\u2026";
+      const position = await getCurrentPosition();
+      if (!position) {
+        locationInput.placeholder = "Location unavailable \u2014 enter coordinates";
+        showToast(
+          "Could not read your location. Allow location access, or type coordinates as lat, lng.",
+          "info",
+          6000
+        );
+        return;
+      }
+      coordinates = { lat: position.lat, lng: position.lng };
+      showCoordinates();
+    }
+
+    document.querySelectorAll("[data-locate]").forEach((el) =>
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        useDeviceLocation();
+      })
+    );
+
+    // Accept a typed "27.7172, 85.3240" as a fallback for a denied permission.
+    locationInput.addEventListener("change", () => {
+      const match = locationInput.value.match(
+        /^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/
+      );
+      if (match) coordinates = { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
+    });
+
+    // Ask on load; a refusal is a choice, not an error.
+    useDeviceLocation();
+
+    // ---- severity ----
+    // The control stays (it is part of the design), but the value is not sent:
+    // the backend Report model has no severity column. Severity is set by the
+    // verifying authority when a report becomes an incident. Submitting it
+    // would be silently discarded, which is worse than not sending it.
     document.querySelectorAll(".severity-option").forEach((opt) => {
       opt.addEventListener("click", () => {
-        document.querySelectorAll(".severity-option").forEach((o) => o.classList.remove("selected"));
+        document
+          .querySelectorAll(".severity-option")
+          .forEach((o) => o.classList.remove("selected"));
         opt.classList.add("selected");
         opt.querySelector("input").checked = true;
       });
     });
 
-    // Submit
+    // ---- submit ----
     document.getElementById("report-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const btn = document.getElementById("submit-btn");
-      btn.textContent = "Submitting...";
+      const original = btn.textContent;
+
+      if (!coordinates) {
+        showToast(
+          "A location is required. Use the locate button or type coordinates as lat, lng.",
+          "error",
+          6000
+        );
+        return;
+      }
+
       btn.disabled = true;
+      btn.textContent = "Submitting\u2026";
 
-      const payload = {
-        title: document.getElementById("report-title").value,
-        location: document.getElementById("location").value,
-        coordinates: "28.5966° N, 83.8203° E",
-        category: document.getElementById("category").options[document.getElementById("category").selectedIndex].text,
-        severity: document.querySelector("input[name=severity]:checked").value,
-        description: document.getElementById("description").value,
-        reporter: getUser().name + " (Registered Guide)",
-      };
+      try {
+        const report = await createReport({
+          title: document.getElementById("report-title").value.trim(),
+          description: document.getElementById("description").value.trim(),
+          category: document.getElementById("category").value,
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+        });
 
-      const report = await apiPost("/reports", payload);
-      window.location.href = "report-details.html?id=" + report.id;
+        // The report is saved. A failed photo upload must not lose it, so the
+        // attachment is a separate step whose failure is reported without
+        // discarding what already succeeded.
+        if (selectedFile) {
+          btn.textContent = "Uploading photo\u2026";
+          try {
+            await uploadEvidence(selectedFile, "report", report.id);
+          } catch (uploadError) {
+            reportApiError(
+              uploadError,
+              "The report was saved, but the photo could not be uploaded."
+            );
+          }
+        }
+
+        sessionStorage.setItem("bn_flash", "Report submitted");
+        window.location.href = "report-details.html?id=" + encodeURIComponent(report.id);
+      } catch (error) {
+        reportApiError(error, "Could not submit the report.");
+        btn.disabled = false;
+        btn.textContent = original;
+      }
     });
   </script>
 </body>

@@ -94,19 +94,30 @@
   <script src="../../js/incidents.js"></script>
   <script src="../../js/projects.js"></script>
   <script src="../../js/alerts.js"></script>
+  <script src="../../js/dashboard.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
 
-    renderStats("admin-stats", [
-      { value: "18,426", label: "Total Reports" },
-      { value: "1,248",  label: "Active Projects" },
-      { value: "12,318", label: "Registered Users" },
-      { value: "77",     label: "Districts" },
-    ]);
+    (async () => {
+      await bootstrapOverviewStats("admin-stats");
 
-    renderIncidentList("admin-incidents", getIncidents().slice(0, 3));
-    renderProjectGrid("admin-projects", getProjects().slice(0, 2));
+      renderLoading("admin-incidents", "Loading incidents\u2026");
+      try {
+        const incidents = await fetchIncidents({ per_page: 5 });
+        renderIncidentList("admin-incidents", incidents, "incidents.html");
+      } catch (error) {
+        renderError("admin-incidents", reportApiError(error, "Could not load incidents."));
+      }
+
+      renderLoading("admin-projects", "Loading projects\u2026");
+      try {
+        const projects = await fetchProjects({ per_page: 4 });
+        renderProjectGrid("admin-projects", projects, "projects.html");
+      } catch (error) {
+        renderError("admin-projects", reportApiError(error, "Could not load projects."));
+      }
+    })();
   </script>
 </body>
 </html>

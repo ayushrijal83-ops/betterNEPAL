@@ -62,9 +62,15 @@
   <script>
     const role = requireRole("authority");
     mountShell(role);
-
-    renderProjectGrid("project-grid", getProjects());
-    renderProjectsTable("projects-body", getProjects());
+    (async () => {
+      try {
+        const projects = await fetchProjects({ per_page: 100 });
+        renderProjectGrid("project-grid", projects, "project-details.html");
+        renderProjectsTable("projects-body", projects, "project-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load projects.");
+      }
+    })();
   </script>
 </body>
 </html>

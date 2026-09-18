@@ -39,6 +39,7 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
@@ -47,15 +48,7 @@
   <script>
     const role = requireRole("contractor");
     mountShell(role);
-
-    renderStats("ctr-stats", [
-      { value: "3", label: "Assigned Projects" },
-      { value: "1", label: "In Progress" },
-      { value: "1", label: "Completed" },
-      { value: "88%", label: "Avg. Progress" },
-    ]);
-
-    renderProjectGrid("ctr-projects", getProjects());
+    bootstrapMyProjects("project-grid", "projects-body", "project-details.html");
   </script>
 </body>
 </html>

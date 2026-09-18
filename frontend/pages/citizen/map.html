@@ -48,7 +48,6 @@
   <script>
     const role = requireRole("citizen");
     mountShell(role);
-
     fetch("../../components/map-panel.html")
       .then((r) => r.text())
       .then((html) => {

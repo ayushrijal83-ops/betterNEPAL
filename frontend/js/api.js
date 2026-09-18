@@ -1,66 +1,245 @@
 // js/api.js
-// Thin API wrapper. Uses mock data for now. Swap to real fetch calls later.
+// ---------------------------------------------------------------------------
+// The single place this frontend talks to the backend.
+//
+// Everything above this file deals in plain objects and never sees a status
+// code, an envelope, or a token. That matters for more than tidiness: token
+// refresh has to be centralised, or a dozen call sites each grow their own
+// half-correct retry.
+// ---------------------------------------------------------------------------
 
-const USE_MOCK = true;
+// --- token storage ---------------------------------------------------------
+//
+// The backend (Phase 3) returns both tokens in the JSON body and sets no
+// cookies, so an HttpOnly cookie is not available to us without a backend
+// change. Given that, the split below is the best available trade:
+//
+//   access token  -> sessionStorage, dies when the tab closes
+//   refresh token -> localStorage, so a reload or a second tab stays signed in
+//
+// Neither is proof against XSS - any script on this origin can read both. The
+// real fix is the backend setting the refresh token as an HttpOnly, Secure,
+// SameSite=Strict cookie and this file dropping its storage entirely; nothing
+// above would need to change, which is the point of putting it here.
+//
+// In-memory-only was rejected deliberately: this is a multi-page app, so every
+// navigation is a fresh JS context and it would sign the user out on each
+// click.
 
-async function apiGet(path) {
-  if (USE_MOCK) return mockGet(path);
-  const res = await fetch(API_URL + path);
-  if (!res.ok) throw new Error("API error: " + res.status);
-  return res.json();
+const ACCESS_TOKEN_KEY = "bn_access_token";
+const REFRESH_TOKEN_KEY = "bn_refresh_token";
+const USER_KEY = "bn_user";
+
+const TokenStore = {
+  getAccess() {
+    try {
+      return sessionStorage.getItem(ACCESS_TOKEN_KEY);
+    } catch (_) {
+      return null;
+    }
+  },
+  getRefresh() {
+    try {
+      return localStorage.getItem(REFRESH_TOKEN_KEY);
+    } catch (_) {
+      return null;
+    }
+  },
+  set(accessToken, refreshToken) {
+    try {
+      if (accessToken) sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+      if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    } catch (_) {
+      /* private browsing: the session simply will not persist */
+    }
+  },
+  setUser(user) {
+    try {
+      sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    } catch (_) {}
+  },
+  getUser() {
+    try {
+      return JSON.parse(sessionStorage.getItem(USER_KEY) || "null");
+    } catch (_) {
+      return null;
+    }
+  },
+  clear() {
+    try {
+      sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+      sessionStorage.removeItem(USER_KEY);
+      localStorage.removeItem(REFRESH_TOKEN_KEY);
+      localStorage.removeItem("bn_role");
+    } catch (_) {}
+  },
+  isSignedIn() {
+    return Boolean(this.getAccess() || this.getRefresh());
+  },
+};
+
+// --- errors ----------------------------------------------------------------
+
+// Carries the backend's own error code and details, so a caller can react to
+// `report_already_linked` specifically rather than string-matching a message.
+class ApiError extends Error {
+  constructor(message, { status = 0, code = "unknown_error", details = null } = {}) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.code = code;
+    this.details = details;
+  }
+
+  // Validation failures arrive as { field: "message" }; flatten for display.
+  fieldMessages() {
+    if (!this.details || typeof this.details !== "object") return [];
+    return Object.entries(this.details)
+      .filter(([, message]) => typeof message === "string" && message)
+      .map(([field, message]) => `${field}: ${message}`);
+  }
 }
 
-async function apiPost(path, body) {
-  if (USE_MOCK) return mockPost(path, body);
-  const res = await fetch(API_URL + path, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+// --- refresh ---------------------------------------------------------------
+//
+// Single-flight. If three requests 401 at once they must not fire three
+// refreshes: Phase 3 rotates the refresh token on every use, so the second
+// would present an already-rotated token and sign the user out. The first
+// caller starts a refresh; the rest await the same promise.
+let refreshInFlight = null;
+
+async function refreshAccessToken() {
+  const refreshToken = TokenStore.getRefresh();
+  if (!refreshToken) return false;
+
+  if (!refreshInFlight) {
+    refreshInFlight = (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refresh_token: refreshToken }),
+        });
+        const payload = await response.json().catch(() => null);
+        if (!response.ok || !payload || payload.status !== "success") return false;
+
+        TokenStore.set(payload.data.access_token, payload.data.refresh_token);
+        return true;
+      } catch (_) {
+        return false;
+      } finally {
+        // Cleared on the next tick, so every concurrent awaiter sees this result.
+        setTimeout(() => {
+          refreshInFlight = null;
+        }, 0);
+      }
+    })();
+  }
+
+  return refreshInFlight;
+}
+
+// --- core request ----------------------------------------------------------
+
+async function request(path, { method = "GET", body, auth = true, retry = true } = {}) {
+  const headers = {};
+  const isFormData = body instanceof FormData;
+
+  // Never set Content-Type for FormData: the browser must add its own
+  // multipart boundary, and overriding it makes the body unparseable.
+  if (body !== undefined && !isFormData) headers["Content-Type"] = "application/json";
+
+  if (auth) {
+    const token = TokenStore.getAccess();
+    if (token) headers.Authorization = `Bearer ${token}`;
+  }
+
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      method,
+      headers,
+      body: isFormData ? body : body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  } catch (_) {
+    // fetch only rejects on network failure, so this really is "no server".
+    throw new ApiError(
+      "Could not reach the server. Check that the backend is running.",
+      { code: "network_error" }
+    );
+  }
+
+  // A 401 means the access token expired; refresh and replay exactly once.
+  // `retry` guards against a loop when the replay 401s again.
+  if (response.status === 401 && auth && retry) {
+    if (await refreshAccessToken()) {
+      return request(path, { method, body, auth, retry: false });
+    }
+    TokenStore.clear();
+  }
+
+  if (response.status === 204) return null;
+
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok || !payload || payload.status === "error") {
+    const error = (payload && payload.error) || {};
+    throw new ApiError(error.message || `Request failed (${response.status})`, {
+      status: response.status,
+      code: error.code || "http_error",
+      details: error.details || null,
+    });
+  }
+
+  // Unwrap the locked { status, data } envelope so callers never see it.
+  return payload.data;
+}
+
+// --- verbs -----------------------------------------------------------------
+
+function apiGet(path, options = {}) {
+  return request(path, { ...options, method: "GET" });
+}
+
+function apiPost(path, body, options = {}) {
+  return request(path, { ...options, method: "POST", body });
+}
+
+function apiPatch(path, body, options = {}) {
+  return request(path, { ...options, method: "PATCH", body });
+}
+
+function apiDelete(path, options = {}) {
+  return request(path, { ...options, method: "DELETE" });
+}
+
+// Build `?a=1&b=2`, skipping blanks so an untouched filter is simply absent
+// rather than sent as an empty string the backend would have to interpret.
+function queryString(params = {}) {
+  const search = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") return;
+    search.append(key, value);
   });
-  if (!res.ok) throw new Error("API error: " + res.status);
-  return res.json();
+  const encoded = search.toString();
+  return encoded ? `?${encoded}` : "";
 }
 
-// --- Mock backend ---
-function mockGet(path) {
-  if (path.startsWith("/reports")) {
-    return Promise.resolve(Object.values(MOCK_REPORTS));
-  }
-  return Promise.resolve(null);
-}
+// --- shared error presentation --------------------------------------------
 
-function mockPost(path, body) {
-  if (path === "/reports") {
-    const id = "BNP" + Math.floor(1000 + Math.random() * 9000);
-    const report = {
-      id,
-      title: body.title || "Untitled report",
-      category: body.category || "Other",
-      severity: body.severity || "Medium",
-      status: "Reported",
-      location: body.location || "Unknown",
-      coordinates: body.coordinates || "—",
-      date: new Date().toISOString(),
-      reporter: body.reporter || "Current User",
-      description: body.description || "",
-      ai: {
-        classification: "Pending AI classification",
-        hazard: "Pending",
-        confidence: 0.0,
-        department: "Pending routing",
-        requiresVerification: true,
-      },
-      timeline: [
-        { label: "Reported by user", time: "Just now", state: "done" },
-        { label: "AI-assisted classification", time: "Pending", state: "active" },
-        { label: "Authority verification", time: "—", state: "" },
-        { label: "Repair assigned", time: "—", state: "" },
-        { label: "Repair in progress", time: "—", state: "" },
-        { label: "Completed", time: "—", state: "" },
-      ],
-    };
-    MOCK_REPORTS[id] = report;
-    return Promise.resolve(report);
+// One place decides what a user sees when a call fails, so every page reports
+// problems the same way instead of inventing its own wording.
+function reportApiError(error, fallback = "Something went wrong.") {
+  console.error(error);
+
+  if (!(error instanceof ApiError)) {
+    if (typeof showToast === "function") showToast(fallback, "error");
+    return fallback;
   }
-  return Promise.resolve(null);
+
+  const fields = error.fieldMessages();
+  const message = fields.length ? fields.join(" · ") : error.message || fallback;
+
+  if (typeof showToast === "function") showToast(message, "error");
+  return message;
 }

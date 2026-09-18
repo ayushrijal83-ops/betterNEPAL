@@ -75,6 +75,7 @@
     </div>
   </div>
 
+  <script src="../../js/dashboard.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
@@ -86,17 +87,19 @@
   <script>
     const role = requireRole("authority");
     mountShell(role);
-
-    renderStats("auth-stats", [
-      { value: "326",  label: "Active Reports" },
-      { value: "23",   label: "Critical Incidents" },
-      { value: "61",   label: "Active Projects" },
-      { value: "84",   label: "Damaged Roads" },
-    ]);
-
-    renderIncidentList("active-incidents", getIncidents().slice(0, 3));
-    renderProjectGrid("tracked-projects", getProjects().slice(0, 2));
-    renderAlertList("alert-list", getAlerts());
+    (async () => {
+      await bootstrapOverviewStats("authority-stats");
+      try {
+        renderIncidentList("authority-incidents", await fetchIncidents({ per_page: 5 }), "incident-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load incidents.");
+      }
+      try {
+        renderProjectGrid("authority-projects", await fetchProjects({ per_page: 4 }), "project-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load projects.");
+      }
+    })();
   </script>
 </body>
 </html>

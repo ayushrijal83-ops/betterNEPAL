@@ -9,20 +9,29 @@
   <link rel="stylesheet" href="../../css/components.css" />
   <link rel="stylesheet" href="../../css/forms.css" />
   <style>
-    .auth-wrap { min-height:100vh;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#0b1f3a 0%,#1e3a5f 100%);padding:var(--space-lg); }
-    .auth-card { background:var(--bn-white);border-radius:var(--radius-lg);padding:var(--space-2xl);
-      width:100%;max-width:440px;box-shadow:var(--shadow-lg); }
-    .auth-brand { display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-lg); }
-    .auth-brand-logo { width:44px;height:44px;background:var(--bn-blue);color:var(--bn-white);
-      border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px; }
-    .auth-title { font-size:var(--font-size-xl);font-weight:700;color:var(--bn-navy); }
-    .auth-sub { color:var(--bn-text-light);font-size:var(--font-size-sm);margin-bottom:var(--space-lg); }
-    .auth-back { display:inline-block;margin-top:var(--space-md);font-size:var(--font-size-xs);color:var(--bn-text-muted); }
-    .secure-note {
-      background:#fef3c7;color:#92400e;font-size:var(--font-size-xs);
-      padding:8px 12px;border-radius:var(--radius-md);margin-bottom:var(--space-md);
+    .auth-wrap {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--bn-navy) 0%, var(--bn-blue) 100%);
+      padding: var(--space-lg);
     }
+    .auth-card {
+      background: var(--bn-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl);
+      width: 100%; max-width: 420px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-brand { display:flex; align-items:center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+    .auth-brand-logo {
+      width:44px;height:44px;background:var(--bn-red);color:var(--bn-white);
+      border-radius: var(--radius-md); display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:18px;
+    }
+    .auth-title { font-size: var(--font-size-xl); font-weight:700; color: var(--bn-navy); }
+    .auth-sub   { color: var(--bn-text-light); font-size: var(--font-size-sm); margin-bottom: var(--space-lg); }
+    .auth-footer { margin-top: var(--space-lg); text-align: center; font-size: var(--font-size-sm); color: var(--bn-text-light); }
+    .auth-back { display:inline-block; margin-top: var(--space-md); font-size: var(--font-size-xs); color: var(--bn-text-muted); }
   </style>
 </head>
 <body>
@@ -32,45 +41,61 @@
         <div class="auth-brand-logo">NP</div>
         <div>
           <div class="auth-title">Better Nepal</div>
-          <div class="auth-sub">Government Authority Portal</div>
+          <div class="auth-sub">Authority Portal</div>
         </div>
       </div>
 
-      <div class="secure-note">Restricted access. Activity is logged.</div>
-
       <form id="login-form">
         <div class="form-group">
-          <label class="form-label">Official ID</label>
-          <input class="form-input" type="text" value="AUTH-00014" required />
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" autocomplete="username" required />
         </div>
         <div class="form-group">
-          <label class="form-label">Department</label>
-          <select class="form-select">
-            <option>Department of Roads</option>
-            <option>NEA Lalitpur Division</option>
-            <option>District Disaster Management Committee</option>
-            <option>Flood Authority</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" value="demo1234" required />
+          <label class="form-label" for="password">Password</label>
+          <input class="form-input" type="password" id="password"
+                 autocomplete="current-password" required />
         </div>
         <button class="btn btn-primary btn-lg" style="width:100%" type="submit">Sign in</button>
       </form>
 
-      <a href="../../index.html" class="auth-back">← Back to home</a>
+      <div class="auth-footer">Staff accounts are created by an administrator.</div>
+      <a href="../../index.html" class="auth-back">&larr; Back to home</a>
     </div>
   </div>
 
+  <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/auth.js"></script>
   <script>
-    document.getElementById("login-form").addEventListener("submit", (e) => {
+    // Already signed in on this portal? Skip the form.
+    if (TokenStore.isSignedIn() && localStorage.getItem("bn_role") === "authority") {
+      window.location.replace("../../pages/authority/dashboard.html");
+    }
+
+    const form = document.getElementById("login-form");
+    const submitBtn = form.querySelector("button[type=submit]");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      setRole("authority");
-      sessionStorage.setItem("bn_flash", "Signed in successfully");
-      window.location.href = "../../pages/authority/dashboard.html";
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing in\u2026";
+
+      try {
+        await login(
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value,
+          "authority"
+        );
+        sessionStorage.setItem("bn_flash", "Signed in successfully");
+        window.location.href = "../../pages/authority/dashboard.html";
+      } catch (error) {
+        reportApiError(error, "Could not sign in.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
     });
   </script>
 </body>

@@ -48,8 +48,6 @@
   <script>
     const role = requireRole("guide");
     mountShell(role);
-
-    // Inject map side panel
     fetch("../../components/map-panel.html")
       .then((r) => r.text())
       .then((html) => {

@@ -48,12 +48,13 @@
   <script>
     const role = requireRole("admin");
     mountShell(role);
-
     fetch("../../components/map-panel.html")
       .then((r) => r.text())
       .then((html) => {
         document.getElementById("map-panel-container").innerHTML = html;
-        bootstrapMapPage();
+        // Admins see everything, including rejected reports and closed
+        // incidents that the public feed leaves out.
+        bootstrapMapPage({ include_inactive: "true" });
       });
   </script>
 </body>

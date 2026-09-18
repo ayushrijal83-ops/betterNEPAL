@@ -1,160 +1,292 @@
 // js/incidents.js
+//
+// Incident listing, verification and authority routing.
+//
+// Note what is absent: nothing here decides anything. Promoting a report and
+// choosing which authority owns it are both human actions, and the backend
+// records who performed each. The UI's job is to make those choices quick, not
+// to make them automatically.
 
-const MOCK_INCIDENTS = [
-  {
-    id: "EL-2026-00482",
-    title: "Transformer Failure — Lalitpur",
-    type: "Infrastructure Failure",
-    severity: "High",
-    status: "In Progress",
-    priority: "High",
-    location: "Ward 8, Patan, Lalitpur",
-    assignedTo: "NEA Lalitpur Division",
-    reportedAt: "2026-10-26T09:30:00",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=900",
-    description:
-      "Insulator failure causing short circuit. Recommended action: replace unit and insulators.",
-    ai: { confidence: 0.87, label: "Equipment Failure" },
-    team: {
-      name: "Team Alpha-04",
-      status: "On Site",
-      eta: "18:00 PM",
-      members: ["Rajesh Sharma (Lead)", "Sita Tamang (Technician)", "Hari Thapa (Electrician)"],
-    },
-    timeline: [
-      { label: "Citizen report", time: "09:30 AM", state: "done" },
-      { label: "AI-assisted classification", time: "09:35 AM", state: "done" },
-      { label: "Authority verification", time: "10:15 AM", state: "done" },
-      { label: "Repair in progress", time: "Dispatched 10:30 AM", state: "active" },
-      { label: "Completed", time: "—", state: "" },
-    ],
-  },
-  {
-    id: "MG-2026-00114",
-    title: "Landslide — Muglin–Narayanghat Highway",
-    type: "Natural Hazard",
-    severity: "High",
-    status: "Reported",
-    priority: "Critical",
-    location: "Muglin–Narayanghat Road, Km 14.3, Chitwan",
-    assignedTo: "Road Authority — Chitwan",
-    reportedAt: "2026-10-26T11:05:00",
-    image: "https://images.unsplash.com/photo-1580659929733-1c2ef6b8b3f0?w=900",
-    description:
-      "Landslide blocking both lanes of the Prithvi Highway. Traffic diverted. Heavy machinery en route.",
-    ai: { confidence: 0.94, label: "Landslide / Rockfall" },
-    team: {
-      name: "Road Response Team 2",
-      status: "Dispatched",
-      eta: "13:00 PM",
-      members: ["Bikash Thapa (Lead)", "Ramesh Yadav (Operator)"],
-    },
-    timeline: [
-      { label: "Guide report", time: "11:05 AM", state: "done" },
-      { label: "AI classification", time: "11:06 AM", state: "done" },
-      { label: "Authority verification", time: "Pending", state: "active" },
-      { label: "Repair assigned", time: "—", state: "" },
-      { label: "Completed", time: "—", state: "" },
-    ],
-  },
-  {
-    id: "FL-2026-00231",
-    title: "Flood warning — Koshi River",
-    type: "Flood",
-    severity: "High",
-    status: "Active",
-    priority: "Critical",
-    location: "Sunsari District",
-    assignedTo: "Flood Authority — Koshi",
-    reportedAt: "2026-10-26T10:45:00",
-    image: "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=900",
-    description:
-      "Water level 2.5m above danger level. Severe flooding downstream. Evacuations initiated.",
-    ai: { confidence: 0.91, label: "Flood / High Water" },
-    team: {
-      name: "Koshi Flood Response",
-      status: "Active",
-      eta: "Now",
-      members: ["Deployed across district"],
-    },
-    timeline: [
-      { label: "Sensor alert", time: "10:45 AM", state: "done" },
-      { label: "Authority verification", time: "10:50 AM", state: "done" },
-      { label: "Evacuation in progress", time: "11:00 AM", state: "active" },
-      { label: "Resolved", time: "—", state: "" },
-    ],
-  },
-];
+// ---------- reads ----------
 
-function getIncidents() {
-  return MOCK_INCIDENTS;
+// `filters`: status, severity, category, district_id, authority_id, page.
+async function fetchIncidents(filters = {}) {
+  const data = await apiGet(`/incidents${queryString(filters)}`);
+  return data.incidents || [];
 }
 
-function getIncidentById(id) {
-  return MOCK_INCIDENTS.find((i) => i.id === id) || MOCK_INCIDENTS[0];
+async function fetchIncident(incidentId) {
+  const data = await apiGet(`/incidents/${incidentId}`);
+  return data.incident;
 }
 
-function iconClassForSeverity(sev) {
-  if (sev === "High" || sev === "Critical") return "critical";
-  if (sev === "Medium") return "warning";
-  if (sev === "Low") return "success";
-  return "info";
+// Unlinked reports near an incident, already filtered by proximity and then by
+// the AI. The response says which proximity method produced it - pass it on so
+// a caller can tell an exact PostGIS answer from the approximate fallback.
+async function fetchNearbyReports(incidentId, radius) {
+  return apiGet(`/incidents/${incidentId}/nearby-reports${queryString({ radius })}`);
 }
 
-function iconLetterForType(type) {
-  if (!type) return "!";
-  if (type.includes("Flood")) return "F";
-  if (type.includes("Landslide")) return "L";
-  if (type.includes("Transformer") || type.includes("Infrastructure")) return "T";
-  if (type.includes("Fire")) return "F";
-  return "!";
+// ---------- writes ----------
+
+// Turn a verified report into an incident. Coordinates, category and district
+// are inherited from the report server-side; only the human's judgement
+// (severity, and optionally a better title) is sent.
+async function promoteReport(reportId, { severity, title, description } = {}) {
+  const data = await apiPost("/incidents/from-report", {
+    report_id: reportId,
+    severity,
+    title,
+    description,
+  });
+  return data.incident;
 }
 
-function renderIncidentCard(inc) {
-  const iconClass = iconClassForSeverity(inc.severity);
-  const iconLetter = iconLetterForType(inc.type);
-  const badgeClass =
-    inc.severity === "High" || inc.priority === "Critical"
-      ? "badge-critical"
-      : inc.severity === "Medium"
-      ? "badge-warning"
-      : "badge-info";
+// Gather an additional report under an existing incident.
+async function linkReport(incidentId, reportId) {
+  const data = await apiPost(`/incidents/${incidentId}/link-report`, {
+    report_id: reportId,
+  });
+  return data.incident;
+}
 
+// Route an incident to the body responsible for fixing it. An OPEN incident
+// becomes IN_PROGRESS as a side effect - having an owner is the work starting.
+async function assignIncident(incidentId, authorityId) {
+  const data = await apiPost(`/incidents/${incidentId}/assign`, {
+    authority_id: authorityId,
+  });
+  return data.incident;
+}
+
+async function updateIncident(incidentId, { status, severity } = {}) {
+  const data = await apiPatch(`/incidents/${incidentId}`, { status, severity });
+  return data.incident;
+}
+
+// ---------- rendering ----------
+
+function iconClassForSeverity(severity) {
+  const map = { critical: "critical", high: "critical", medium: "warning", low: "success" };
+  return map[String(severity).toLowerCase()] || "info";
+}
+
+function iconLetterForCategory(category) {
+  const map = {
+    road_damage: "R",
+    water_leak: "W",
+    waste_management: "G",
+    electricity: "E",
+    public_property: "P",
+    natural_disaster: "H",
+  };
+  return map[category] || "!";
+}
+
+function severityBadge(severity) {
+  const map = {
+    critical: "badge-critical",
+    high: "badge-critical",
+    medium: "badge-warning",
+    low: "badge-info",
+  };
+  const cls = map[String(severity).toLowerCase()] || "badge-neutral";
+  return `<span class="badge ${cls}">${escapeHtml(humanise(severity))}</span>`;
+}
+
+function renderIncidentCard(inc, detailHref = "incident-details.html") {
+  const location = inc.district || "Location pending";
   return `
-    <a href="incident-details.html?id=${inc.id}" class="incident-card">
-      <div class="incident-icon ${iconClass}">${iconLetter}</div>
+    <a href="${detailHref}?id=${encodeURIComponent(inc.id)}" class="incident-card">
+      <div class="incident-icon ${iconClassForSeverity(inc.severity)}">${iconLetterForCategory(
+        inc.category
+      )}</div>
       <div class="incident-body">
-        <div class="incident-title">${inc.title}</div>
-        <div class="incident-meta">${inc.location} • ${formatDate(inc.reportedAt)}</div>
+        <div class="incident-title">${escapeHtml(inc.title)}</div>
+        <div class="incident-meta">${escapeHtml(location)} • ${escapeHtml(
+          formatDate(inc.created_at)
+        )}</div>
       </div>
-      <span class="badge ${badgeClass}">${inc.severity}</span>
+      ${severityBadge(inc.severity)}
     </a>
   `;
 }
 
-function renderIncidentList(containerId, incidents) {
+function renderIncidentList(containerId, incidents, detailHref = "incident-details.html") {
   const el = document.getElementById(containerId);
   if (!el) return;
-  el.innerHTML = incidents.map(renderIncidentCard).join("");
+
+  if (!incidents || incidents.length === 0) {
+    renderEmpty(containerId, "No incidents", "Verified problems will appear here.");
+    return;
+  }
+  el.innerHTML = incidents.map((inc) => renderIncidentCard(inc, detailHref)).join("");
 }
 
-function renderIncidentsTable(tbodyId, incidents) {
+function renderIncidentsTable(tbodyId, incidents, detailHref = "incident-details.html") {
   const el = document.getElementById(tbodyId);
   if (!el) return;
+
+  if (!incidents || incidents.length === 0) {
+    el.innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">
+        <div class="empty-title">No incidents match these filters</div>
+        <div class="empty-text">Try clearing the status or severity filter.</div>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
   el.innerHTML = incidents
     .map(
       (i) => `
     <tr>
-      <td>#${i.id}</td>
-      <td>${i.title}</td>
-      <td>${i.type}</td>
-      <td>${i.location}</td>
+      <td>#${escapeHtml(String(i.id).slice(0, 8))}</td>
+      <td>${escapeHtml(i.title)}</td>
+      <td>${escapeHtml(humanise(i.category))}</td>
+      <td>${escapeHtml(i.district || "—")}</td>
+      <td>${severityBadge(i.severity)}</td>
       <td>${statusBadge(i.status)}</td>
-      <td>${formatDate(i.reportedAt)}</td>
+      <td>${escapeHtml(i.authority ? i.authority.name : "Unassigned")}</td>
       <td class="actions">
-        <a href="incident-details.html?id=${i.id}" class="btn btn-sm btn-outline">View</a>
+        <a href="${detailHref}?id=${encodeURIComponent(
+          i.id
+        )}" class="btn btn-sm btn-outline">View</a>
+        ${
+          // A closed incident is terminal, so offering Assign there would only
+          // produce a 409 the user cannot act on.
+          i.status === "closed"
+            ? ""
+            : `<button class="btn btn-sm btn-primary" data-assign="${i.id}" data-district="${
+                i.district_id || ""
+              }">${i.authority_id ? "Reassign" : "Assign"}</button>`
+        }
       </td>
     </tr>`
     )
     .join("");
+}
+
+// ---------- page bootstrap ----------
+
+// Wire the authority incidents page: load, filter, and re-render.
+async function bootstrapIncidentsPage(tbodyId, { statusFilterId, severityFilterId } = {}) {
+  const el = document.getElementById(tbodyId);
+
+  async function load() {
+    if (el) {
+      el.innerHTML = `<tr><td colspan="8"><div class="loading-state"><span class="spinner lg"></span><span>Loading incidents…</span></div></td></tr>`;
+    }
+    try {
+      // Filtering happens server-side: sending the filter is one indexed query,
+      // whereas fetching everything and filtering here ships the whole table to
+      // the browser and breaks as soon as there is more than one page of it.
+      const incidents = await fetchIncidents({
+        status: statusFilterId ? document.getElementById(statusFilterId)?.value : "",
+        severity: severityFilterId ? document.getElementById(severityFilterId)?.value : "",
+        per_page: 100,
+      });
+      renderIncidentsTable(tbodyId, incidents);
+    } catch (error) {
+      const message = reportApiError(error, "Could not load incidents.");
+      if (el) {
+        el.innerHTML = `<tr><td colspan="8"><div class="error-state">${escapeHtml(
+          message
+        )}</div></td></tr>`;
+      }
+    }
+  }
+
+  [statusFilterId, severityFilterId].forEach((id) => {
+    const filter = id && document.getElementById(id);
+    if (filter) filter.addEventListener("change", load);
+  });
+
+  bindAssignButtons(tbodyId, load);
+  await load();
+}
+
+
+// ---------- assignment UI ----------
+
+// Open the shared modal with a list of candidate authorities. Suggestions come
+// first, each showing why it matched, so the person routing sees the reasoning
+// and can disagree - the backend never assigns anything on its own.
+async function openAssignDialog(incidentId, districtId, onDone) {
+  let incident;
+  try {
+    incident = await fetchIncident(incidentId);
+  } catch (error) {
+    reportApiError(error, "Could not load that incident.");
+    return;
+  }
+
+  let suggestions = [];
+  let authorities = [];
+  try {
+    [suggestions, authorities] = await Promise.all([
+      fetchAuthoritySuggestions(incident.category, districtId || undefined),
+      fetchAuthorities({ district_id: districtId || "", include_national: districtId ? "true" : "", per_page: 100 }),
+    ]);
+  } catch (error) {
+    reportApiError(error, "Could not load authorities.");
+    return;
+  }
+
+  if (!authorities.length) {
+    showToast("No authorities are registered yet. An admin must add one first.", "error", 6000);
+    return;
+  }
+
+  const suggestedIds = new Set(suggestions.map((s) => s.id));
+  const rest = authorities.filter((a) => !suggestedIds.has(a.id));
+
+  const options = [
+    ...suggestions.map(
+      (s) =>
+        `<option value="${s.id}">${escapeHtml(s.name)} — ${escapeHtml(
+          s.match_reasons.join(", ")
+        )}</option>`
+    ),
+    ...rest.map((a) => `<option value="${a.id}">${escapeHtml(a.name)}</option>`),
+  ].join("");
+
+  openModal({
+    title: "Assign to an authority",
+    bodyHtml: `
+      <div class="form-group">
+        <label class="form-label" for="assign-authority">${escapeHtml(incident.title)}</label>
+        <select class="form-select" id="assign-authority">${options}</select>
+        <div class="form-hint">
+          Suggestions are ranked by category and district. They are a shortlist,
+          not a decision — your choice is what gets recorded.
+        </div>
+      </div>`,
+    confirmText: "Assign",
+    onConfirm: async () => {
+      const select = document.getElementById("assign-authority");
+      if (!select || !select.value) return;
+      try {
+        await assignIncident(incidentId, select.value);
+        showToast("Incident assigned", "success");
+        if (typeof onDone === "function") onDone();
+      } catch (error) {
+        reportApiError(error, "Could not assign the incident.");
+      }
+    },
+  });
+}
+
+// Delegated so it survives the table being re-rendered after a filter change.
+function bindAssignButtons(tbodyId, onDone) {
+  const el = document.getElementById(tbodyId);
+  if (!el || el.dataset.assignBound) return;
+  el.dataset.assignBound = "true";
+
+  el.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-assign]");
+    if (!btn) return;
+    e.preventDefault();
+    openAssignDialog(btn.dataset.assign, btn.dataset.district, onDone);
+  });
 }

@@ -70,15 +70,7 @@
   <script>
     const role = requireRole("citizen");
     mountShell(role);
-
-    renderStats("cit-stats", [
-      { value: "12", label: "My Reports" },
-      { value: "7",  label: "Active" },
-      { value: "5",  label: "Resolved" },
-    ]);
-
-    renderReportsTable("cit-recent", Object.values(MOCK_REPORTS).slice(0, 3));
-    renderAlertList("cit-alerts", getAlerts());
+    bootstrapMyReports("reports-body", "report-details.html");
   </script>
 </body>
 </html>
