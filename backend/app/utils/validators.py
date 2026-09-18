@@ -524,3 +524,132 @@ def validate_assignment(payload: Any) -> str:
 
     errors.raise_if_any()
     return authority_id
+
+
+# --- projects --------------------------------------------------------------
+
+PROJECT_TITLE_MIN_LENGTH = 5
+PROJECT_TITLE_MAX_LENGTH = 150
+NOTES_MIN_LENGTH = 5
+NOTES_MAX_LENGTH = 5000
+
+
+def validate_date(
+    value: Any, errors: ValidationErrors, field: str, required: bool = False
+):
+    """Parse an ISO ``YYYY-MM-DD`` date.
+
+    Deliberately strict about the format: accepting several would mean guessing
+    between day-first and month-first on ambiguous input, and silently storing
+    the wrong date.
+    """
+    from datetime import date as date_cls
+
+    if value is None or (isinstance(value, str) and not value.strip()):
+        if required:
+            errors.add(field, f"{field} is required.")
+        return None
+
+    if isinstance(value, date_cls):
+        return value
+    if not isinstance(value, str):
+        errors.add(field, f"{field} must be a date in YYYY-MM-DD format.")
+        return None
+
+    try:
+        return date_cls.fromisoformat(value.strip())
+    except ValueError:
+        errors.add(field, f"{field} must be a date in YYYY-MM-DD format.")
+        return None
+
+
+def validate_project_creation(payload: Any) -> dict[str, Any]:
+    """Validate a new project.
+
+    ``status`` and ``actual_end_date`` are not read: a project begins as
+    PLANNED, and its completion date is stamped by the service when the work is
+    actually declared done.
+    """
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    title = _as_text(data, "title")
+    if not title:
+        errors.add("title", "title is required.")
+    elif not (PROJECT_TITLE_MIN_LENGTH <= len(title) <= PROJECT_TITLE_MAX_LENGTH):
+        errors.add(
+            "title",
+            f"title must be between {PROJECT_TITLE_MIN_LENGTH} and "
+            f"{PROJECT_TITLE_MAX_LENGTH} characters.",
+        )
+
+    description = _as_text(data, "description")
+    if not description:
+        errors.add("description", "description is required.")
+    elif len(description) < DESCRIPTION_MIN_LENGTH:
+        errors.add(
+            "description",
+            f"description must be at least {DESCRIPTION_MIN_LENGTH} characters.",
+        )
+
+    authority_id = _as_text(data, "authority_id")
+    if not authority_id:
+        errors.add("authority_id", "authority_id is required.")
+
+    start_date = validate_date(data.get("start_date"), errors, "start_date")
+    estimated_end_date = validate_date(
+        data.get("estimated_end_date"), errors, "estimated_end_date"
+    )
+    if start_date and estimated_end_date and estimated_end_date < start_date:
+        errors.add("estimated_end_date", "estimated_end_date cannot precede start_date.")
+
+    errors.raise_if_any()
+    return {
+        "title": title,
+        "description": description,
+        "authority_id": authority_id,
+        "incident_id": _as_text(data, "incident_id") or None,
+        "start_date": start_date,
+        "estimated_end_date": estimated_end_date,
+    }
+
+
+def validate_contractor_assignment(payload: Any) -> str:
+    """Validate a request to award a project to a contractor."""
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    contractor_id = _as_text(data, "contractor_id")
+    if not contractor_id:
+        errors.add("contractor_id", "contractor_id is required.")
+
+    errors.raise_if_any()
+    return contractor_id
+
+
+def validate_progress_update(payload: Any) -> dict[str, Any]:
+    """Validate a ledger entry.
+
+    ``notes`` are mandatory even on a status change: a transition with no
+    explanation is the opacity this ledger exists to remove.
+    """
+    from ..models.enums import ProjectStatus
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    notes = _as_text(data, "notes")
+    if not notes:
+        errors.add("notes", "notes are required.")
+    elif not (NOTES_MIN_LENGTH <= len(notes) <= NOTES_MAX_LENGTH):
+        errors.add(
+            "notes",
+            f"notes must be between {NOTES_MIN_LENGTH} and {NOTES_MAX_LENGTH} characters.",
+        )
+
+    new_status = validate_enum_field(
+        data.get("new_status"), ProjectStatus, errors, "new_status", required=False
+    )
+
+    errors.raise_if_any()
+    return {"notes": notes, "new_status": new_status}

@@ -30,6 +30,7 @@ from .enums import IncidentSeverity, IncidentStatus, ReportCategory, enum_column
 
 if TYPE_CHECKING:  # pragma: no cover
     from .authority import Authority
+    from .project import Project
     from .district import District
     from .municipality import Municipality
     from .report import Report
@@ -115,6 +116,11 @@ class Incident(BaseModel):
     # nullable FK only if the application says so, so the service unlinks first.
     reports: Mapped[list["Report"]] = relationship(
         back_populates="incident", order_by="Report.created_at"
+    )
+    # SET NULL on the child side: a project outlives the incident record it
+    # was raised from, so no cascade here.
+    projects: Mapped[list["Project"]] = relationship(
+        back_populates="incident", passive_deletes="all"
     )
 
     __table_args__ = (

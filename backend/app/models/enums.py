@@ -96,6 +96,21 @@ class AuthorityType(str, enum.Enum):
     OTHER = "other"
 
 
+class ProjectStatus(str, enum.Enum):
+    """Lifecycle of commissioned work.
+
+    ``COMPLETED`` and ``CANCELLED`` are both terminal. Work that restarts after
+    either is a new project, so the original's ledger keeps meaning what it
+    said at the time.
+    """
+
+    PLANNED = "planned"
+    ACTIVE = "active"
+    ON_HOLD = "on_hold"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
+
+
 def enum_column(enum_class: type[enum.Enum], name: str) -> SAEnum:
     """Map an enum to VARCHAR + a named CHECK constraint.
 

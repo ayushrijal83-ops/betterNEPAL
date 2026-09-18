@@ -4,6 +4,7 @@ from . import (
     authority_service,
     geolocation_service,
     incident_service,
+    project_service,
     report_service,
 )
 
@@ -12,5 +13,6 @@ __all__ = [
     "authority_service",
     "geolocation_service",
     "incident_service",
+    "project_service",
     "report_service",
 ]

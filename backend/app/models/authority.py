@@ -37,6 +37,7 @@ from .enums import AuthorityType, GovernmentLevel, enum_column
 
 if TYPE_CHECKING:  # pragma: no cover
     from .district import District
+    from .project import Project
     from .incident import Incident
 
 NAME_MAX_LENGTH = 150
@@ -73,6 +74,9 @@ class Authority(BaseModel):
 
     district: Mapped["District | None"] = relationship(back_populates="authorities")
     incidents: Mapped[list["Incident"]] = relationship(back_populates="authority")
+    projects: Mapped[list["Project"]] = relationship(
+        back_populates="authority", passive_deletes="all"
+    )
 
     __table_args__ = (
         # The routing question is always "who covers this district at this

@@ -16,6 +16,8 @@ from .base import BaseModel, UtcDateTime
 from .role import Role, user_roles
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .progress_update import ProgressUpdate
+    from .project import Project
     from .incident import Incident
     from .report import Report
 
@@ -47,6 +49,12 @@ class User(BaseModel):
         foreign_keys="Incident.assigned_by_id",
         back_populates="assigned_by",
         passive_deletes="all",
+    )
+    contracted_projects: Mapped[list["Project"]] = relationship(
+        back_populates="contractor", passive_deletes="all"
+    )
+    progress_updates: Mapped[list["ProgressUpdate"]] = relationship(
+        back_populates="author", passive_deletes="all"
     )
 
     @validates("email")
