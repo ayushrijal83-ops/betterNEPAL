@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Flask
+instance/*
+!instance/.gitkeep
+uploads/*
+!uploads/.gitkeep
+
+# Tooling
+.pytest_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
