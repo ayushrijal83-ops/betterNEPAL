@@ -7,6 +7,7 @@ Flask-SQLAlchemy==3.1.1
 Flask-Migrate==4.1.0
 SQLAlchemy==2.0.54
 psycopg2-binary==2.9.13
+GeoAlchemy2==0.20.0
 
 # authentication
 PyJWT==2.14.0

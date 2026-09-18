@@ -1,0 +1,2451 @@
+BETTER NEPAL
+FULL 7-PROVINCE × 77-DISTRICT AUTHORITY CONTACT DATABASE
+==============================================================
+Verification date: 18 September 2026
+
+PURPOSE
+This file is designed for Better Nepal authority routing:
+PROBLEM → DISTRICT → SECTOR → RESPONSIBLE OFFICE → PHONE / EMAIL → REPORT → ESCALATE
+
+IMPORTANT
+- Only contacts found in official government/authority directories are recorded.
+- Where an official district-level office head was not published, it is marked 'Not listed'.
+- Where only a provincial authority was verified, the record says 'Provincial fallback'.
+- Do not treat a provincial fallback as proof that it owns a particular local asset.
+- Office heads, phone numbers and ministry structures can change; store last_verified_at in the production database.
+
+
+==============================================================================
+ELECTRICITY — NEPAL ELECTRICITY AUTHORITY (NEA)
+==============================================================================
+
+Koshi — Bhojpur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bhojpur Distribution Center
+  Office Head     : Niraj Kumar Shah
+  Phone           : 9852052377
+  Email           : bhojpur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Dhankuta
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dhankuta Distribution Center
+  Office Head     : Bijuli Prasad Yadav
+  Phone           : 9852070091
+  Email           : dhankuta@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Ilam
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Illam Distribution Center
+  Office Head     : Rewat Kumar Chaudhary
+  Phone           : 9852620054
+  Email           : illam@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Jhapa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bhadrapur Distribution Center
+  Office Head     : Dhirendra Bajgain
+  Phone           : 9852630666
+  Email           : bhadrapur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Khotang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Diktel Distribution Center
+  Office Head     : Dhanraj Bista
+  Phone           : 9855011636
+  Email           : diktel@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Morang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Biratnagar Distribution Center
+  Office Head     : Ram Udgar Shah
+  Phone           : 9852021725
+  Email           : biratnagar@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Okhaldhunga
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Okhaldhunga Distribution Center
+  Office Head     : Rupesh Kumar Yadav
+  Phone           : 9852842268
+  Email           : okhaldhunga@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Panchthar
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Panchthar Distribution Center
+  Office Head     : Pradip Kumar Sharma
+  Phone           : 9852684177
+  Email           : panchthar@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Sankhuwasabha
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Khandbari Distribution Center
+  Office Head     : Ram Babu Chaudhary
+  Phone           : 9852099588
+  Email           : khabdari@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Solukhumbu
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Solukhumbu Distribution Centre
+  Office Head     : Lal Bahadur Lamsal
+  Phone           : 9852853226
+  Email           : solukhumbu@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Sunsari
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dharan Distribution Center
+  Office Head     : Hari Ram Pokhrel
+  Phone           : 9852062421
+  Email           : dharan@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Taplejung
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Taplejung Distribution Center
+  Office Head     : Umesh Shrestha
+  Phone           : 9852660456
+  Email           : taplejung@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Terhathum
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Tehrathum Distribution Center
+  Office Head     : Satrudhan Yadav
+  Phone           : 9862359800
+  Email           : terathum@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Koshi — Udayapur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Udayapur Distribution Center
+  Office Head     : Manoj Kumar Jha
+  Phone           : 9852835668
+  Email           : udayapur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Bara
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Kalaiya Distribution Center
+  Office Head     : Not listed
+  Phone           : 9855049149
+  Email           : kalaiya@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Dhanusha
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Janakpur Distribution Center
+  Office Head     : Not listed
+  Phone           : 9854022614
+  Email           : janakpur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Mahottari
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Jaleshwor Distribution Center
+  Office Head     : Not listed
+  Phone           : 9854032312
+  Email           : jaleshwar@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Parsa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Birgunj Distribution Center
+  Office Head     : Not listed
+  Phone           : 9855026034
+  Email           : birgunj@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Rautahat
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gaur Distribution Center
+  Office Head     : Not listed
+  Phone           : 9855044770
+  Email           : gaur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Saptari
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Rajbiraj Distribution Center
+  Office Head     : Not listed
+  Phone           : 9852821459
+  Email           : rajbiraj@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Sarlahi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Malangwa Distribution Center
+  Office Head     : Not listed
+  Phone           : 9854065777
+  Email           : malangawa@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Madhesh — Siraha
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Siraha Distribution Center
+  Office Head     : Not listed
+  Phone           : 9852822203
+  Email           : siraha@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Bhaktapur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bhaktapur Distribution Center
+  Office Head     : Ramu Shrestha
+  Phone           : 9851273714
+  Email           : bhaktapur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Chitwan
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bharatpur Distribution Center
+  Office Head     : Rajendra Kumar Chaudhary
+  Phone           : 9855082380
+  Email           : bharatpur@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Dhading
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dhading Distribution Center
+  Office Head     : Chutun Kumar Srivastav
+  Phone           : 9851105132
+  Email           : dhading@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Dolakha
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dolakha Distribution Center
+  Office Head     : Roshan Singh
+  Phone           : 9854045773
+  Email           : dolakha@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Kathmandu
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bagmati Provincial Office, Kathmandu
+  Office Head     : Munindra Thakur
+  Phone           : 9851273710
+  Email           : kathmandu.ro@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Kavrepalanchok
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Kavre Distribution Center
+  Office Head     : ShivaRam Yadav
+  Phone           : 9851273718
+  Email           : kavre@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Lalitpur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Pulchwok Distribution Center
+  Office Head     : Rumesh Rupakheti
+  Phone           : 9851273712
+  Email           : pulchowk@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Makwanpur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Hetauda Distribution Center
+  Office Head     : Mithilesh Kumar Gohivar
+  Phone           : 9865409152
+  Email           : hetauda@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Nuwakot
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Nuwakot Distribution Center
+  Office Head     : Rajkumar Raman
+  Phone           : 9851160177
+  Email           : nuwakot@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Ramechhap
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Ramechhap Distribution Center
+  Office Head     : Shisir Lamsal
+  Phone           : 9851273719
+  Email           : ramechap@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Rasuwa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Rasuwa Distribution Center
+  Office Head     : GunjaMan Tamang
+  Phone           : 9851273720
+  Email           : rasuwadcs@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Sindhuli
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Sindhuli Distribution Center
+  Office Head     : Shashi Kant Tiwari
+  Phone           : 9854042250
+  Email           : sindhuli@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Bagmati — Sindhupalchok
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Sindhupalchowk DCS
+  Office Head     : Netra Mani Neupane
+  Phone           : 9851207686
+  Email           : sindhupalchowk@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Baglung
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Baglung Distribution Center
+  Office Head     : Dilip Marasini
+  Phone           : 9857666444
+  Email           : baglung@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Gorkha
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gorkha Distribution Center
+  Office Head     : Ram ashish Shah
+  Phone           : 9856043177
+  Email           : gorkha@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Kaski
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Pokhara Distribution Center
+  Office Head     : Jitendra Yadav
+  Phone           : 9856024435
+  Email           : pokhara@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Lamjung
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Lamjung Distribution Center
+  Office Head     : Sobit Bahadur Chhetri
+  Phone           : 9856072321
+  Email           : lamjung@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Manang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Manang Distribution Centre
+  Office Head     : Purushottam Regmi
+  Phone           : 9856037039
+  Email           : manang@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Mustang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gandaki Provincial Office, Pokhara
+  Office Head     : Suraj Gautam
+  Phone           : 9856061501
+  Email           : pokhara.ro@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified provincial fallback
+
+Gandaki — Myagdi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Myagdi Distribution Center
+  Office Head     : Satya Narayan Gami
+  Phone           : 9857655403
+  Email           : myagdi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Nawalpur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Kawasoti Distribution Center
+  Office Head     : Shiva Narayan Goshali
+  Phone           : 9857041388
+  Email           : kawasoti@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Parbat
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Parbat Distribution Center
+  Office Head     : Yam Kumari Gurung
+  Phone           : 9857640177
+  Email           : parbat@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Syangja
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Syangja Distribution Center
+  Office Head     : Raju Mahato
+  Phone           : 9856054811
+  Email           : syangja@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Gandaki — Tanahun
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Tanahu Distribution Center
+  Office Head     : Pawan Poudel
+  Phone           : 9856027333
+  Email           : tanahu@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Arghakhanchi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Arghakhanchi Distribution Center
+  Office Head     : Janardan Poudel
+  Phone           : 9857066824
+  Email           : arghakhanchi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Banke
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Nepalgunj Distribution Center
+  Office Head     : Sanjaya Kumar Mishra
+  Phone           : 9858051177
+  Email           : nepalgunj@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Bardiya
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gulariya Distribution Center
+  Office Head     : Sher Bahadur Sunar
+  Phone           : 9858031266
+  Email           : gularia@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Dang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Ghorahi Distribution Center
+  Office Head     : Pramod Khanal
+  Phone           : 9857861201
+  Email           : ghorahi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Gulmi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gulmi Distribution Center
+  Office Head     : Manoj Aryal
+  Phone           : 9857026275
+  Email           : gulmi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Kapilvastu
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Krishnanagar Distribution Center
+  Office Head     : Trilochan Bhattarai
+  Phone           : 9802532431
+  Email           : krishnanagar@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Nawalparasi West
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Parasi Distribution Center
+  Office Head     : Kapil Raj Pandey
+  Phone           : 9857046242
+  Email           : parasi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Palpa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Palpa Distribution Center
+  Office Head     : Nishchal Adhikari
+  Phone           : 9857075511
+  Email           : palpa@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Pyuthan
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Pyuthan Distribution Center
+  Office Head     : Prashant Kumar Jha
+  Phone           : 9857836458
+  Email           : pyuthan@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Rolpa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Rolpa Distribution Center
+  Office Head     : Ishwor Bahadur Bista
+  Phone           : 9857886248
+  Email           : rolpa@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Rukum East
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Rukum East Distribution Center
+  Office Head     : Ishwor Kumar Shrestha
+  Phone           : 9857854629
+  Email           : rukum@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Lumbini — Rupandehi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Butwal Distribution Center
+  Office Head     : Ritesh Gupta
+  Phone           : 9857074585
+  Email           : butwal@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Dailekh
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dailekh Distribution Center
+  Office Head     : Tanka Raj Giri
+  Phone           : 9858029500
+  Email           : dailekh@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Dolpa
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dolpa Distribution Center
+  Office Head     : Shreejesh Prasad
+  Phone           : 9858390081
+  Email           : dolpa@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Humla
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Heldung Distribution Center
+  Office Head     : Jitendra Sah
+  Phone           : 9858322178
+  Email           : heldung@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Jajarkot
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Jajarkot Distribution Center
+  Office Head     : Rajendra Lal Deu
+  Phone           : 9858080375
+  Email           : jajarkot@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Jumla
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Jumla Distribution Center
+  Office Head     : Lalit Mandal
+  Phone           : 9858391500
+  Email           : jumla@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Kalikot
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Kalikot Distribution Center
+  Office Head     : Harendra Ray Yadav
+  Phone           : 9858322705
+  Email           : kalikot@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Mugu
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Gamgad Distribution Center
+  Office Head     : Pusparaj Malla
+  Phone           : 9858322136
+  Email           : gamgad@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Rukum West
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Rukum West Distribution Center
+  Office Head     : Suresh Prasad Chaudhary
+  Phone           : 9857832032
+  Email           : rukum@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Salyan
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Salyan Distribution Center
+  Office Head     : Naresh Datta Rawal
+  Phone           : 9857822930
+  Email           : salyan@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Karnali — Surkhet
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Surkhet Distribution Center
+  Office Head     : Kiran Khanal
+  Phone           : 9858084600
+  Email           : surkhet@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Achham
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Achham Distribution Center
+  Office Head     : Rajesh Kumar Jha
+  Phone           : 9858422522
+  Email           : achham@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Baitadi
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Baitadi Distribution Center
+  Office Head     : Sujan Acharya
+  Phone           : 9858783333
+  Email           : baitadi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Bajhang
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bajhang Distribution Center
+  Office Head     : Dinesh Poudel
+  Phone           : 9858485623
+  Email           : bajhang@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Bajura
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Bajura Distribution Center
+  Office Head     : Gopal Kumar Yadav
+  Phone           : 9858488452
+  Email           : bajura@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Dadeldhura
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dadeldhura Distribution Center
+  Office Head     : Kapil Joshi
+  Phone           : 9858786769
+  Email           : dadeldhura@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Darchula
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Darchula Distribution Center
+  Office Head     : Raushan Kumar Thakur
+  Phone           : 9858787378
+  Email           : darchula@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Doti
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Doti Distribution Center
+  Office Head     : Satya Narayan Sah
+  Phone           : 9858440184
+  Email           : doti@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Kailali
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Dhangadi Distribution Center
+  Office Head     : Santosh Prasad Pant
+  Phone           : 9858422456
+  Email           : dhangadi@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+Sudurpashchim — Kanchanpur
+  Authority       : Nepal Electricity Authority (NEA)
+  Office          : Mahendranagar Distribution Center
+  Office Head     : Santosh Shrestha
+  Phone           : 9858784222
+  Email           : mahendranagar@nea.org.np
+  Reporting       : Call office / email; use local DCS when listed
+  Website         : https://nea.org.np/
+  Verification    : Verified on NEA current directory
+
+
+==============================================================================
+WATER / WASH — WATER SUPPLY & SEWERAGE MANAGEMENT
+==============================================================================
+
+Koshi — Bhojpur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Khotang
+  Office Head     : Sunil Tiwari
+  Phone           : 036-420110 / 9851212730
+  Email           : fwssmpkhotang@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Dhankuta
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Ilam
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Jhapa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Biratnagar
+  Office Head     : Tika Bahadur Chaudhary
+  Phone           : 021-463884
+  Email           : fwssmp.biratnagar04@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Khotang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Khotang
+  Office Head     : Sunil Tiwari
+  Phone           : 036-420110 / 9851212730
+  Email           : fwssmpkhotang@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Morang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Biratnagar
+  Office Head     : Tika Bahadur Chaudhary
+  Phone           : 021-463884
+  Email           : fwssmp.biratnagar04@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Okhaldhunga
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Khotang
+  Office Head     : Sunil Tiwari
+  Phone           : 036-420110 / 9851212730
+  Email           : fwssmpkhotang@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Panchthar
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Sankhuwasabha
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Solukhumbu
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Khotang
+  Office Head     : Sunil Tiwari
+  Phone           : 036-420110 / 9851212730
+  Email           : fwssmpkhotang@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Sunsari
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Biratnagar
+  Office Head     : Tika Bahadur Chaudhary
+  Phone           : 021-463884
+  Email           : fwssmp.biratnagar04@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Taplejung
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Terhathum
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dhankuta
+  Office Head     : Herakaji Maharjan
+  Phone           : 026-590628 / 9851171884
+  Email           : fwssmpdhankuta@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Koshi — Udayapur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Biratnagar
+  Office Head     : Tika Bahadur Chaudhary
+  Phone           : 021-463884
+  Email           : fwssmp.biratnagar04@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Bara
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Birgunj
+  Office Head     : Bipul Kumar Lal Das
+  Phone           : 051-591767 / 9861531633
+  Email           : fwssmpbirgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Dhanusha
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Janakpur
+  Office Head     : Mihir Chandra Acharya
+  Phone           : 041-590210 / 9854026625
+  Email           : fwssmpjanakpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Mahottari
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Janakpur
+  Office Head     : Mihir Chandra Acharya
+  Phone           : 041-590210 / 9854026625
+  Email           : fwssmpjanakpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Parsa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Birgunj
+  Office Head     : Bipul Kumar Lal Das
+  Phone           : 051-591767 / 9861531633
+  Email           : fwssmpbirgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Rautahat
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Birgunj
+  Office Head     : Bipul Kumar Lal Das
+  Phone           : 051-591767 / 9861531633
+  Email           : fwssmpbirgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Saptari
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Janakpur
+  Office Head     : Mihir Chandra Acharya
+  Phone           : 041-590210 / 9854026625
+  Email           : fwssmpjanakpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Sarlahi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Birgunj
+  Office Head     : Bipul Kumar Lal Das
+  Phone           : 051-591767 / 9861531633
+  Email           : fwssmpbirgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Madhesh — Siraha
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Janakpur
+  Office Head     : Mihir Chandra Acharya
+  Phone           : 041-590210 / 9854026625
+  Email           : fwssmpjanakpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Bhaktapur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Bhaktapur
+  Office Head     : Purna Prasad Upadhyay
+  Phone           : 01-5092348 / 9855019512
+  Email           : fwssmpbhaktapur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Chitwan
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Chitwan
+  Office Head     : Shekhar Chandra K.C.
+  Phone           : 056-493204 / 9855032204
+  Email           : fwssmpchitwan@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Dhading
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Chitwan
+  Office Head     : Shekhar Chandra K.C.
+  Phone           : 056-493204 / 9855032204
+  Email           : fwssmpchitwan@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Dolakha
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Ramechhap
+  Office Head     : Not listed
+  Phone           : 048-540285
+  Email           : fwssmpramechhap@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Kathmandu
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Bhaktapur
+  Office Head     : Purna Prasad Upadhyay
+  Phone           : 01-5092348 / 9855019512
+  Email           : fwssmpbhaktapur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Kavrepalanchok
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Ramechhap
+  Office Head     : Not listed
+  Phone           : 048-540285
+  Email           : fwssmpramechhap@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Lalitpur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Bhaktapur
+  Office Head     : Purna Prasad Upadhyay
+  Phone           : 01-5092348 / 9855019512
+  Email           : fwssmpbhaktapur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Makwanpur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Chitwan
+  Office Head     : Shekhar Chandra K.C.
+  Phone           : 056-493204 / 9855032204
+  Email           : fwssmpchitwan@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Nuwakot
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Bhaktapur
+  Office Head     : Purna Prasad Upadhyay
+  Phone           : 01-5092348 / 9855019512
+  Email           : fwssmpbhaktapur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Ramechhap
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Ramechhap
+  Office Head     : Not listed
+  Phone           : 048-540285
+  Email           : fwssmpramechhap@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Rasuwa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Bhaktapur
+  Office Head     : Purna Prasad Upadhyay
+  Phone           : 01-5092348 / 9855019512
+  Email           : fwssmpbhaktapur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Sindhuli
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Janakpur
+  Office Head     : Mihir Chandra Acharya
+  Phone           : 041-590210 / 9854026625
+  Email           : fwssmpjanakpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Bagmati — Sindhupalchok
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Ramechhap
+  Office Head     : Not listed
+  Phone           : 048-540285
+  Email           : fwssmpramechhap@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Baglung
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Gorkha
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Lamjung
+  Office Head     : Utsav Pokhrel
+  Phone           : 066-520110 / 9845444800
+  Email           : fwssmplamjung@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Kaski
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Lamjung
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Lamjung
+  Office Head     : Utsav Pokhrel
+  Phone           : 066-520110 / 9845444800
+  Email           : fwssmplamjung@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Manang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Lamjung
+  Office Head     : Utsav Pokhrel
+  Phone           : 066-520110 / 9845444800
+  Email           : fwssmplamjung@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Mustang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Myagdi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Nawalpur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Chitwan
+  Office Head     : Shekhar Chandra K.C.
+  Phone           : 056-493204 / 9855032204
+  Email           : fwssmpchitwan@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Parbat
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Syangja
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Gandaki — Tanahun
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Lamjung
+  Office Head     : Utsav Pokhrel
+  Phone           : 066-520110 / 9845444800
+  Email           : fwssmplamjung@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Arghakhanchi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Banke
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Bardiya
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Dang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Gulmi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Kapilvastu
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Nawalparasi West
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Palpa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Pyuthan
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Rolpa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Rukum East
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Pokhara
+  Office Head     : Padam Bahadur Kunwar Chhetri
+  Phone           : 061-453086 / 9856073086
+  Email           : fwssmppokhara@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Lumbini — Rupandehi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Butwal
+  Office Head     : Atulesh Kumar Karn
+  Phone           : 071-420518 / 9857078518
+  Email           : fwssmpbutwal@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Dailekh
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Dolpa
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Humla
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Jajarkot
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Jumla
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Kalikot
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Mugu
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Rukum West
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Nepalgunj
+  Office Head     : Jagarnath Das
+  Phone           : 081-415247 / 9851101724
+  Email           : fwssmpnepalgunj@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Salyan
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Karnali — Surkhet
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Surkhet
+  Office Head     : Manish Kumar Raj
+  Phone           : 083-523248 / 9858049477
+  Email           : fwssmpsurkhet@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Achham
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Baitadi
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Bajhang
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Bajura
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Dadeldhura
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Darchula
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Doti
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Dadeldhura
+  Office Head     : Arun Kumar Karn
+  Phone           : Not listed / 9858484540
+  Email           : wssmodadeldhura@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Kailali
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Kanchanpur
+  Office Head     : Birendra Kandel
+  Phone           : 099-520683 / 9858784797
+  Email           : wssmo.kanchanpur@gmail.com; fwssmp.kanchanpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+Sudurpashchim — Kanchanpur
+  Authority       : Department of Water Supply & Sewerage Management / Ministry of Water Supply
+  Office          : Kanchanpur
+  Office Head     : Birendra Kandel
+  Phone           : 099-520683 / 9858784797
+  Email           : wssmo.kanchanpur@gmail.com; fwssmp.kanchanpur@gmail.com
+  Reporting       : Call/email regional office; for Kathmandu Valley use KVWSMB/KUKL where applicable
+  Website         : https://mows.gov.np/
+  Verification    : Verified federal Water Supply & Sewerage Management Office coverage
+  Notes           : Regional federal water-supply office; provincial/local water operators may also be responsible.
+
+
+==============================================================================
+ROADS / BRIDGES — PROVINCIAL INFRASTRUCTURE AUTHORITIES
+==============================================================================
+
+Koshi — Bhojpur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Dhankuta
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Ilam
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Jhapa
+  Authority       : Provincial infrastructure system
+  Office          : Infrastructure Development Office, Jhapa
+  Office Head     : Jitendra Kumar Karna
+  Phone           : 9851164047
+  Email           : info@idojhapa.p1.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://idojhapa.p1.gov.np/
+  Verification    : District office contact verified from official source
+
+Koshi — Khotang
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Morang
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Okhaldhunga
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Panchthar
+  Authority       : Provincial infrastructure system
+  Office          : Infrastructure Development Office, Panchthar
+  Office Head     : Not listed
+  Phone           : 024-520143
+  Email           : ido.panchthar@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://idopanchthar.p1.gov.np/
+  Verification    : District office contact verified from official source
+
+Koshi — Sankhuwasabha
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Solukhumbu
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Sunsari
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Taplejung
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Terhathum
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Koshi — Udayapur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 021-474430
+  Email           : mopid@koshi.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.koshi.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Bara
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Dhanusha
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Mahottari
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Parsa
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Rautahat
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Saptari
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Sarlahi
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 041-590661
+  Email           : mopid@p2.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Madhesh — Siraha
+  Authority       : Provincial infrastructure system
+  Office          : Infrastructure Development Office, Siraha
+  Office Head     : Ramdev Khatri
+  Phone           : Not listed
+  Email           : idosiraha@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.madhesh.gov.np/
+  Verification    : District office contact verified from official source
+
+Bagmati — Bhaktapur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Chitwan
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Dhading
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Dolakha
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Kathmandu
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Kavrepalanchok
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Lalitpur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Makwanpur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Nuwakot
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Ramechhap
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Rasuwa
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Sindhuli
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Bagmati — Sindhupalchok
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 057-520926; 057-525197; 057-525186
+  Email           : s3mopid@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://www.molet.bagamati.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Baglung
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Gorkha
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Kaski
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Lamjung
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Manang
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Mustang
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Myagdi
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Nawalpur
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Parbat
+  Authority       : Provincial infrastructure system
+  Office          : Infrastructure Development Office, Parbat
+  Office Head     : Ashish Pokhrel (complaint officer)
+  Phone           : 067-420110
+  Email           : idoparwat@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://idoparwat.gandaki.gov.np/
+  Verification    : District office contact verified from official source
+
+Gandaki — Syangja
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Gandaki — Tanahun
+  Authority       : Ministry of Physical Infrastructure Development and Transport Management
+  Office          : Ministry of Physical Infrastructure Development and Transport Management
+  Office Head     : Not verified in this dataset
+  Phone           : 061-590197
+  Email           : mopid@gandaki.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.gandaki.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Arghakhanchi
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Banke
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Bardiya
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Dang
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Gulmi
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Kapilvastu
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Nawalparasi West
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Palpa
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Pyuthan
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Rolpa
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Rukum East
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Lumbini — Rupandehi
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 9857073373
+  Email           : mopid.lumbini@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.lumbini.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Dailekh
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Dolpa
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Humla
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Jajarkot
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Jumla
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Kalikot
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Mugu
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Rukum West
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Salyan
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Karnali — Surkhet
+  Authority       : Ministry of Physical Infrastructure and Urban Development
+  Office          : Ministry of Physical Infrastructure and Urban Development
+  Office Head     : Not verified in this dataset
+  Phone           : 083-524063
+  Email           : info.mopiud@karnali.gov.np; mopidskt@gmail.com
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopiud.karnali.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Achham
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Baitadi
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Bajhang
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Bajura
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Dadeldhura
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Darchula
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Doti
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Kailali
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+Sudurpashchim — Kanchanpur
+  Authority       : Ministry of Physical Infrastructure Development
+  Office          : Ministry of Physical Infrastructure Development
+  Office Head     : Not verified in this dataset
+  Phone           : 091-523303
+  Email           : mopidp7@gmail.com; info.mopid@sudurpashchim.gov.np
+  Reporting       : Call/email office; for national highways route to Department of Roads; for local roads route to municipality/rural municipality
+  Website         : https://mopid.sudurpashchim.gov.np/
+  Verification    : Provincial authority verified; district-level contact not yet individually verified
+
+
+==============================================================================
+OFFICIAL SOURCE DIRECTORY
+==============================================================================
+
+NEA — Distribution & Consumer Services:
+https://dcsd.nea.org.np/en/dcs-contacts
+https://www.nea.org.np/en/contact-information-of-dcs
+
+Ministry of Water Supply — Water Supply & Sewerage Management Offices:
+https://mows.gov.np/pages/water-supply-and-sewerage-management-offices/
+
+Madhesh Physical Infrastructure Development:
+https://mopid.madhesh.gov.np/divisions.php
+
+Bagmati Physical Infrastructure Development:
+https://www.molet.bagamati.gov.np/en/contact
+
+Gandaki Infrastructure Development Directorate:
+https://idd.gandaki.gov.np/en/offices?office_type=12
+
+Better Nepal routing rule:
+1. Identify GPS/district.
+2. Identify asset: road / bridge / electricity / water / local infrastructure.
+3. Check government level: federal / provincial / local.
+4. Select responsible office.
+5. Display CALL + EMAIL + REPORT.
+6. Escalate when no response.
+
+EMERGENCY NOTE:
+For immediate life-safety emergencies, Better Nepal should additionally route to
+the relevant District Administration Office / District Emergency Operations Center
+and Nepal emergency services, rather than relying only on a normal service complaint.

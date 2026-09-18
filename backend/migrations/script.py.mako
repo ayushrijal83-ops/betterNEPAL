@@ -10,6 +10,7 @@ import sqlalchemy as sa
 # Custom column types (e.g. UtcDateTime) are rendered by Alembic as
 # fully-qualified names, so the module must be importable here.
 import app.models.base  # noqa: F401
+import app.gis.types  # noqa: F401
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.
