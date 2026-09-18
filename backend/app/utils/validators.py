@@ -166,3 +166,125 @@ def validate_refresh(payload: Any) -> str:
         errors.add("refresh_token", "Refresh token is required.")
         errors.raise_if_any()
     return token
+
+
+# --- reports ---------------------------------------------------------------
+
+TITLE_MIN_LENGTH = 5
+TITLE_MAX_LENGTH = 100
+DESCRIPTION_MIN_LENGTH = 10
+DESCRIPTION_MAX_LENGTH = 5000
+
+
+def validate_enum_field(
+    value: Any,
+    enum_class: type,
+    errors: ValidationErrors,
+    field: str,
+    required: bool = True,
+):
+    """Coerce a request value to an enum member, recording an error if it fails.
+
+    The error message lists the accepted values, because a client that sent the
+    wrong one cannot guess the vocabulary from a bare rejection.
+    """
+    from ..models.enums import enum_values, parse_enum
+
+    if value is None or (isinstance(value, str) and not value.strip()):
+        if required:
+            errors.add(field, f"{field} is required.")
+        return None
+
+    member = parse_enum(enum_class, value)
+    if member is None:
+        errors.add(
+            field, f"{field} must be one of: {', '.join(enum_values(enum_class))}."
+        )
+        return None
+    return member
+
+
+def validate_coordinates(
+    payload: dict[str, Any],
+    errors: ValidationErrors,
+    lat_field: str = "lat",
+    lng_field: str = "lng",
+):
+    """Validate a lat/lng pair into a :class:`Coordinates`.
+
+    Delegates to ``app/gis/location.py`` rather than re-checking ranges here,
+    so there is exactly one definition of a valid coordinate in the codebase.
+    """
+    from ..gis.location import Coordinates, InvalidCoordinate
+
+    latitude = payload.get(lat_field)
+    longitude = payload.get(lng_field)
+    if longitude is None:
+        longitude = payload.get("lon")
+    if longitude is None:
+        longitude = payload.get("longitude")
+    if latitude is None:
+        latitude = payload.get("latitude")
+
+    try:
+        return Coordinates.parse(latitude=latitude, longitude=longitude)
+    except InvalidCoordinate as exc:
+        message = str(exc)
+        # Attribute the failure to whichever field it actually concerns.
+        field = lat_field if "latitude" in message else lng_field
+        errors.add(field, message)
+        return None
+
+
+def validate_report_creation(payload: Any) -> dict[str, Any]:
+    """Validate a report submission body.
+
+    ``status``, ``district_id`` and ``municipality_id`` are deliberately not
+    read: status is server-controlled, and the geographic fields are resolved
+    by reverse geocoding rather than trusted from the client.
+    """
+    from ..models.enums import ReportCategory
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    title = _as_text(data, "title")
+    if not title:
+        errors.add("title", "title is required.")
+    elif not (TITLE_MIN_LENGTH <= len(title) <= TITLE_MAX_LENGTH):
+        errors.add(
+            "title",
+            f"title must be between {TITLE_MIN_LENGTH} and {TITLE_MAX_LENGTH} characters.",
+        )
+
+    description = _as_text(data, "description")
+    if not description:
+        errors.add("description", "description is required.")
+    elif not (DESCRIPTION_MIN_LENGTH <= len(description) <= DESCRIPTION_MAX_LENGTH):
+        errors.add(
+            "description",
+            f"description must be between {DESCRIPTION_MIN_LENGTH} and "
+            f"{DESCRIPTION_MAX_LENGTH} characters.",
+        )
+
+    category = validate_enum_field(data.get("category"), ReportCategory, errors, "category")
+    coordinates = validate_coordinates(data, errors)
+
+    errors.raise_if_any()
+    return {
+        "title": title,
+        "description": description,
+        "category": category,
+        "coordinates": coordinates,
+    }
+
+
+def validate_status_update(payload: Any) -> Any:
+    """Validate a status-change body."""
+    from ..models.enums import ReportStatus
+
+    data = require_json(payload)
+    errors = ValidationErrors()
+    status = validate_enum_field(data.get("status"), ReportStatus, errors, "status")
+    errors.raise_if_any()
+    return status

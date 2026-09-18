@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Evidence — Better Nepal</title>
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Upload Site Evidence</h1>
+            <p class="page-subtitle">Bridge Repair — Trail #104</p>
+          </div>
+          <a href="dashboard.html" class="btn btn-outline">← Back</a>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">Site Photos</h2></div>
+
+          <div class="evidence-grid">
+            <div class="evidence-item">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600" alt="Site clearing" />
+              <div class="evidence-label">Site clearing (Jan 10)</div>
+            </div>
+            <div class="evidence-item">
+              <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600" alt="Foundation" />
+              <div class="evidence-label">Foundation pouring (Mar 12)</div>
+            </div>
+            <div class="evidence-item">
+              <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600" alt="Rebar" />
+              <div class="evidence-label">Rebar structure (Apr 20)</div>
+            </div>
+            <div class="upload-zone" style="height:100%;">
+              <svg class="upload-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+              </svg>
+              <p class="text-muted text-sm">Add photo</p>
+            </div>
+          </div>
+
+          <div class="form-group mt-lg">
+            <label class="form-label">Notes</label>
+            <textarea class="form-textarea" placeholder="Add any notes about the evidence..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-outline">Cancel</button>
+            <button class="btn btn-primary">Upload Evidence</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    const role = requireRole("contractor");
+    mountShell(role);
+  </script>
+</body>
+</html>

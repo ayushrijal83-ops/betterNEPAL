@@ -1,0 +1,60 @@
+<!-- Reusable map side panel template.
+     Used directly inside map.html pages. -->
+
+<div class="map-panel">
+  <div class="map-search">
+    <svg class="map-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <input type="text" id="map-search-input" placeholder="Search location, incident, project..." />
+  </div>
+
+  <h3>Layers</h3>
+  <label class="layer-toggle">
+    <input type="checkbox" id="layer-disaster" checked />
+    <span class="layer-dot disaster"></span>
+    Disaster (floods, landslides)
+  </label>
+  <label class="layer-toggle">
+    <input type="checkbox" id="layer-citizen" checked />
+    <span class="layer-dot citizen"></span>
+    Citizen &amp; Guide Reports
+  </label>
+  <label class="layer-toggle">
+    <input type="checkbox" id="layer-development" checked />
+    <span class="layer-dot development"></span>
+    Development Projects
+  </label>
+  <label class="layer-toggle">
+    <input type="checkbox" id="layer-environment" checked />
+    <span class="layer-dot environment"></span>
+    Conservation &amp; Trekking
+  </label>
+</div>
+
+<div class="map-panel">
+  <h3>Legend</h3>
+  <div class="map-legend">
+    <div class="legend-item">
+      <span class="legend-swatch critical"></span>
+      Critical / High severity
+    </div>
+    <div class="legend-item">
+      <span class="legend-swatch warning"></span>
+      Warning / In progress
+    </div>
+    <div class="legend-item">
+      <span class="legend-swatch info"></span>
+      Information
+    </div>
+    <div class="legend-item">
+      <span class="legend-swatch success"></span>
+      Resolved / Completed
+    </div>
+  </div>
+</div>
+
+<div class="map-panel">
+  <h3>Nearby Activity</h3>
+  <div id="map-nearby"></div>
+</div>

@@ -1,0 +1,9 @@
+<!-- Incident card template. Used by js/incidents.js -> renderIncidentCard() -->
+<a href="incident-details.html?id={{id}}" class="incident-card">
+  <div class="incident-icon {{iconClass}}">{{iconLetter}}</div>
+  <div class="incident-body">
+    <div class="incident-title">{{title}}</div>
+    <div class="incident-meta">{{location}} • {{date}}</div>
+  </div>
+  <span class="badge {{badgeClass}}">{{severity}}</span>
+</a>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Details — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="prj-name">Project Details</h1>
+            <p class="page-subtitle" id="prj-meta">Loading…</p>
+          </div>
+          <a href="projects.html" class="btn btn-outline">← All Projects</a>
+        </div>
+
+        <div class="details-layout">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Overview</h2>
+                <span id="prj-status"></span>
+              </div>
+
+              <p class="text-muted" id="prj-desc"></p>
+
+              <div class="meta-row">
+                <div class="meta-item">
+                  <span class="meta-label">Contractor</span>
+                  <span class="meta-value" id="prj-contractor">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Location</span>
+                  <span class="meta-value" id="prj-location">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Start</span>
+                  <span class="meta-value" id="prj-start">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Expected completion</span>
+                  <span class="meta-value" id="prj-end">—</span>
+                </div>
+              </div>
+
+              <div class="project-progress mt-md">
+                <span>Progress</span>
+                <span id="prj-progress-label">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="prj-progress" style="width:0%"></div>
+              </div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Evidence</h2>
+              </div>
+              <div class="evidence-grid" id="prj-evidence"></div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Milestones</h2>
+              </div>
+              <div id="prj-timeline"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Budget</h2>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Allocated</span>
+                <span class="budget-value" id="budget-allocated">—</span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Spent</span>
+                <span class="budget-value" id="budget-spent">—</span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Remaining</span>
+                <span class="budget-value" id="budget-remaining">—</span>
+              </div>
+              <div class="budget-row">
+                <span class="budget-label">Utilization</span>
+                <span class="budget-value" id="budget-util">—</span>
+              </div>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Linked Incident</h2>
+              </div>
+              <p class="text-sm" id="prj-incident">—</p>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script src="../../js/projects.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    const params = new URLSearchParams(window.location.search);
+    const p = getProjectById(params.get("id") || "");
+
+    document.getElementById("prj-name").textContent = p.name;
+    document.getElementById("prj-meta").textContent = `#${p.id} • ${p.location}`;
+    document.getElementById("prj-status").innerHTML = statusBadge(p.status);
+    document.getElementById("prj-desc").textContent = p.description;
+    document.getElementById("prj-contractor").textContent = p.contractor;
+    document.getElementById("prj-location").textContent = p.location;
+    document.getElementById("prj-start").textContent = formatDate(p.startDate);
+    document.getElementById("prj-end").textContent = formatDate(p.expectedCompletion);
+
+    document.getElementById("prj-progress").style.width = p.progress + "%";
+    document.getElementById("prj-progress-label").textContent = p.progress + "%";
+
+    document.getElementById("prj-evidence").innerHTML = p.evidence
+      .map(
+        (e) => `
+      <div class="evidence-item">
+        <img src="${e.url}" alt="${e.label}" />
+        <div class="evidence-label">${e.label}</div>
+      </div>`
+      )
+      .join("");
+
+    document.getElementById("prj-timeline").innerHTML = renderTimeline(p.milestones);
+
+    document.getElementById("budget-allocated").textContent = formatNPR(p.budget);
+    document.getElementById("budget-spent").textContent = formatNPR(p.spent);
+    document.getElementById("budget-remaining").textContent = formatNPR(p.budget - p.spent);
+    document.getElementById("budget-util").textContent =
+      Math.round((p.spent / p.budget) * 100) + "%";
+
+    document.getElementById("prj-incident").textContent = p.incidentId
+      ? `#${p.incidentId}`
+      : "Not linked to an incident";
+  </script>
+</body>
+</html>

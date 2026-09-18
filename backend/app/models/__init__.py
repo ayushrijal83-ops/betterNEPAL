@@ -5,8 +5,10 @@ populated before Alembic autogenerates a migration.
 """
 from .base import Base, BaseModel, UtcDateTime, utcnow
 from .district import District
+from .enums import ReportCategory, ReportStatus
 from .municipality import MUNICIPALITY_TYPES, Municipality
 from .refresh_token import RefreshToken
+from .report import Report
 from .role import (
     DEFAULT_ROLE,
     ROLE_ADMIN,
@@ -36,6 +38,9 @@ __all__ = [
     "ROLE_NAMES",
     "ROLE_TREKKING_GUIDE",
     "RefreshToken",
+    "Report",
+    "ReportCategory",
+    "ReportStatus",
     "Role",
     "User",
     "UtcDateTime",

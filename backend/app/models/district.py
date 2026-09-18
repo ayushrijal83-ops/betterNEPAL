@@ -39,6 +39,7 @@ from .provenance import ProvenanceMixin, verification_status_constraint
 
 if TYPE_CHECKING:  # pragma: no cover
     from .municipality import Municipality
+    from .report import Report
 
 
 class District(BaseModel, ProvenanceMixin):
@@ -59,6 +60,9 @@ class District(BaseModel, ProvenanceMixin):
         # No cascade: deleting a district that still holds municipalities must
         # raise, matching the RESTRICT foreign key on the child table.
         passive_deletes="all",
+    )
+    reports: Mapped[list["Report"]] = relationship(
+        back_populates="district", passive_deletes="all"
     )
 
     __table_args__ = (

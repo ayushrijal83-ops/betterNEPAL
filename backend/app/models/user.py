@@ -7,13 +7,16 @@ dumping model attributes, so a future column cannot leak by accident.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from .base import BaseModel, UtcDateTime
 from .role import Role, user_roles
+
+if TYPE_CHECKING:  # pragma: no cover
+    from .report import Report
 
 
 class User(BaseModel):
@@ -28,6 +31,11 @@ class User(BaseModel):
 
     roles: Mapped[list[Role]] = relationship(
         secondary=user_roles, back_populates="users", lazy="selectin"
+    )
+    # No cascade: reports outlive account changes, and the RESTRICT foreign key
+    # on reports.reporter_id refuses to delete a user who has filed any.
+    reports: Mapped[list["Report"]] = relationship(
+        back_populates="reporter", passive_deletes="all"
     )
 
     @validates("email")

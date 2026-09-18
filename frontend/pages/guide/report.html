@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Issue — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Report an Issue</h1>
+            <p class="page-subtitle">Take photo → GPS location → Select issue → Submit</p>
+          </div>
+          <a href="dashboard.html" class="btn btn-outline">← Back</a>
+        </div>
+
+        <div class="form-layout">
+          <form id="report-form">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Issue Details</h2>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Photo</label>
+                <div class="upload-zone" id="upload-zone">
+                  <svg class="upload-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                  </svg>
+                  <p class="text-muted">Click to upload or drag an image</p>
+                  <input type="file" accept="image/*" id="photo-input" hidden />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="report-title">Title</label>
+                <input class="form-input" type="text" id="report-title"
+                       value="Bridge damaged — Annapurna Region" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="location">Location</label>
+                  <input class="form-input" type="text" id="location"
+                         value="Annapurna Region, Gandaki Province" />
+                  <div class="gps-chip">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    28.5966° N, 83.8203° E
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="category">Category</label>
+                  <select class="form-select" id="category"></select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Severity</label>
+                <div class="severity-options">
+                  <label class="severity-option">
+                    <input type="radio" name="severity" value="Low" />
+                    <span class="sev-dot sev-low"></span>
+                    <div class="sev-label">Low</div>
+                  </label>
+                  <label class="severity-option">
+                    <input type="radio" name="severity" value="Medium" />
+                    <span class="sev-dot sev-medium"></span>
+                    <div class="sev-label">Medium</div>
+                  </label>
+                  <label class="severity-option selected">
+                    <input type="radio" name="severity" value="High" checked />
+                    <span class="sev-dot sev-high"></span>
+                    <div class="sev-label">High</div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-textarea" id="description"
+                  placeholder="Describe the issue in detail...">Bridge damaged after recent rainfall. Difficult for trekkers to cross.</textarea>
+              </div>
+
+              <div class="form-actions">
+                <a href="dashboard.html" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-danger btn-lg" id="submit-btn">
+                  Submit Report
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <aside>
+            <div class="ai-panel">
+              <div class="ai-panel-header">
+                <span class="ai-badge">AI</span>
+                Smart Classification Preview
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Category</span>
+                <span class="ai-result-value" id="ai-cat">Infrastructure</span>
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Subcategory</span>
+                <span class="ai-result-value" id="ai-sub">Bridge</span>
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Severity</span>
+                <span class="ai-result-value" id="ai-sev">High</span>
+              </div>
+              <div class="ai-result-row">
+                <span class="ai-result-label">Confidence</span>
+                <span class="ai-result-value" id="ai-conf">0.87</span>
+              </div>
+              <p class="text-muted text-sm mt-sm">Human verification required.</p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Auto-routed to</h2>
+              </div>
+              <p class="text-sm text-muted">Based on GPS + category:</p>
+              <p class="mt-sm"><strong>Department of Roads</strong><br/>Gandaki Province</p>
+              <p class="text-sm text-muted mt-sm">
+                District: Kaski<br/>
+                Municipality: Annapurna Rural Municipality
+              </p>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script>
+    const role = requireRole("guide");
+    mountShell(role);
+
+    // Fill category options
+    document.getElementById("category").innerHTML = renderCategoryOptions();
+    document.getElementById("category").value = "bridge";
+
+    // Upload zone
+    const uploadZone = document.getElementById("upload-zone");
+    const photoInput = document.getElementById("photo-input");
+    uploadZone.addEventListener("click", () => photoInput.click());
+    photoInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        uploadZone.classList.add("has-image");
+        uploadZone.innerHTML = `<img src="${ev.target.result}" alt="upload" />`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Severity selection styling
+    document.querySelectorAll(".severity-option").forEach((opt) => {
+      opt.addEventListener("click", () => {
+        document.querySelectorAll(".severity-option").forEach((o) => o.classList.remove("selected"));
+        opt.classList.add("selected");
+        opt.querySelector("input").checked = true;
+      });
+    });
+
+    // Submit
+    document.getElementById("report-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("submit-btn");
+      btn.textContent = "Submitting...";
+      btn.disabled = true;
+
+      const payload = {
+        title: document.getElementById("report-title").value,
+        location: document.getElementById("location").value,
+        coordinates: "28.5966° N, 83.8203° E",
+        category: document.getElementById("category").options[document.getElementById("category").selectedIndex].text,
+        severity: document.querySelector("input[name=severity]:checked").value,
+        description: document.getElementById("description").value,
+        reporter: getUser().name + " (Registered Guide)",
+      };
+
+      const report = await apiPost("/reports", payload);
+      window.location.href = "report-details.html?id=" + report.id;
+    });
+  </script>
+</body>
+</html>

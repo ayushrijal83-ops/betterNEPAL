@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Incident Details — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="inc-title">Incident Details</h1>
+            <p class="page-subtitle" id="inc-meta">Loading…</p>
+          </div>
+          <a href="incidents.html" class="btn btn-outline">← All Incidents</a>
+        </div>
+
+        <div class="details-layout">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Media</h2>
+                <span id="inc-status"></span>
+              </div>
+
+              <div class="report-media">
+                <img id="inc-image" alt="Incident media" />
+              </div>
+
+              <div class="meta-row">
+                <div class="meta-item">
+                  <span class="meta-label">Type</span>
+                  <span class="meta-value" id="inc-type">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Severity</span>
+                  <span class="meta-value" id="inc-sev">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Priority</span>
+                  <span class="meta-value" id="inc-pri">—</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Assigned To</span>
+                  <span class="meta-value" id="inc-assigned">—</span>
+                </div>
+              </div>
+
+              <p class="text-muted" id="inc-desc"></p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Timeline</h2>
+              </div>
+              <div id="inc-timeline"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="ai-panel">
+              <div class="ai-panel-header">
+                <span class="ai-badge">AI</span>
+                AI-Assisted Analysis
+              </div>
+              <div class="confidence-circle"><span id="inc-conf">—</span></div>
+              <p class="text-center text-sm" style="color:#3730a3;font-weight:600;">
+                Classification accuracy
+              </p>
+              <div class="ai-result-row mt-md">
+                <span class="ai-result-label">Classification</span>
+                <span class="ai-result-value" id="inc-ai-class">—</span>
+              </div>
+              <p class="text-sm text-muted mt-sm">
+                AI-assisted assessment — human verification required.
+              </p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Field Team</h2>
+              </div>
+              <p class="text-sm"><strong id="team-name">—</strong></p>
+              <p class="text-sm text-muted">
+                Status: <span class="badge badge-warning" id="team-status">—</span>
+              </p>
+              <p class="text-sm text-muted mt-sm">ETA: <span id="team-eta">—</span></p>
+              <ul class="text-sm mt-sm" style="padding-left:18px;color:var(--bn-text-light)" id="team-members"></ul>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header">
+                <h2 class="card-title">Actions</h2>
+              </div>
+              <div class="flex flex-col gap-sm">
+                <button class="btn btn-primary" id="btn-verify">Verify Incident</button>
+                <button class="btn btn-outline" id="btn-assign">Assign to Department</button>
+                <button class="btn btn-outline" id="btn-project">Create Project</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script src="../../js/incidents.js"></script>
+  <script>
+  document.getElementById("btn-verify").addEventListener("click", () => {
+    openModal({
+      title: "Verify this incident?",
+      bodyHtml: `<p class="text-muted">Marking the incident as verified will notify the assigned department and start the resolution workflow.</p>`,
+      confirmText: "Verify",
+      onConfirm: () => showToast("Incident verified.", "success"),
+    });
+  });
+
+  document.getElementById("btn-assign").addEventListener("click", () => {
+    openModal({
+      title: "Assign to department",
+      bodyHtml: `
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <select class="form-select">
+            <option>Department of Roads — Chitwan</option>
+            <option>NEA Lalitpur Division</option>
+            <option>DDMC — Manang</option>
+          </select>
+        </div>`,
+      confirmText: "Assign",
+      onConfirm: () => showToast("Incident assigned.", "success"),
+    });
+  });
+
+  document.getElementById("btn-project").addEventListener("click", () => {
+    window.location.href = "projects.html";
+  });
+</script>
+</body>
+</html>

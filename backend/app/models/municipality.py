@@ -26,6 +26,7 @@ from .provenance import ProvenanceMixin, verification_status_constraint
 
 if TYPE_CHECKING:  # pragma: no cover
     from .district import District
+    from .report import Report
 
 # Nepal's four constitutionally defined local-level unit types.
 MUNICIPALITY_TYPE_METROPOLITAN = "metropolitan"
@@ -57,6 +58,9 @@ class Municipality(BaseModel, ProvenanceMixin):
     boundary = mapped_column(GeometryColumn("MULTIPOLYGON", DEFAULT_SRID), nullable=True)
 
     district: Mapped["District"] = relationship(back_populates="municipalities")
+    reports: Mapped[list["Report"]] = relationship(
+        back_populates="municipality", passive_deletes="all"
+    )
 
     __table_args__ = (
         UniqueConstraint("district_id", "name", name="uq_municipalities_district_name"),
