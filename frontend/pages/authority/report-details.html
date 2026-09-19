@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Details — Authority — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="report-title">Report Details</h1>
+            <p class="page-subtitle" id="report-id-line">Loading…</p>
+          </div>
+          <a href="reports.html" class="btn btn-outline">← All Reports</a>
+        </div>
+
+        <div class="details-layout">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Report Media</h2>
+                <span id="status-badge"></span>
+              </div>
+              <div class="report-media" id="report-media"></div>
+              <div class="meta-row">
+                <div class="meta-item"><span class="meta-label">Category</span><span class="meta-value" id="meta-type">—</span></div>
+                <div class="meta-item"><span class="meta-label">Location</span><span class="meta-value" id="meta-location">—</span></div>
+                <div class="meta-item"><span class="meta-label">Coordinates</span><span class="meta-value" id="meta-coords">—</span></div>
+                <div class="meta-item"><span class="meta-label">Filed</span><span class="meta-value" id="meta-filed">—</span></div>
+              </div>
+              <p class="text-muted" id="report-description"></p>
+            </div>
+
+            <div class="card mt-lg">
+              <div class="card-header"><h2 class="card-title">Progress Timeline</h2></div>
+              <div id="timeline-container"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">AI Disaster Triage</h2>
+              </div>
+              <p class="text-sm text-muted">
+                Runs the report through the platform's disaster classifier. This is
+                advisory only — the dispatch decision below is made by backend policy,
+                not the AI.
+              </p>
+              <button class="btn btn-primary mt-sm" id="btn-evaluate" style="width:100%">
+                Evaluate for Disaster
+              </button>
+              <div id="disaster-result" class="mt-md"></div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    const reportId = new URLSearchParams(window.location.search).get("id");
+
+    // ---- Disaster triage: labels only, never invented values -------------
+    const DISASTER_TYPE_LABELS = {
+      earthquake: "Earthquake", flood: "Flood", flash_flood: "Flash Flood",
+      landslide: "Landslide", forest_fire: "Forest Fire", storm: "Storm",
+      lightning: "Lightning", avalanche: "Avalanche", wildfire: "Wildfire",
+      other: "Other Hazard", none: "No Disaster Detected",
+    };
+    const SEVERITY_LABELS = { low: "Low", moderate: "Moderate", high: "High", critical: "Critical" };
+
+    function checkRow(passed, label) {
+      return `<div class="disaster-check ${passed ? "" : "no"}">
+        <span class="disaster-check-mark">${passed ? "✓" : "✕"}</span>
+        <span>${escapeHtml(label)}</span>
+      </div>`;
+    }
+
+    function renderDisasterResult(result) {
+      const a = result.analysis;
+      const pct = Math.round((a.confidence || 0) * 100);
+      const severity = a.severity || "low";
+      const typeLabel = DISASTER_TYPE_LABELS[a.disaster_type] || (a.disaster_type || "Unknown");
+      const sevLabel = SEVERITY_LABELS[severity] || severity;
+
+      const incidentLabel =
+        result.action === "created" ? `Incident created (${result.policy_decision.should_dispatch ? "dispatched" : "logged for review"})`
+        : result.action === "correlated" ? "Linked to an existing incident"
+        : "No incident created";
+
+      document.getElementById("disaster-result").innerHTML = `
+        <div class="disaster-card" data-severity="${escapeHtml(severity)}">
+          <div class="disaster-card-head">
+            <span>AI Disaster Analysis</span>
+            <span class="ai-badge" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff;">AI</span>
+          </div>
+          <div class="disaster-card-body">
+            <div>
+              <div class="disaster-card-type">${escapeHtml(typeLabel.toUpperCase())}</div>
+              <div class="disaster-card-sub">
+                <span class="badge ${a.is_disaster ? "badge-critical" : "badge-neutral"}">${escapeHtml(sevLabel)} severity</span>
+              </div>
+            </div>
+            <div class="disaster-confidence">
+              <div class="confidence-circle" style="--pct:${pct};"><span>${pct}%</span></div>
+              <span class="text-sm text-muted">AI confidence</span>
+            </div>
+            ${a.reason ? `<p class="disaster-reason">"${escapeHtml(a.reason)}"</p>` : ""}
+            <div class="disaster-checks">
+              ${checkRow(true, "AI classification complete")}
+              ${checkRow(result.policy_decision.should_dispatch, `Policy evaluation: ${result.policy_decision.reason}`)}
+              ${checkRow(result.action !== "none", incidentLabel)}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    document.getElementById("btn-evaluate").addEventListener("click", async () => {
+      const btn = document.getElementById("btn-evaluate");
+      const resultEl = document.getElementById("disaster-result");
+      btn.disabled = true;
+      resultEl.innerHTML = `<div class="disaster-processing"><span class="spinner"></span> Analyzing report…</div>`;
+
+      try {
+        const result = await apiPost(`/disaster/reports/${reportId}/evaluate`, undefined);
+        renderDisasterResult(result);
+        showToast("Disaster evaluation complete.", "success");
+      } catch (error) {
+        resultEl.innerHTML = "";
+        reportApiError(error, "Could not run disaster evaluation.");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // ---- Report details (mirrors the citizen/guide detail pages) ---------
+    (async () => {
+      if (!reportId) {
+        showToast("No report selected.", "error");
+        return;
+      }
+      try {
+        const report = await fetchReport(reportId);
+
+        document.getElementById("report-title").textContent = report.title;
+        document.getElementById("report-id-line").textContent = `#${String(report.id).slice(0, 8)} · ${humanise(report.category)}`;
+        document.getElementById("status-badge").innerHTML = statusBadge(report.status);
+        document.getElementById("meta-type").textContent = humanise(report.category);
+        document.getElementById("meta-location").textContent = report.district || "Location pending";
+        document.getElementById("meta-coords").textContent =
+          report.latitude != null ? `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}` : "—";
+        document.getElementById("meta-filed").textContent = formatDate(report.created_at);
+        document.getElementById("report-description").textContent = report.description;
+        document.getElementById("timeline-container").innerHTML = reportTimeline(report);
+
+        const mediaEl = document.getElementById("report-media");
+        const media = await fetchReportMedia(report.id);
+        const origin = API_BASE_URL.replace("/api/v1", "");
+        mediaEl.innerHTML = media.length
+          ? media
+              .map((m) => {
+                const href = `${origin}${m.url}`;
+                const name = escapeHtml(m.original_filename || "");
+                return /\.(jpe?g|png|webp|gif)$/i.test(m.original_filename || "")
+                  ? `<a href="${href}" target="_blank" rel="noopener">
+                       <img src="${href}" alt="${name}" class="report-media-img" loading="lazy">
+                     </a>`
+                  : `<a href="${href}" target="_blank" rel="noopener">${name}</a>`;
+              })
+              .join("")
+          : `<div class="empty-text">${tr("state.empty.hint", "No evidence attached.")}</div>`;
+      } catch (error) {
+        reportApiError(error, "Could not load this report.");
+      }
+    })();
+  </script>
+</body>
+</html>

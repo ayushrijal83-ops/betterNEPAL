@@ -65,8 +65,8 @@ async function bootstrapAuthorityPerformance(containerId) {
       <table class="table">
         <thead>
           <tr>
-            <th>Authority</th><th>Assigned</th><th>Backlog</th>
-            <th>Resolved</th><th>Avg. days</th><th>Active projects</th>
+            <th>${tr("table.authority","Authority")}</th><th>${tr("table.assigned","Assigned")}</th><th>${tr("table.backlog","Backlog")}</th>
+            <th>${tr("status.resolved","Resolved")}</th><th>${tr("table.avgDays","Avg. days")}</th><th>${tr("dash.activeProjects","Active projects")}</th>
           </tr>
         </thead>
         <tbody>
@@ -122,8 +122,8 @@ function renderReportsTable(tbodyId, reports) {
   if (!reports || reports.length === 0) {
     el.innerHTML = `<tr><td colspan="7">
       <div class="empty-state">
-        <div class="empty-title">No reports yet</div>
-        <div class="empty-text">Reports you submit will appear here.</div>
+        <div class="empty-title">${tr("state.empty.title","Nothing here yet")}</div>
+        <div class="empty-text">${tr("state.empty.reportsHint","Reports you submit will appear here.")}</div>
       </div>
     </td></tr>`;
     return;

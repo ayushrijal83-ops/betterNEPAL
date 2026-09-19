@@ -43,7 +43,7 @@ function renderAuthoritiesTable(tbodyId, authorities) {
   if (!authorities || authorities.length === 0) {
     el.innerHTML = `<tr><td colspan="6">
       <div class="empty-state">
-        <div class="empty-title">No authorities registered</div>
+        <div class="empty-title">${tr("state.empty.title", "Nothing here yet")}</div>
         <div class="empty-text">An admin can add government bodies here.</div>
       </div>
     </td></tr>`;

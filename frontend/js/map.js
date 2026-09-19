@@ -10,12 +10,13 @@
 let nepalMap = null;
 let mapPointLayers = null;
 
-// The backend answers in two kinds; the existing layer toggles are named for
+// The backend answers in three kinds; the existing layer toggles are named for
 // four. `citizen` carries unverified reports, `disaster` carries verified
-// incidents. The development and environment layers have no backing data yet -
+// incidents, `disaster_incident` carries AI-classified disaster events.
+// The development and environment layers have no backing data yet -
 // projects have no coordinates of their own, and conservation areas were never
 // imported - so they are created empty rather than filled with invented pins.
-const LAYER_KEYS = ["disaster", "citizen", "development", "environment"];
+const LAYER_KEYS = ["disaster", "disaster_incident", "citizen", "development", "environment"];
 
 // Where to look when a map has no data at all: the centre of Nepal.
 const NEPAL_CENTER = [28.3949, 84.124];
@@ -32,9 +33,13 @@ function markerIcon(severity) {
 
 // Pin colour. Incidents carry a real severity; a report has none (the backend
 // Report model has no severity column), so its status is used instead.
+// Disaster incidents carry disaster_severity.
 function pinClassFor(point) {
   if (point.type === "incident") {
     return (typeof SEVERITY_PIN !== "undefined" && SEVERITY_PIN[point.severity]) || "warning";
+  }
+  if (point.type === "disaster_incident") {
+    return (typeof DISASTER_SEVERITY_PIN !== "undefined" && DISASTER_SEVERITY_PIN[point.severity]) || "warning";
   }
   return point.status === "under_review" ? "warning" : "info";
 }
@@ -74,7 +79,17 @@ function popupHtml(point) {
 
 function initNepalMap(mapElementId) {
   if (nepalMap) return nepalMap;
-  if (!document.getElementById(mapElementId)) return null;
+  const mapEl = document.getElementById(mapElementId);
+  if (!mapEl) return null;
+
+  // A Leaflet container is an interactive region with no accessible name of
+  // its own: a screen reader announces nothing when focus enters it. Set here
+  // rather than in each page's markup so every map page gets it.
+  if (!mapEl.hasAttribute("role")) {
+    mapEl.setAttribute("role", "region");
+    mapEl.setAttribute("aria-label",
+      typeof t === "function" ? t("map.title") : "Map");
+  }
 
   nepalMap = L.map(mapElementId, {
     center: NEPAL_CENTER,
@@ -123,7 +138,14 @@ async function loadMapPoints(filters = {}) {
   points.forEach((point) => {
     if (typeof point.latitude !== "number" || typeof point.longitude !== "number") return;
 
-    const group = mapPointLayers[point.type === "incident" ? "disaster" : "citizen"];
+    let group;
+    if (point.type === "incident") {
+      group = mapPointLayers["disaster"];
+    } else if (point.type === "disaster_incident") {
+      group = mapPointLayers["disaster_incident"];
+    } else {
+      group = mapPointLayers["citizen"];
+    }
     if (!group) return;
 
     L.marker([point.latitude, point.longitude], { icon: markerIcon(pinClassFor(point)) })
@@ -162,8 +184,8 @@ function renderNearby(containerId, points = lastLoadedPoints) {
   if (!points.length) {
     el.innerHTML = `
       <div class="empty-state">
-        <div class="empty-title">Nothing reported yet</div>
-        <div class="empty-text">Reports and incidents will appear here as they come in.</div>
+        <div class="empty-title">${tr("state.empty.title","Nothing here yet")}</div>
+        <div class="empty-text">${tr("state.empty.mapHint","Reports and incidents will appear here as they come in.")}</div>
       </div>`;
     return;
   }

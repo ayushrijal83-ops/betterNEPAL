@@ -1,0 +1,320 @@
+{
+  "_meta": {
+    "dataset": "nepal_district_reference_points_dev_fallback",
+    "description": "Approximate administrative-centre (headquarters town) coordinates for each of Nepal's 77 districts, for a single narrow purpose: a deterministic nearest-neighbour jurisdiction fallback on backends with no PostGIS point-in-polygon support (SQLite dev/test only).",
+    "source_type": "general_geographic_knowledge",
+    "verification_status": "approximate_reference_only",
+    "contains_geometry": false,
+    "notes": "These are NOT surveyed centroids and NOT district boundaries - just a single reference point per district, good enough to pick 'closest district headquarters' but not to answer 'is this point inside the district'. Never used when PostGIS is available: geolocation_service.spatial_backend_available() gates this out in any real PostgreSQL+PostGIS deployment, where the existing ST_Contains boundary-polygon lookup runs unchanged. Every response produced via this fallback is tagged reason='dev_nearest_centroid_fallback' so it can never be mistaken for a real polygon match."
+  },
+  "points": {
+    "Taplejung": {
+      "latitude": 27.35,
+      "longitude": 87.67
+    },
+    "Panchthar": {
+      "latitude": 27.14,
+      "longitude": 87.8
+    },
+    "Ilam": {
+      "latitude": 26.91,
+      "longitude": 87.93
+    },
+    "Jhapa": {
+      "latitude": 26.55,
+      "longitude": 87.98
+    },
+    "Morang": {
+      "latitude": 26.45,
+      "longitude": 87.28
+    },
+    "Sunsari": {
+      "latitude": 26.65,
+      "longitude": 87.28
+    },
+    "Dhankuta": {
+      "latitude": 26.98,
+      "longitude": 87.35
+    },
+    "Terhathum": {
+      "latitude": 27.12,
+      "longitude": 87.55
+    },
+    "Sankhuwasabha": {
+      "latitude": 27.35,
+      "longitude": 87.2
+    },
+    "Bhojpur": {
+      "latitude": 27.17,
+      "longitude": 87.05
+    },
+    "Solukhumbu": {
+      "latitude": 27.55,
+      "longitude": 86.72
+    },
+    "Okhaldhunga": {
+      "latitude": 27.32,
+      "longitude": 86.5
+    },
+    "Khotang": {
+      "latitude": 27.2,
+      "longitude": 86.8
+    },
+    "Udayapur": {
+      "latitude": 26.87,
+      "longitude": 86.7
+    },
+    "Saptari": {
+      "latitude": 26.6,
+      "longitude": 86.75
+    },
+    "Siraha": {
+      "latitude": 26.65,
+      "longitude": 86.2
+    },
+    "Dhanusha": {
+      "latitude": 26.73,
+      "longitude": 85.92
+    },
+    "Mahottari": {
+      "latitude": 26.65,
+      "longitude": 85.8
+    },
+    "Sarlahi": {
+      "latitude": 26.85,
+      "longitude": 85.55
+    },
+    "Rautahat": {
+      "latitude": 26.83,
+      "longitude": 85.3
+    },
+    "Bara": {
+      "latitude": 27.03,
+      "longitude": 85.05
+    },
+    "Parsa": {
+      "latitude": 27.05,
+      "longitude": 84.87
+    },
+    "Kathmandu": {
+      "latitude": 27.7172,
+      "longitude": 85.324
+    },
+    "Lalitpur": {
+      "latitude": 27.6644,
+      "longitude": 85.3188
+    },
+    "Bhaktapur": {
+      "latitude": 27.671,
+      "longitude": 85.4298
+    },
+    "Kavrepalanchok": {
+      "latitude": 27.63,
+      "longitude": 85.55
+    },
+    "Sindhupalchok": {
+      "latitude": 27.85,
+      "longitude": 85.68
+    },
+    "Dolakha": {
+      "latitude": 27.65,
+      "longitude": 86.17
+    },
+    "Ramechhap": {
+      "latitude": 27.33,
+      "longitude": 86.08
+    },
+    "Sindhuli": {
+      "latitude": 27.25,
+      "longitude": 85.97
+    },
+    "Makwanpur": {
+      "latitude": 27.42,
+      "longitude": 85.03
+    },
+    "Chitwan": {
+      "latitude": 27.6262,
+      "longitude": 84.4335
+    },
+    "Dhading": {
+      "latitude": 27.86,
+      "longitude": 84.9
+    },
+    "Nuwakot": {
+      "latitude": 27.92,
+      "longitude": 85.17
+    },
+    "Rasuwa": {
+      "latitude": 28.1,
+      "longitude": 85.28
+    },
+    "Mustang": {
+      "latitude": 28.98,
+      "longitude": 83.83
+    },
+    "Myagdi": {
+      "latitude": 28.6,
+      "longitude": 83.58
+    },
+    "Parbat": {
+      "latitude": 28.23,
+      "longitude": 83.68
+    },
+    "Baglung": {
+      "latitude": 28.27,
+      "longitude": 83.6
+    },
+    "Syangja": {
+      "latitude": 28.1,
+      "longitude": 83.88
+    },
+    "Kaski": {
+      "latitude": 28.2096,
+      "longitude": 83.9856
+    },
+    "Tanahun": {
+      "latitude": 27.93,
+      "longitude": 84.25
+    },
+    "Lamjung": {
+      "latitude": 28.28,
+      "longitude": 84.42
+    },
+    "Manang": {
+      "latitude": 28.66,
+      "longitude": 84.02
+    },
+    "Gorkha": {
+      "latitude": 28.0,
+      "longitude": 84.63
+    },
+    "Nawalpur": {
+      "latitude": 27.8,
+      "longitude": 84.3
+    },
+    "Rukum East": {
+      "latitude": 28.6,
+      "longitude": 82.75
+    },
+    "Rolpa": {
+      "latitude": 28.3,
+      "longitude": 82.63
+    },
+    "Pyuthan": {
+      "latitude": 28.1,
+      "longitude": 82.85
+    },
+    "Dang": {
+      "latitude": 28.03,
+      "longitude": 82.3
+    },
+    "Arghakhanchi": {
+      "latitude": 27.93,
+      "longitude": 83.1
+    },
+    "Gulmi": {
+      "latitude": 28.07,
+      "longitude": 83.25
+    },
+    "Palpa": {
+      "latitude": 27.87,
+      "longitude": 83.55
+    },
+    "Rupandehi": {
+      "latitude": 27.68,
+      "longitude": 83.45
+    },
+    "Kapilvastu": {
+      "latitude": 27.55,
+      "longitude": 83.05
+    },
+    "Nawalparasi West": {
+      "latitude": 27.62,
+      "longitude": 83.9
+    },
+    "Banke": {
+      "latitude": 28.05,
+      "longitude": 81.62
+    },
+    "Bardiya": {
+      "latitude": 28.3,
+      "longitude": 81.45
+    },
+    "Humla": {
+      "latitude": 29.97,
+      "longitude": 81.83
+    },
+    "Mugu": {
+      "latitude": 29.68,
+      "longitude": 82.1
+    },
+    "Jumla": {
+      "latitude": 29.27,
+      "longitude": 82.18
+    },
+    "Kalikot": {
+      "latitude": 29.13,
+      "longitude": 81.6
+    },
+    "Dolpa": {
+      "latitude": 28.98,
+      "longitude": 82.82
+    },
+    "Jajarkot": {
+      "latitude": 28.7,
+      "longitude": 82.2
+    },
+    "Rukum West": {
+      "latitude": 28.63,
+      "longitude": 82.3
+    },
+    "Dailekh": {
+      "latitude": 28.85,
+      "longitude": 81.72
+    },
+    "Surkhet": {
+      "latitude": 28.6,
+      "longitude": 81.62
+    },
+    "Salyan": {
+      "latitude": 28.38,
+      "longitude": 82.17
+    },
+    "Darchula": {
+      "latitude": 29.85,
+      "longitude": 80.55
+    },
+    "Baitadi": {
+      "latitude": 29.53,
+      "longitude": 80.47
+    },
+    "Bajhang": {
+      "latitude": 29.55,
+      "longitude": 81.2
+    },
+    "Bajura": {
+      "latitude": 29.53,
+      "longitude": 81.5
+    },
+    "Dadeldhura": {
+      "latitude": 29.3,
+      "longitude": 80.58
+    },
+    "Doti": {
+      "latitude": 29.27,
+      "longitude": 80.93
+    },
+    "Achham": {
+      "latitude": 29.07,
+      "longitude": 81.18
+    },
+    "Kailali": {
+      "latitude": 28.68,
+      "longitude": 80.62
+    },
+    "Kanchanpur": {
+      "latitude": 28.83,
+      "longitude": 80.18
+    }
+  }
+}

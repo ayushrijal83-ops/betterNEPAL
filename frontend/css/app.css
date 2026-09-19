@@ -1,0 +1,413 @@
+/* ==========================================================================
+   Better Nepal — Feed and Travel Planner
+   ==========================================================================
+   The two public application pages that sit outside the dashboard shell. They
+   carry their own header rather than the sidebar, so their chrome lives here.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Feed
+   -------------------------------------------------------------------------- */
+
+.feed-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: linear-gradient(120deg, var(--bn-forest-900) 0%, var(--bn-charcoal-900) 100%);
+  color: var(--bn-on-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feed-header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
+}
+
+.feed-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-3xl);
+}
+
+.feed-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--bn-forest-200);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.feed-mark svg { width: 23px; height: 23px; }
+
+.feed-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.feed-subtitle { font-size: var(--font-size-xs); color: var(--bn-on-dark-dim); }
+
+.feed-back {
+  font-size: var(--font-size-sm);
+  color: var(--bn-on-dark-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.feed-back:hover { color: #fff; text-decoration: none; }
+
+/* --- Scope switcher ------------------------------------------------------ */
+
+.feed-scope {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.feed-scope .scope-btn {
+  padding: 6px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: rgba(244, 239, 230, 0.66);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.feed-scope .scope-btn:hover { color: #fff; }
+
+.feed-scope .scope-btn.is-active,
+.feed-scope .scope-btn.selected {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* --- District pills ------------------------------------------------------ */
+
+.district-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-md);
+}
+
+.district-pills .gps-chip,
+.district-pills button {
+  padding: 4px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(244, 239, 230, 0.75);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.district-pills button:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  color: #fff;
+}
+
+.district-pills button.is-active,
+.district-pills button.selected {
+  background: var(--bn-forest-500);
+  border-color: var(--bn-forest-400);
+  color: #fff;
+}
+
+/* --- Feed cards ---------------------------------------------------------- */
+
+.feed-list { display: grid; gap: var(--space-md); }
+
+.feed-card {
+  padding: 0;
+  overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.feed-card:hover { border-color: var(--bn-forest-300); box-shadow: var(--shadow-md); }
+
+.feed-card-inner { padding: var(--space-lg); }
+
+/* An official advisory is a different class of object from a citizen report,
+   and the crimson band is what says so before the text does. */
+.feed-notice-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 7px var(--space-lg);
+  background: var(--bn-crimson-700);
+  color: #fff;
+}
+
+.feed-notice-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.feed-notice-meta { font-size: var(--font-size-xs); color: rgba(255, 255, 255, 0.8); }
+
+.feed-card-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  color: var(--bn-text);
+}
+
+.feed-card-body {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  color: var(--bn-text-light);
+}
+
+.feed-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  color: var(--bn-text-muted);
+}
+
+.feed-end {
+  padding: var(--space-xl) 0;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--bn-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Travel planner
+   -------------------------------------------------------------------------- */
+
+.travel-header {
+  background: linear-gradient(120deg, var(--bn-forest-900) 0%, var(--bn-charcoal-900) 100%);
+  color: var(--bn-on-dark);
+}
+
+/* The width and padding live on .travel-main, which is this element's grid
+   parent. Leaving `margin: 0 auto` here made the layout a shrink-to-fit grid
+   item rather than a full-width one, collapsing the map to a sliver. */
+.travel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.hub-list {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--bn-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.hub-list button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.hub-list button:hover,
+.hub-list button:focus-visible { background: var(--bn-forest-50); outline: none; }
+
+/* --- Risk rating ---------------------------------------------------------
+   The headline verdict. Colour carries it, but the word is always present -
+   a rating that only exists as a hue is unreadable to a chunk of users. */
+
+.risk-card { text-align: center; }
+
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.risk-badge.low      { background: var(--bn-forest-50);  border-color: var(--bn-forest-200);  color: var(--bn-forest-700); }
+.risk-badge.medium   { background: var(--bn-brass-100);  border-color: var(--bn-brass-300);   color: var(--bn-brass-700); }
+.risk-badge.high     { background: var(--bn-earth-50);   border-color: var(--bn-earth-100);   color: var(--bn-earth-700); }
+.risk-badge.critical { background: var(--bn-crimson-50); border-color: var(--bn-crimson-100); color: var(--bn-crimson-700); }
+
+.risk-summary {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--bn-text-light);
+}
+
+.risk-breakdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--bn-border);
+}
+
+.risk-count {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.risk-count-label {
+  font-size: 10.5px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--bn-text-muted);
+}
+
+.risk-note {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  line-height: var(--leading-snug);
+  color: var(--bn-text-muted);
+  text-align: left;
+}
+
+.hazard-drawer { display: grid; gap: var(--space-sm); }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .travel-layout { grid-template-columns: minmax(0, 1fr); padding-inline: var(--space-md); }
+}
+
+@media (max-width: 640px) {
+  .feed-header-inner,
+  .feed-main { padding-inline: var(--space-md); }
+
+  .feed-scope { width: 100%; }
+  .feed-scope .scope-btn { flex: 1; }
+
+  .feed-card-inner { padding: var(--space-md); }
+  .feed-notice-band { padding-inline: var(--space-md); }
+
+  .risk-breakdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Header-right cluster on the pages that carry their own header. */
+.page-lang-slot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 520px) {
+  /* The back link goes before the switcher does: the browser's own back
+     button covers it, and nothing else offers a language change here. */
+  .page-lang-slot .feed-back { display: none; }
+}
+
+/* Travel planner layout containers. */
+.travel-header-inner { max-width: var(--content-max); padding: var(--space-md) var(--space-xl); }
+
+.travel-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-xl) var(--space-3xl);
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.travel-form { padding: var(--space-lg); }
+
+/* Two inputs and the action on one row; the button keeps its own column so
+   it lines up with the field boxes rather than their labels. */
+.travel-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: var(--space-md);
+  align-items: end;
+}
+
+.travel-fields .form-group { margin-bottom: 0; }
+
+.travel-map-card { padding: var(--space-sm); }
+.travel-map-card #route-map { border-radius: var(--radius-md); }
+
+@media (max-width: 860px) {
+  .travel-fields { grid-template-columns: minmax(0, 1fr); }
+  .travel-fields .btn { width: 100%; }
+  .travel-main,
+  .travel-header-inner { padding-inline: var(--space-md); }
+}
+
+/* --- Photographic page headers -------------------------------------------
+   feed.html and travel.html carry their own header rather than the shell
+   navbar, so the photograph goes behind that header directly. */
+
+.feed-header--photo,
+.travel-header--photo {
+  background-color: var(--bn-forest-900);
+}
+
+.feed-header--photo > img,
+.travel-header--photo > img,
+.feed-header--photo > picture > img,
+.travel-header--photo > picture > img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--photo-focus, center);
+}
+
+/* Same containing-block trap as the landing hero: <picture> is inline, and
+   leaving it in flow gives the absolutely-positioned image nothing to size
+   against. */
+.feed-header--photo > picture,
+.travel-header--photo > picture { display: contents; }
+
+.feed-header--photo > *:not(picture):not(img),
+.travel-header--photo > *:not(picture):not(img) { position: relative; }
+
+@media (max-width: 640px) {
+  /* A 168px photographic banner costs a third of a phone screen before any
+     content. Shorter, and the sub-line goes. */
+  .photo-banner { min-height: 118px; }
+  .photo-banner-sub { display: none; }
+}

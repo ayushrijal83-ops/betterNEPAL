@@ -1,4 +1,7 @@
-/* Reset & Base */
+/* ==========================================================================
+   Better Nepal — Base, layout and typography
+   ========================================================================== */
+
 *,
 *::before,
 *::after {
@@ -10,111 +13,358 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
   background-color: var(--bn-bg);
   color: var(--bn-text);
-  line-height: 1.5;
+  font-size: var(--font-size-md);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-a {
-  color: var(--bn-blue);
-  text-decoration: none;
+/* Devanagari sits on a different baseline and needs a little more room, or
+   Nepali and Maithili headings clip their matras against the line above. */
+:lang(ne) body,
+:lang(mai) body,
+[lang="ne"],
+[lang="mai"] {
+  line-height: 1.75;
 }
 
-a:hover {
-  text-decoration: underline;
+:lang(ne) .page-title,
+:lang(mai) .page-title,
+:lang(ne) .display,
+:lang(mai) .display {
+  line-height: 1.35;
 }
 
-img {
-  max-width: 100%;
+img,
+svg,
+video {
   display: block;
+  max-width: 100%;
 }
 
-/* Layout Utilities */
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--space-md);
+img { height: auto; }
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
 }
 
-.flex {
-  display: flex;
+/* --- Links ---------------------------------------------------------------
+   Underlined on hover rather than always, except in prose where an
+   always-underlined link is the accessible default. */
+a {
+  color: var(--bn-forest-700);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
-.flex-col {
-  flex-direction: column;
+a:hover { color: var(--bn-forest-600); text-decoration: underline; }
+
+.prose a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* --- Focus ---------------------------------------------------------------
+   One visible ring for the whole product. :focus-visible so a mouse click
+   does not leave a ring behind, but every keyboard tab does. */
+:focus-visible {
+  outline: 2px solid var(--bn-forest-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
-.items-center {
+.np-deep :focus-visible,
+.dark-surface :focus-visible {
+  outline-color: var(--bn-forest-300);
+}
+
+/* Skip link: present on every shell page, invisible until tabbed to. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-md);
+  z-index: var(--z-toast);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bn-forest-700);
+  color: var(--bn-on-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: top var(--dur-base) var(--ease-out);
+}
+
+.skip-link:focus { top: var(--space-md); text-decoration: none; }
+
+/* --- Typography ----------------------------------------------------------
+   Display sizes use the serif; everything functional stays sans. The split
+   is what gives the product an editorial voice without a second brand. */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--bn-text);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+
+.display {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.2rem + 4.4vw, var(--font-size-5xl));
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.display-sm {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1rem + 2.4vw, var(--font-size-4xl));
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+/* The small caps rule that labels a section. Used everywhere a heading
+   needs a kicker above it. */
+.eyebrow {
+  display: inline-flex;
   align-items: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.gap-sm {
   gap: var(--space-sm);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--bn-earth-600);
 }
 
-.gap-md {
-  gap: var(--space-md);
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.55;
 }
 
-.gap-lg {
-  gap: var(--space-lg);
+.np-deep .eyebrow { color: var(--bn-brass-300); }
+
+.lede {
+  font-size: var(--font-size-lg);
+  line-height: var(--leading-body);
+  color: var(--bn-text-light);
+  max-width: var(--prose-max);
 }
 
-.grid {
+.np-deep .lede { color: var(--bn-on-dark-dim); }
+
+.prose { max-width: var(--prose-max); }
+
+/* --- Application shell ---------------------------------------------------
+   Sidebar + navbar + content. Grid rather than fixed positioning so the
+   content column cannot slide under the sidebar at awkward widths. */
+
+.app-layout {
   display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--bn-bg);
 }
 
-.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
+.app-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
+.app-content {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-xl) var(--space-3xl);
 }
 
-.grid-4 {
-  grid-template-columns: repeat(4, 1fr);
+/* --- Page header ---------------------------------------------------------
+   The band at the top of every dashboard page. The hairline underneath is
+   a Dhaka-weave motif rather than a plain border. */
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  position: relative;
 }
 
-/* Spacing Utilities */
+.page-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'%3E%3Cg fill='none' stroke='%23ddd4c5' stroke-width='1.2'%3E%3Cpath d='M0 3 L3 0 L6 3 L3 6 Z'/%3E%3Cpath d='M12 3 L15 0 L18 3 L15 6 Z'/%3E%3C/g%3E%3Cg fill='%23ddd4c5'%3E%3Ccircle cx='9' cy='3' r='1'/%3E%3Ccircle cx='21' cy='3' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 24px 6px;
+  background-repeat: repeat-x;
+  opacity: 0.9;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--bn-text);
+}
+
+.page-subtitle {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-md);
+  color: var(--bn-text-light);
+  max-width: var(--prose-max);
+}
+
+/* --- Sections (marketing pages) ------------------------------------------ */
+
+.section {
+  padding: var(--space-4xl) var(--space-xl);
+}
+
+.section--tight { padding: var(--space-3xl) var(--space-xl); }
+
+.shell {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.shell--narrow { max-width: 860px; }
+
+/* Section heading block: eyebrow + title + lede, aligned left by default.
+   Centring every heading is one of the things that makes a page look
+   generated, so it is opt-in. */
+.section-head { margin-bottom: var(--space-2xl); }
+.section-head > * + * { margin-top: var(--space-md); }
+.section-head--center { text-align: center; margin-inline: auto; max-width: 720px; }
+.section-head--center .lede { margin-inline: auto; }
+
+/* --- Layout utilities ---------------------------------------------------- */
+
+.flex { display: flex; }
+.grid { display: grid; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-col { flex-direction: column; }
+.hidden { display: none !important; }
+.relative { position: relative; }
+.sticky { position: sticky; }
+.overflow-hidden { overflow: hidden; }
+.shrink-0 { flex-shrink: 0; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.mx-auto { margin-inline: auto; }
+.w-full { width: 100%; }
+
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+
+.mt-xs { margin-top: var(--space-xs); }
 .mt-sm { margin-top: var(--space-sm); }
 .mt-md { margin-top: var(--space-md); }
 .mt-lg { margin-top: var(--space-lg); }
-.mb-sm { margin-bottom: var(--space-sm); }
+.mt-xl { margin-top: var(--space-xl); }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
-.p-sm { padding: var(--space-sm); }
-.p-md { padding: var(--space-md); }
-.p-lg { padding: var(--space-lg); }
 
-/* Text Utilities */
-.text-sm { font-size: var(--font-size-sm); }
-.text-md { font-size: var(--font-size-md); }
-.text-lg { font-size: var(--font-size-lg); }
-.text-xl { font-size: var(--font-size-xl); }
+.space-y-3 > * + * { margin-top: var(--space-sm); }
+.space-y-4 > * + * { margin-top: var(--space-md); }
+.space-y-6 > * + * { margin-top: var(--space-lg); }
+
+/* --- Text utilities ------------------------------------------------------ */
+
+.text-xs  { font-size: var(--font-size-xs); }
+.text-sm  { font-size: var(--font-size-sm); }
+.text-md  { font-size: var(--font-size-md); }
+.text-lg  { font-size: var(--font-size-lg); }
+.text-xl  { font-size: var(--font-size-xl); }
 .text-2xl { font-size: var(--font-size-2xl); }
-.text-muted { color: var(--bn-text-light); }
-.text-center { text-align: center; }
+.text-3xl { font-size: var(--font-size-3xl); font-family: var(--font-display); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .grid-2,
-  .grid-3,
-  .grid-4 {
-    grid-template-columns: 1fr;
-  }
+.font-medium   { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold     { font-weight: 700; }
+
+.text-muted { color: var(--bn-text-light); }
+.text-dim   { color: var(--bn-text-muted); }
+.text-white { color: #fff; }
+.uppercase  { text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+.tracking-wide { letter-spacing: var(--tracking-wide); }
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug  { line-height: var(--leading-snug); }
+.leading-relaxed { line-height: var(--leading-body); }
+.whitespace-pre-line { white-space: pre-line; }
+
+.line-clamp-2,
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
+
+/* Screen-reader-only, for labels an icon-only control still needs. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Numerals ------------------------------------------------------------
+   Tabular figures wherever numbers are compared or animated, so a counter
+   does not visibly jitter as digits change width. */
+.tnum,
+.stat-value,
+.metric-value,
+.budget-value,
+.table td {
+  font-variant-numeric: tabular-nums;
 }

@@ -111,6 +111,43 @@ class ProjectStatus(str, enum.Enum):
     CANCELLED = "cancelled"
 
 
+class DisasterType(str, enum.Enum):
+    """Classified disaster/hazard types from AI triage."""
+
+    EARTHQUAKE = "earthquake"
+    FLOOD = "flood"
+    FLASH_FLOOD = "flash_flood"
+    LANDSLIDE = "landslide"
+    FOREST_FIRE = "forest_fire"
+    STORM = "storm"
+    LIGHTNING = "lightning"
+    AVALANCHE = "avalanche"
+    WILDFIRE = "wildfire"
+    OTHER = "other"
+    NONE = "none"
+
+
+class DisasterSeverity(str, enum.Enum):
+    """Severity levels for disaster incidents."""
+
+    LOW = "low"
+    MODERATE = "moderate"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+class DisasterIncidentStatus(str, enum.Enum):
+    """Lifecycle of a disaster incident from detection to resolution."""
+
+    DETECTED = "detected"
+    TRIAGED = "triaged"
+    DISPATCHED = "dispatched"
+    ACKNOWLEDGED = "acknowledged"
+    RESPONDING = "responding"
+    RESOLVED = "resolved"
+    FALSE_ALARM = "false_alarm"
+
+
 class MediaType(str, enum.Enum):
     """Broad class of an attachment, derived from its verified content type."""
 

@@ -19,7 +19,10 @@ answer, and guessing would be worse than returning nothing.
 from __future__ import annotations
 
 import json
+import math
 import uuid
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from flask import current_app
@@ -37,6 +40,11 @@ from ..utils.helpers import ApiError
 REASON_NO_SPATIAL_BACKEND = "spatial_backend_unavailable"
 REASON_NO_BOUNDARY_DATA = "no_boundary_data"
 REASON_OUTSIDE_COVERAGE = "outside_known_boundaries"
+
+# A resolved result that did NOT come from real polygon containment - see
+# _dev_nearest_district(). Distinct from `None` (unresolved) specifically so
+# nothing downstream can mistake this for a real PostGIS match.
+REASON_DEV_FALLBACK = "dev_nearest_centroid_fallback"
 
 _SPATIAL_FLAG = "_betternepal_spatial_available"
 
@@ -191,6 +199,72 @@ def _boundary_count(model) -> int:
     ) or 0
 
 
+# --- dev-only jurisdiction fallback -----------------------------------------
+#
+# SQLite (dev/test) has no point-in-polygon support at all - not "not imported
+# yet", genuinely absent, see app/gis/types.py. Without *something*, every
+# report in dev resolves to "unresolved" forever, which means the real
+# jurisdiction -> policy -> dispatch -> feed chain can never be exercised
+# end-to-end outside a real PostgreSQL+PostGIS deployment.
+#
+# This is a coarse, explicit, deterministic stand-in for that one case only:
+# nearest-known-district-reference-point, not a boundary lookup. It is gated
+# on spatial_backend_available() being False, which is true only off
+# PostgreSQL - and ProductionConfig.validate() already refuses to boot
+# production on anything but PostgreSQL, so this code path is structurally
+# unreachable in production. It never claims to be a real match: the reason
+# code is REASON_DEV_FALLBACK, distinct from the real "resolved" reason
+# (``None``), a WARNING is logged every time it fires, and a point too far
+# from every known reference (150km) is left unresolved rather than forced
+# onto whatever is nearest.
+
+_DEV_FALLBACK_POINTS_FILE = (
+    Path(__file__).resolve().parents[1] / "data" / "districts" / "nepal_district_reference_points_dev_fallback.json"
+)
+_DEV_FALLBACK_MAX_DISTANCE_METRES = 150_000
+
+
+@lru_cache(maxsize=1)
+def _dev_fallback_points() -> dict[str, tuple[float, float]]:
+    with open(_DEV_FALLBACK_POINTS_FILE, encoding="utf-8") as f:
+        raw = json.load(f)
+    return {
+        name: (point["latitude"], point["longitude"])
+        for name, point in raw["points"].items()
+    }
+
+
+def _haversine_metres(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    r1, r2 = math.radians(lat1), math.radians(lat2)
+    d_lat = math.radians(lat2 - lat1)
+    d_lng = math.radians(lng2 - lng1)
+    a = math.sin(d_lat / 2) ** 2 + math.cos(r1) * math.cos(r2) * math.sin(d_lng / 2) ** 2
+    return 2 * 6_371_008.8 * math.asin(math.sqrt(a))
+
+
+def _dev_nearest_district(coordinates: Coordinates) -> District | None:
+    """Nearest district, by reference point, among districts actually seeded
+    in this database - never a district this deployment doesn't know about,
+    and never a match beyond the distance cutoff.
+    """
+    reference_points = _dev_fallback_points()
+    candidates = db.session.scalars(select(District)).all()
+
+    nearest: District | None = None
+    nearest_distance = None
+    for district in candidates:
+        point = reference_points.get(district.name)
+        if point is None:
+            continue
+        distance = _haversine_metres(coordinates.latitude, coordinates.longitude, *point)
+        if nearest_distance is None or distance < nearest_distance:
+            nearest, nearest_distance = district, distance
+
+    if nearest is None or nearest_distance > _DEV_FALLBACK_MAX_DISTANCE_METRES:
+        return None
+    return nearest
+
+
 def reverse_geocode(coordinates: Coordinates) -> dict:
     """Resolve a point to its administrative area.
 
@@ -198,9 +272,34 @@ def reverse_geocode(coordinates: Coordinates) -> dict:
     structured unresolved result - never an invented location - when PostGIS is
     absent, when no boundaries have been imported, or when the point falls
     outside every known boundary.
+
+    Off PostGIS (dev/test only - see ``_dev_nearest_district``), falls back to
+    a coarse nearest-reference-point match instead of always reporting
+    unresolved, so the real jurisdiction/policy/dispatch/feed chain has
+    something to run against locally. The result says so plainly via
+    ``reason=REASON_DEV_FALLBACK`` - it is never presented as a real match.
     """
     if not spatial_backend_available():
-        return _unresolved(coordinates, REASON_NO_SPATIAL_BACKEND)
+        district = _dev_nearest_district(coordinates)
+        if district is None:
+            return _unresolved(coordinates, REASON_NO_SPATIAL_BACKEND)
+        current_app.logger.warning(
+            "Jurisdiction resolved via dev nearest-centroid fallback (no PostGIS available): "
+            "district=%s. This never happens in production - see ProductionConfig.validate().",
+            district.name,
+        )
+        return {
+            "point": coordinates.to_geojson(),
+            "coordinates": coordinates.as_dict(),
+            "resolved": True,
+            "reason": REASON_DEV_FALLBACK,
+            "province": district.province,
+            "district": district.to_dict(),
+            # No municipality-level reference points exist for this fallback -
+            # inventing one would be exactly the kind of guess this function
+            # exists to avoid.
+            "municipality": None,
+        }
 
     if not _boundary_count(District) and not _boundary_count(Municipality):
         return _unresolved(coordinates, REASON_NO_BOUNDARY_DATA)

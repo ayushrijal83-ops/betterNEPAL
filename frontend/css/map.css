@@ -1,188 +1,265 @@
-/* Map page layout */
+/* ==========================================================================
+   Better Nepal — Map
+   ==========================================================================
+   Default OpenStreetMap tiles are a loud blue-and-orange road atlas, which
+   fights everything else in this product. A CSS filter pulls them toward the
+   platform's muted green-earth register - hue toward green, saturation down,
+   contrast slightly up so labels survive the desaturation.
+
+   A filter rather than a commercial styled-tile service: no API key, no
+   dependency, no per-view billing, and it degrades to plain tiles if the
+   filter is unsupported.
+   ========================================================================== */
+
 .map-layout {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: var(--space-lg);
   align-items: start;
 }
 
-@media (max-width: 1100px) {
-  .map-layout { grid-template-columns: 1fr; }
-}
-
-/* Map container */
-#nepal-map {
-  width: 100%;
-  height: 640px;
+.map-canvas,
+#map,
+.leaflet-container {
+  min-height: 560px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--bn-border);
+  background: var(--bn-sand);
+  font-family: var(--font-sans);
   overflow: hidden;
-  z-index: 1;
+  z-index: var(--z-base);
 }
 
-@media (max-width: 900px) {
-  #nepal-map { height: 460px; }
+/* The tile pane only - filtering the whole container would drag the markers,
+   popups and controls through the same transform and wreck the palette we
+   deliberately chose for them. */
+.leaflet-tile-pane {
+  filter: saturate(0.62) hue-rotate(-12deg) brightness(1.03) contrast(1.06);
 }
 
-/* Leaflet overrides */
-.leaflet-container {
-  font-family: var(--font-family);
-  font-size: var(--font-size-sm);
-}
+/* --- Controls ------------------------------------------------------------ */
 
-.leaflet-popup-content-wrapper {
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-}
-
-.leaflet-popup-content {
-  margin: 12px 14px;
-  font-size: var(--font-size-sm);
-  line-height: 1.4;
-}
-
-.leaflet-popup-content strong {
-  color: var(--bn-navy);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.leaflet-popup-content .popup-meta {
-  color: var(--bn-text-light);
-  font-size: var(--font-size-xs);
-  margin-bottom: 6px;
-}
-
-.leaflet-popup-content a {
-  font-size: var(--font-size-xs);
+.leaflet-control-zoom a {
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  border: none !important;
+  color: var(--bn-forest-800) !important;
+  background: var(--bn-surface) !important;
   font-weight: 600;
 }
 
-/* Custom marker pins */
+.leaflet-control-zoom a:hover { background: var(--bn-forest-50) !important; }
+
+.leaflet-bar {
+  border: 1px solid var(--bn-border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  overflow: hidden;
+}
+
+.leaflet-control-attribution {
+  background: rgba(250, 247, 241, 0.88) !important;
+  color: var(--bn-text-muted) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+}
+
+.leaflet-control-attribution a { color: var(--bn-forest-700) !important; }
+
+/* --- Popups -------------------------------------------------------------- */
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--bn-border);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-lg) !important;
+  padding: 2px;
+}
+
+.leaflet-popup-content {
+  margin: 11px 13px !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--leading-snug) !important;
+  color: var(--bn-text);
+}
+
+.leaflet-popup-content strong { font-weight: 600; }
+.leaflet-popup-tip { background: var(--bn-surface) !important; }
+
+/* --- Markers -------------------------------------------------------------
+   A teardrop pin with a contour ring, matching the .np-marker motif used in
+   empty states and the brand. */
+
 .marker-pin {
+  display: grid;
+  place-items: center;
   width: 26px;
   height: 26px;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  border: 2px solid var(--bn-white);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background: var(--bn-forest-600);
+  border: 2px solid var(--bn-surface);
+  box-shadow: var(--shadow-md);
 }
 
-.marker-pin span {
-  transform: rotate(45deg);
-  display: block;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--bn-white);
-  line-height: 22px;
+.marker-pin span,
+.marker-pin svg { transform: rotate(45deg); color: #fff; }
+
+.marker-pin.sev-low,
+.marker-pin.low { background: var(--bn-sev-low); }
+.marker-pin.sev-medium,
+.marker-pin.medium { background: var(--bn-sev-medium); }
+.marker-pin.sev-high,
+.marker-pin.high { background: var(--bn-sev-high); }
+.marker-pin.sev-critical,
+.marker-pin.critical { background: var(--bn-sev-critical); }
+
+/* One slow ring on a critical pin - the only looping animation on the map,
+   because if everything pulses nothing reads as urgent. */
+.marker-pin.critical::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid var(--bn-crimson-500);
+  opacity: 0;
+  animation: marker-ring 2.4s var(--ease-out) infinite;
 }
 
-.marker-pin.critical { background: var(--bn-red); }
-.marker-pin.warning  { background: var(--bn-orange); }
-.marker-pin.info     { background: var(--bn-blue); }
-.marker-pin.success  { background: var(--bn-green); }
+@keyframes marker-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  70%, 100% { transform: scale(1.5); opacity: 0; }
+}
 
-/* Map side panel */
+/* --- Side panel ---------------------------------------------------------- */
+
 .map-panel {
-  background: var(--bn-white);
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-md);
   border: 1px solid var(--bn-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-xs);
 }
 
-.map-panel + .map-panel { margin-top: var(--space-lg); }
+.map-search { position: relative; }
 
-.map-panel h3 {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  color: var(--bn-navy);
-  margin-bottom: var(--space-md);
+.map-search input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  border: 1px solid var(--bn-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface);
+  font-size: var(--font-size-sm);
 }
 
-/* Layer toggles */
+.map-search input:focus {
+  outline: none;
+  border-color: var(--bn-forest-500);
+  box-shadow: 0 0 0 3px rgba(47, 117, 84, 0.13);
+}
+
+.map-search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: var(--bn-text-muted);
+  pointer-events: none;
+}
+
+/* --- Layer toggles ------------------------------------------------------- */
+
 .layer-toggle {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: 8px 0;
+  padding: 7px 10px;
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface);
   font-size: var(--font-size-sm);
   cursor: pointer;
-  user-select: none;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
 }
 
-.layer-toggle input {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--bn-blue);
-  cursor: pointer;
+.layer-toggle:hover { border-color: var(--bn-forest-300); background: var(--bn-forest-50); }
+
+.layer-toggle.is-active {
+  border-color: var(--bn-forest-500);
+  background: var(--bn-forest-50);
+  font-weight: 600;
+  color: var(--bn-forest-800);
 }
 
-.layer-toggle .layer-dot {
-  width: 10px;
-  height: 10px;
+.layer-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   flex-shrink: 0;
+  background: var(--bn-forest-500);
 }
 
-.layer-dot.disaster      { background: var(--bn-red); }
-.layer-dot.development   { background: var(--bn-blue); }
-.layer-dot.environment   { background: var(--bn-green); }
-.layer-dot.citizen       { background: var(--bn-orange); }
+/* --- Legend -------------------------------------------------------------- */
 
-/* Legend */
 .map-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: var(--font-size-sm);
+  display: grid;
+  gap: 7px;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--bn-border);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--bn-text-light);
 }
 
 .legend-swatch {
-  width: 14px;
-  height: 14px;
-  border-radius: var(--radius-sm);
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
   flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.legend-swatch.critical { background: var(--bn-red); }
-.legend-swatch.warning  { background: var(--bn-orange); }
-.legend-swatch.info     { background: var(--bn-blue); }
-.legend-swatch.success  { background: var(--bn-green); }
+.legend-swatch.low      { background: var(--bn-sev-low); }
+.legend-swatch.medium   { background: var(--bn-sev-medium); }
+.legend-swatch.high     { background: var(--bn-sev-high); }
+.legend-swatch.critical { background: var(--bn-sev-critical); }
 
-/* Map search bar */
-.map-search {
-  position: relative;
-  margin-bottom: var(--space-md);
+/* Marks a result placed without PostGIS, so an approximate position is never
+   silently presented as a survey-accurate one. */
+.map-approx {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
+  color: var(--bn-brass-700);
 }
 
-.map-search input {
-  width: 100%;
-  padding: 10px 14px 10px 38px;
-  border: 1px solid var(--bn-border);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  background: var(--bn-white);
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .map-layout { grid-template-columns: minmax(0, 1fr); }
+  /* Panel first on a phone: filters and search are how you make a small map
+     useful, so they should not sit below 560px of it. */
+  .map-panel { order: -1; }
+  .map-canvas,
+  #map,
+  .leaflet-container { min-height: 400px; }
 }
 
-.map-search input:focus {
-  outline: none;
-  border-color: var(--bn-blue);
-}
-
-.map-search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--bn-text-muted);
-  width: 16px;
-  height: 16px;
+@media (max-width: 640px) {
+  .map-canvas,
+  #map,
+  .leaflet-container { min-height: 320px; }
 }

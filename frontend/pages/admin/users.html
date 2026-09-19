@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -20,86 +21,44 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Users</h1>
+            <h1 class="page-title" data-i18n="nav.users">Users</h1>
             <p class="page-subtitle">All registered users across roles</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="filter-bar">
-            <select>
-              <option>All Roles</option>
-              <option>Citizen</option>
-              <option>Guide</option>
-              <option>Authority</option>
-              <option>Contractor</option>
-              <option>Admin</option>
-            </select>
-            <select>
-              <option>All Provinces</option>
-              <option>Koshi</option>
-              <option>Madhesh</option>
-              <option>Bagmati</option>
-              <option>Gandaki</option>
-              <option>Lumbini</option>
-              <option>Karnali</option>
-              <option>Sudurpashchim</option>
-            </select>
-            <input type="text" placeholder="Search name or email..." />
-          </div>
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>District</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th class="actions"></th>
-              </tr>
-            </thead>
-            <tbody id="users-body"></tbody>
-          </table>
+          <div id="users-panel"></div>
         </div>
+
       </main>
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
 
-    const users = [
-      { id: "U-1001", name: "Sanjal Neupane", role: "Citizen", district: "Kathmandu", status: "Active", joined: "2026-01-12" },
-      { id: "U-1002", name: "Pemba Sherpa",    role: "Guide",   district: "Solukhumbu", status: "Active", joined: "2026-02-03" },
-      { id: "U-1003", name: "Ramesh Karki",    role: "Authority", district: "Chitwan", status: "Active", joined: "2026-02-20" },
-      { id: "U-1004", name: "Himalayan Infra", role: "Contractor", district: "Kaski", status: "Active", joined: "2026-03-01" },
-      { id: "U-1005", name: "Sita Tamang",     role: "Citizen", district: "Lalitpur", status: "Suspended", joined: "2026-03-15" },
-      { id: "U-1006", name: "Hari Thapa",      role: "Guide",   district: "Manang", status: "Active", joined: "2026-04-02" },
-      { id: "U-1007", name: "Bikash Shrestha", role: "Admin",   district: "Kathmandu", status: "Active", joined: "2026-04-10" },
-    ];
-
-    document.getElementById("users-body").innerHTML = users
-      .map(
-        (u) => `
-      <tr>
-        <td>${u.id}</td>
-        <td>${u.name}</td>
-        <td>${u.role}</td>
-        <td>${u.district}</td>
-        <td>${u.status === "Active"
-          ? '<span class="badge badge-success">Active</span>'
-          : '<span class="badge badge-critical">Suspended</span>'}</td>
-        <td>${formatDate(u.joined)}</td>
-        <td class="actions"><button class="btn btn-sm btn-outline">Manage</button></td>
-      </tr>`
-      )
-      .join("");
+    // This page previously rendered seven invented people - names, districts
+    // and join dates - as if they were real registered users of the platform.
+    //
+    // There is no users endpoint to replace them with: the API exposes
+    // /authorities but nothing that lists accounts, and building one is a
+    // backend feature, which this redesign is explicitly not doing. An honest
+    // empty state is better than a convincing fake user directory in an
+    // admin console.
+    renderEmpty(
+      "users-panel",
+      "User directory not available yet",
+      "The platform does not expose an account listing endpoint. This view will populate once one exists."
+    );
   </script>
 </body>
 </html>

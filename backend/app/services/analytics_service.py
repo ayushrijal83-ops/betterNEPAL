@@ -30,6 +30,8 @@ from ..extensions import db
 from ..models.authority import Authority
 from ..models.district import District
 from ..models.enums import (
+    DisasterIncidentStatus,
+    DisasterSeverity,
     IncidentSeverity,
     IncidentStatus,
     ProjectStatus,
@@ -38,6 +40,7 @@ from ..models.enums import (
     enum_values,
     parse_enum,
 )
+from ..models.disaster_incident import DisasterIncident
 from ..models.incident import Incident
 from ..models.project import Project
 from ..models.report import Report
@@ -169,9 +172,13 @@ def _apply_common_filters(statement, model, filters: dict[str, Any]):
             model.district_id == _parse_uuid(district_id, "district_id")
         )
 
+    # Category filter only applies to models that use ReportCategory enum.
+    # DisasterIncident uses DisasterType, which has different values.
     category = _parse_enum_filter(filters.get("category"), ReportCategory, "category")
     if category:
-        statement = statement.where(model.category == category)
+        # Only apply to models with a 'category' column of type ReportCategory
+        if hasattr(model, "category") and model.category.property.columns[0].type.enum_class is ReportCategory:
+            statement = statement.where(model.category == category)
 
     return statement
 
@@ -187,9 +194,9 @@ def get_map_points(filters: dict[str, Any] | None = None) -> dict[str, Any]:
     limit = min(MAX_MAP_POINTS, max(1, _as_int(filters.get("limit"), DEFAULT_MAP_POINTS)))
 
     requested = (filters.get("type") or "all").strip().lower()
-    if requested not in {"all", "reports", "incidents"}:
+    if requested not in {"all", "reports", "incidents", "disaster_incidents"}:
         raise ApiError(
-            "type must be one of: all, reports, incidents.",
+            "type must be one of: all, reports, incidents, disaster_incidents.",
             status=400,
             code="invalid_filter",
         )
@@ -278,6 +285,56 @@ def get_map_points(filters: dict[str, Any] | None = None) -> dict[str, Any]:
                 "status": row.status.value,
                 # Severity drives pin colour, and an incident is already a
                 # verified public finding, so it is safe to publish.
+                "severity": row.severity.value,
+                "latitude": row.latitude,
+                "longitude": row.longitude,
+                "district_id": str(row.district_id) if row.district_id else None,
+                "created_at": _iso(row.created_at),
+            }
+            for row in rows[:limit]
+        )
+
+    if requested in {"all", "disaster_incidents"}:
+        statement = select(
+            DisasterIncident.id,
+            DisasterIncident.title,
+            DisasterIncident.disaster_type,
+            DisasterIncident.status,
+            DisasterIncident.severity,
+            DisasterIncident.latitude,
+            DisasterIncident.longitude,
+            DisasterIncident.district_id,
+            DisasterIncident.created_at,
+        )
+        statement = _apply_common_filters(statement, DisasterIncident, filters)
+
+        status = _parse_enum_filter(filters.get("status"), DisasterIncidentStatus, "status")
+        if status:
+            statement = statement.where(DisasterIncident.status == status)
+        elif not filters.get("include_inactive"):
+            statement = statement.where(
+                DisasterIncident.status.in_(
+                    (
+                        DisasterIncidentStatus.DETECTED,
+                        DisasterIncidentStatus.TRIAGED,
+                        DisasterIncidentStatus.DISPATCHED,
+                        DisasterIncidentStatus.ACKNOWLEDGED,
+                        DisasterIncidentStatus.RESPONDING,
+                    )
+                )
+            )
+
+        rows = db.session.execute(
+            statement.order_by(DisasterIncident.created_at.desc()).limit(limit + 1)
+        ).all()
+        truncated = truncated or len(rows) > limit
+        points.extend(
+            {
+                "id": str(row.id),
+                "type": "disaster_incident",
+                "title": row.title,
+                "category": row.disaster_type.value,
+                "status": row.status.value,
                 "severity": row.severity.value,
                 "latitude": row.latitude,
                 "longitude": row.longitude,

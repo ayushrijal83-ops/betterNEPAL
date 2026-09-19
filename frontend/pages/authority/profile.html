@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content" id="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-i18n="profile.title">Profile</h1>
+            <p class="page-subtitle" data-i18n="profile.preferences">Your account and interface preferences</p>
+          </div>
+        </div>
+
+        <div class="details-layout" style="grid-template-columns: minmax(0,1fr) minmax(0,1fr)">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.account">Account</h2>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profile-name" data-i18n="auth.fullName">Full name</label>
+              <input class="form-input" type="text" id="profile-name" value="" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profile-email" data-i18n="auth.email">Email</label>
+              <input class="form-input" type="email" id="profile-email" value="" readonly />
+            </div>
+
+            <div class="form-group">
+              <span class="form-label" data-i18n="nav.role">Role</span>
+              <div id="profile-roles" class="actions"></div>
+            </div>
+
+            <p class="form-hint">
+              Authority account details are maintained by a system administrator.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.preferences">Preferences</h2>
+            </div>
+
+            <div class="form-group">
+              <span class="form-label" data-i18n="profile.language">Interface language</span>
+              <div id="profile-lang"></div>
+              <p class="form-hint" data-i18n="profile.languageHint">
+                Applies across the whole site and is remembered on this device.
+              </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <button type="button" class="btn btn-outline" data-logout>
+              <span data-i18n="common.signOut">Sign out</span>
+            </button>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/dashboard.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    document.getElementById("profile-lang").innerHTML = BN_I18N.switcherMarkup();
+
+    // Read-only: this page shows who you are signed in as. The fields are
+    // filled from /auth/me rather than shipped with values in the markup.
+    verifySession(role).then((user) => {
+      if (!user) return;
+      document.getElementById("profile-name").value = user.full_name || "";
+      document.getElementById("profile-email").value = user.email || "";
+      document.getElementById("profile-roles").innerHTML = (user.roles || [])
+        .map((r) => `<span class="badge badge-info">${escapeHtml(r)}</span>`)
+        .join("");
+    });
+  </script>
+</body>
+</html>

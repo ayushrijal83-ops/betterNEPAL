@@ -78,9 +78,9 @@ function projectStage(status) {
 
 function renderProjectCard(p, detailHref = "project-details.html") {
   const stage = projectStage(p.status);
-  const contractor = p.contractor ? p.contractor.full_name : "No contractor assigned";
+  const contractor = p.contractor ? p.contractor.full_name : tr("project.noContractor", "No contractor assigned");
   const overdue = p.is_overdue
-    ? `<span class="badge badge-critical">Overdue</span>`
+    ? `<span class="badge badge-critical">${tr("status.overdue","Overdue")}</span>`
     : "";
 
   return `
@@ -126,8 +126,8 @@ function renderProjectsTable(tbodyId, projects, detailHref = "project-details.ht
   if (!projects || projects.length === 0) {
     el.innerHTML = `<tr><td colspan="7">
       <div class="empty-state">
-        <div class="empty-title">No projects yet</div>
-        <div class="empty-text">Work assigned to you will appear here.</div>
+        <div class="empty-title">${tr("state.empty.title","Nothing here yet")}</div>
+        <div class="empty-text">${tr("state.empty.projectsHint","Work assigned to you will appear here.")}</div>
       </div>
     </td></tr>`;
     return;

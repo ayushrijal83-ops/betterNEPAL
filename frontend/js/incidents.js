@@ -130,8 +130,8 @@ function renderIncidentsTable(tbodyId, incidents, detailHref = "incident-details
   if (!incidents || incidents.length === 0) {
     el.innerHTML = `<tr><td colspan="7">
       <div class="empty-state">
-        <div class="empty-title">No incidents match these filters</div>
-        <div class="empty-text">Try clearing the status or severity filter.</div>
+        <div class="empty-title">${tr("state.empty.filtered","Nothing matches these filters.")}</div>
+        <div class="empty-text">${tr("state.empty.filteredHint","Try clearing the status or severity filter.")}</div>
       </div>
     </td></tr>`;
     return;

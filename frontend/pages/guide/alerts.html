@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -20,27 +21,32 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Trail Alerts</h1>
-            <p class="page-subtitle">Hazard warnings and route closures</p>
+            <h1 class="page-title" data-i18n="nav.alerts">Trail Alerts</h1>
+            <p class="page-subtitle" data-i18n="dash.hazards">Hazard warnings and route closures</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header"><h2 class="card-title">Active Alerts</h2></div>
+          <div class="card-header"><h2 class="card-title" data-i18n="nav.alerts">Active Alerts</h2></div>
           <div id="alert-list"></div>
         </div>
       </main>
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/alerts.js"></script>
   <script>
     const role = requireRole("guide");
     mountShell(role);
-    renderAlertList("alert-list", getAlerts());
+    renderAlertList("alert-list", { limit: 30 });
   </script>
 </body>
 </html>

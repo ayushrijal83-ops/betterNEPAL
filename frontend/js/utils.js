@@ -79,37 +79,71 @@ function escapeHtml(str) {
 
 // ---------- UI helper components ----------
 
-function renderLoading(containerId, message = "Loading…") {
+// Translation helper that degrades to the supplied English when the i18n
+// runtime has not loaded. Every user-facing default string here goes through
+// it, so a shared renderer is never the thing that leaves English on a
+// Nepali page.
+function tr(key, fallback) {
+  return typeof t === "function" ? t(key) : fallback;
+}
+
+function renderLoading(containerId, message) {
   const el = document.getElementById(containerId);
   if (!el) return;
+  // Skeleton rather than a spinner: it reserves the space the content will
+  // occupy, so nothing jumps when the data lands.
   el.innerHTML = `
-    <div class="loading-state">
-      <span class="spinner lg"></span>
-      <span>${escapeHtml(message)}</span>
+    <div class="loading-state" role="status" aria-live="polite">
+      <span class="sr-only">${escapeHtml(message || tr("state.loading", "Loading…"))}</span>
+      <div class="skeleton skeleton-line" style="width:45%"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
     </div>
   `;
 }
 
-function renderEmpty(containerId, title = "Nothing here yet", text = "") {
+function renderEmpty(containerId, title, text = "") {
   const el = document.getElementById(containerId);
   if (!el) return;
+  // A contour ring rather than a magnifying glass or a shrug emoji: it is the
+  // same survey-marker motif the map pins and the brand use, so an empty
+  // panel still looks like part of this product.
   el.innerHTML = `
     <div class="empty-state">
-      <div class="empty-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      <div class="empty-mark" aria-hidden="true">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M2 17 Q 7 12 12 15 T 22 12" stroke-opacity=".5"/>
+          <path d="M2 21 Q 7 16 12 19 T 22 16" stroke-opacity=".3"/>
+          <path d="M6 10 L12 3 L18 10 L12 13 Z"/>
         </svg>
       </div>
-      <div class="empty-title">${escapeHtml(title)}</div>
-      ${text ? `<div class="empty-text">${escapeHtml(text)}</div>` : ""}
+      <div class="empty-title">${escapeHtml(title || tr("state.empty.title", "Nothing here yet"))}</div>
+      <div class="empty-text">${escapeHtml(text || tr("state.empty.hint", ""))}</div>
     </div>
   `;
 }
 
-function renderError(containerId, message = "Something went wrong.") {
+function renderError(containerId, message, onRetry) {
   const el = document.getElementById(containerId);
   if (!el) return;
-  el.innerHTML = `<div class="error-state">${escapeHtml(message)}</div>`;
+  el.innerHTML = `
+    <div class="empty-state" role="alert">
+      <div class="empty-mark empty-mark--error" aria-hidden="true">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+        </svg>
+      </div>
+      <div class="empty-title">${escapeHtml(tr("state.error.title", "Something went wrong"))}</div>
+      <div class="empty-text">${escapeHtml(message || tr("state.error.generic", "We could not load this right now."))}</div>
+      ${onRetry ? `<button type="button" class="btn btn-outline btn-sm mt-sm" data-retry>${escapeHtml(tr("common.retry", "Try again"))}</button>` : ""}
+    </div>
+  `;
+  if (onRetry) {
+    const btn = el.querySelector("[data-retry]");
+    if (btn) btn.addEventListener("click", onRetry);
+  }
 }
 
 // ---------- Toast ----------
@@ -118,24 +152,76 @@ function ensureToastContainer() {
   if (!c) {
     c = document.createElement("div");
     c.id = "bn-toast-container";
-    c.className = "toast-container";
+    c.className = "toast-stack";
+    // Announced politely: a toast is informational, and assertive would cut
+    // across whatever the user is currently reading.
+    c.setAttribute("role", "status");
+    c.setAttribute("aria-live", "polite");
     document.body.appendChild(c);
   }
   return c;
 }
 
-function showToast(message, type = "info", duration = 3000) {
+const TOAST_ICONS = {
+  success: '<path d="M20 6 9 17l-5-5"/>',
+  error: '<path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+  warning: '<path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>',
+};
+
+function showToast(message, type = "info", duration = 3600) {
   const container = ensureToastContainer();
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.textContent = message;
+  toast.innerHTML = `
+    <svg class="toast-icon" width="16" height="16" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         viewBox="0 0 24 24" aria-hidden="true">${TOAST_ICONS[type] || TOAST_ICONS.info}</svg>
+    <span></span>
+  `;
+  // textContent, not innerHTML: a toast often carries a server message, and
+  // that is not a safe place to interpolate markup.
+  toast.querySelector("span").textContent = message;
   container.appendChild(toast);
+
   setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transition = "opacity 0.3s";
-    setTimeout(() => toast.remove(), 300);
+    toast.classList.add("is-leaving");
+    setTimeout(() => toast.remove(), 220);
   }, duration);
 }
+
+// ---------- Scroll reveal ----------
+// Sections fade up as they enter the viewport. The `js-reveal-ready` class is
+// added only once the observer actually exists, so a browser without
+// IntersectionObserver - or a script that fails to run - leaves every section
+// visible rather than permanently blank.
+function initScrollReveal() {
+  const targets = document.querySelectorAll("[data-reveal]");
+  if (!targets.length || !("IntersectionObserver" in window)) return;
+
+  document.documentElement.classList.add("js-reveal-ready");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        // Stagger siblings slightly so a row of cards arrives as a wave
+        // rather than a single snap.
+        const delay = Number(entry.target.dataset.revealDelay || 0);
+        setTimeout(() => entry.target.classList.add("is-revealed"), delay);
+        observer.unobserve(entry.target);
+      });
+    },
+    // Positive bottom margin: the section starts revealing ~220px before it
+    // enters the viewport. With a negative margin a fast scroll outruns the
+    // transition and the user sees a blank band where content should be.
+    { rootMargin: "0px 0px 220px 0px", threshold: 0 }
+  );
+
+  targets.forEach((el) => observer.observe(el));
+}
+
+document.addEventListener("DOMContentLoaded", initScrollReveal);
 
 // ---------- Modal ----------
 async function openModal({ title, bodyHtml, confirmText = "Confirm", cancelText = "Cancel", onConfirm }) {

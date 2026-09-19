@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -20,75 +21,160 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Departments</h1>
+            <h1 class="page-title" data-i18n="nav.departments">Departments</h1>
             <p class="page-subtitle">Categorised government departments</p>
           </div>
-          <button class="btn btn-primary">+ Add Department</button>
+          <button class="btn btn-primary" id="btn-add-department">+ Add Department</button>
         </div>
 
         <div class="project-grid" id="dept-grid"></div>
 
         <div class="card mt-lg">
-          <div class="card-header"><h2 class="card-title">All Departments</h2></div>
+          <div class="card-header"><h2 class="card-title" data-i18n="nav.departments">All Departments</h2></div>
           <table class="table">
             <thead>
               <tr>
-                <th>Code</th>
                 <th>Name</th>
-                <th>Category</th>
-                <th>Province</th>
-                <th>Active Assignments</th>
+                <th data-i18n="report.field.category">Type</th>
+                <th>Level</th>
+                <th>District</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>DOR</td><td>Department of Roads</td><td>Roads & Bridges</td><td>All</td><td>128</td></tr>
-              <tr><td>DDMC</td><td>District Disaster Management Committee</td><td>Disaster</td><td>All</td><td>42</td></tr>
-              <tr><td>NEA</td><td>Nepal Electricity Authority</td><td>Electricity</td><td>All</td><td>87</td></tr>
-              <tr><td>DWSS</td><td>Department of Water Supply & Sewerage</td><td>Water</td><td>All</td><td>56</td></tr>
-              <tr><td>FLOOD</td><td>Flood Forecasting & Early Warning</td><td>Flood</td><td>All</td><td>23</td></tr>
-              <tr><td>DNPWC</td><td>Dept. of National Parks & Wildlife Conservation</td><td>Conservation</td><td>All</td><td>14</td></tr>
-            </tbody>
+            <tbody id="dept-table-body"></tbody>
           </table>
         </div>
       </main>
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/reports.js"></script>
+  <script src="../../js/authorities.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
 
-    const departments = [
-      { name: "Department of Roads", category: "Roads & Bridges", open: 128, progress: 62 },
-      { name: "District Disaster Management Committee", category: "Disaster", open: 42, progress: 48 },
-      { name: "Nepal Electricity Authority", category: "Electricity", open: 87, progress: 74 },
-      { name: "Water Supply & Sewerage", category: "Water", open: 56, progress: 55 },
+    const LEVELS = [
+      ["federal", "Federal"],
+      ["provincial", "Provincial"],
+      ["local", "Local"],
+      ["utility", "Utility"],
+    ];
+    const TYPES = [
+      ["department_of_roads", "Department of Roads"],
+      ["municipal_office", "Municipal Office"],
+      ["water_authority", "Water Authority"],
+      ["electricity_authority", "Electricity Authority"],
+      ["other", "Other"],
     ];
 
-    document.getElementById("dept-grid").innerHTML = departments
-      .map(
-        (d) => `
-      <div class="project-card">
-        <div class="project-name">${d.name}</div>
-        <div class="project-meta">${d.category}</div>
-        <div class="project-progress">
-          <span>Open assignments</span>
-          <span>${d.open}</span>
-        </div>
-        <div class="project-progress">
-          <span>Avg. resolution progress</span>
-          <span>${d.progress}%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${d.progress}%"></div>
-        </div>
-      </div>`
-      )
-      .join("");
+    document.getElementById("btn-add-department").addEventListener("click", () => {
+      openModal({
+        title: "Register a department",
+        bodyHtml: `
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input class="form-input" id="dept-name" placeholder="e.g. Department of Roads - Bagmati" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Level</label>
+            <select class="form-select" id="dept-level">
+              ${LEVELS.map(([v, l]) => `<option value="${v}">${escapeHtml(l)}</option>`).join("")}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-select" id="dept-type">
+              ${TYPES.map(([v, l]) => `<option value="${v}">${escapeHtml(l)}</option>`).join("")}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact email (optional)</label>
+            <input class="form-input" id="dept-email" type="email" placeholder="office@example.gov.np" />
+          </div>
+          <div class="form-hint">National body - leave district unset for now; per-district assignment is edited from the authority's own record.</div>`,
+        confirmText: "Register",
+        onConfirm: async () => {
+          const name = document.getElementById("dept-name").value.trim();
+          if (!name) {
+            showToast("A name is required.", "error");
+            return;
+          }
+          try {
+            await apiPost("/authorities", {
+              name,
+              level: document.getElementById("dept-level").value,
+              type: document.getElementById("dept-type").value,
+              contact_email: document.getElementById("dept-email").value.trim() || undefined,
+            });
+            showToast("Department registered.", "success");
+            loadAuthorities();
+          } catch (error) {
+            reportApiError(error, "Could not register the department.");
+          }
+        },
+      });
+    });
+
+    // These were seven hardcoded rows naming real Nepali institutions with
+    // invented open-case counts and progress percentages. Attributing made-up
+    // performance figures to an actual government body is not a placeholder,
+    // it is a fabricated record - so this reads the authorities API instead.
+    // The table below reuses the same fetch - there is no per-authority
+    // assignment-count endpoint on the list route, so that column is left out
+    // entirely rather than filled with another invented number.
+    async function loadAuthorities() {
+      const grid = document.getElementById("dept-grid");
+      renderLoading("dept-grid");
+      try {
+        const authorities = await fetchAuthorities({ per_page: 60 });
+        if (!authorities.length) {
+          renderEmpty(
+            "dept-grid",
+            t("state.empty.title"),
+            "No authorities have been registered yet."
+          );
+          document.getElementById("dept-table-body").innerHTML =
+            `<tr><td colspan="4"><div class="empty-text">No authorities have been registered yet.</div></td></tr>`;
+          return;
+        }
+        grid.innerHTML = authorities
+          .map(
+            (a) => `
+          <div class="project-card">
+            <div class="project-name">${escapeHtml(a.name)}</div>
+            <div class="project-meta">
+              ${escapeHtml(a.type || "")}${a.level ? " · " + escapeHtml(a.level) : ""}
+              ${a.district ? " · " + escapeHtml(a.district) : ""}
+            </div>
+          </div>`
+          )
+          .join("");
+
+        document.getElementById("dept-table-body").innerHTML = authorities
+          .map(
+            (a) => `
+          <tr>
+            <td>${escapeHtml(a.name)}</td>
+            <td>${escapeHtml(humanise(a.type || ""))}</td>
+            <td>${escapeHtml(humanise(a.level || ""))}</td>
+            <td>${escapeHtml(a.district || "National")}</td>
+          </tr>`
+          )
+          .join("");
+      } catch (error) {
+        renderError("dept-grid", reportApiError(error, t("state.error.generic")));
+      }
+    }
+
+    loadAuthorities();
   </script>
 </body>
 </html>

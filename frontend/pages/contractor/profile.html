@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -21,14 +22,14 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Company Profile</h1>
+            <h1 class="page-title" data-i18n="profile.title">Company Profile</h1>
             <p class="page-subtitle">Himalayan Infra Pvt. Ltd.</p>
           </div>
         </div>
 
         <div class="form-layout">
           <div class="card">
-            <div class="card-header"><h2 class="card-title">Company Details</h2></div>
+            <div class="card-header"><h2 class="card-title" data-i18n="profile.account">Company Details</h2></div>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Company name</label>
@@ -45,13 +46,13 @@
                 <input class="form-input" type="text" value="Rajesh Sharma" />
               </div>
               <div class="form-group">
-                <label class="form-label">Phone</label>
+                <label class="form-label" data-i18n="auth.phone">Phone</label>
                 <input class="form-input" type="text" value="+977 98XXXXXXXX" />
               </div>
             </div>
             <div class="form-actions">
-              <button class="btn btn-outline" onclick="logout()">Logout</button>
-              <button class="btn btn-primary">Save Changes</button>
+              <button class="btn btn-outline" onclick="logout()" data-i18n="common.signOut">Logout</button>
+              <button class="btn btn-primary" data-i18n="common.save">Save Changes</button>
             </div>
           </div>
 
@@ -59,7 +60,7 @@
             <div class="card">
               <div class="card-header"><h2 class="card-title">Track Record</h2></div>
               <div class="budget-row"><span class="budget-label">Total projects</span><span class="budget-value">14</span></div>
-              <div class="budget-row"><span class="budget-label">Completed</span><span class="budget-value">11</span></div>
+              <div class="budget-row"><span class="budget-label" data-i18n="status.completed">Completed</span><span class="budget-value">11</span></div>
               <div class="budget-row"><span class="budget-label">On-time delivery</span><span class="budget-value">93%</span></div>
               <div class="budget-row"><span class="budget-label">Rating</span><span class="budget-value">4.6 / 5</span></div>
             </div>
@@ -69,9 +70,14 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script>
     const role = requireRole("contractor");
     mountShell(role);

@@ -322,6 +322,24 @@ class BaseAIService(ABC):
     def compare_reports(self, report_a, report_b) -> DuplicateVerdict:
         """Judge whether two reports describe the same physical problem."""
 
+    def chat(self, prompt: str) -> str:
+        """Answer a fully-assembled prompt.
+
+        Takes the finished prompt rather than a message plus context, so that
+        retrieval and prompt construction stay in ``chat_service`` and every
+        provider is handed exactly the same text.
+
+        Concrete rather than abstract, and refusing by default. Free-form
+        generation is an *optional* capability: an embedding-only or
+        classification-only backend is a perfectly valid provider, and making
+        this abstract would have forced every existing implementation to grow a
+        method it cannot honour. A provider that cannot chat says so through
+        AIUnavailable, which callers already handle as a 503.
+        """
+        raise AIUnavailable(
+            f"The {self.name} provider does not support free-form answers."
+        )
+
 
 class NullAIService(BaseAIService):
     """What runs when no provider is configured.
@@ -345,6 +363,11 @@ class NullAIService(BaseAIService):
     def compare_reports(self, report_a, report_b) -> DuplicateVerdict:
         raise AIUnavailable(
             "No AI provider is configured. Set GEMINI_API_KEY to enable analysis."
+        )
+
+    def chat(self, prompt: str) -> str:
+        raise AIUnavailable(
+            "No AI provider is configured, so the assistant is unavailable."
         )
 
 
@@ -416,6 +439,10 @@ class GeminiService(BaseAIService):
         )
         return parse_duplicate_verdict(extract_json(raw), model=self._model_name)
 
+    def chat(self, prompt: str) -> str:
+        """Free-text answer. No JSON parsing - the caller wants prose."""
+        return self._generate(prompt)
+
 
 _AI_KEY = "_betternepal_ai"
 
@@ -427,14 +454,30 @@ def get_ai_service() -> BaseAIService:
     callers always get an object and never have to check for None.
     """
     service = current_app.extensions.get(_AI_KEY)
-    if service is None:
-        api_key = current_app.config.get("GEMINI_API_KEY", "")
-        service = (
-            GeminiService(api_key, current_app.config.get("GEMINI_MODEL", "gemini-1.5-flash"))
-            if api_key
-            else NullAIService()
+    if service is not None:
+        return service
+
+    config = current_app.config
+
+    # Ollama first. It is self-hosted, so it costs nothing per request and no
+    # citizen's report text leaves the network - both of which matter more than
+    # raw model quality for this platform. Gemini stays as a fallback, though
+    # its SDK is deprecated upstream.
+    if any(
+        config.get(key)
+        for key in ("OLLAMA_VISION_NODE", "OLLAMA_TEXT_NODE", "OLLAMA_EMBED_NODE")
+    ):
+        from .ollama_service import OllamaService
+
+        service = OllamaService.from_config(config)
+    elif config.get("GEMINI_API_KEY"):
+        service = GeminiService(
+            config["GEMINI_API_KEY"], config.get("GEMINI_MODEL", "gemini-1.5-flash")
         )
-        current_app.extensions[_AI_KEY] = service
+    else:
+        service = NullAIService()
+
+    current_app.extensions[_AI_KEY] = service
     return service
 
 

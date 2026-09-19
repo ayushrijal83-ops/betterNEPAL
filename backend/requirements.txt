@@ -20,5 +20,18 @@ argon2-cffi==25.1.0
 # ai_service.py isolates it behind BaseAIService so replacing it is one class.
 google-generativeai==0.8.6
 
+# Self-hosted Ollama, reached through its OpenAI-compatible /v1 endpoint.
+# The `openai` package here is a protocol client, not a commitment to OpenAI:
+# it speaks the same wire format Ollama serves, so no traffic leaves the
+# network unless a hosted base_url is configured.
+openai==3.16.1
+
+# security
+Flask-Limiter==4.1.1
+redis==5.2.1
+
+# real-time
+Flask-SocketIO==5.5.1
+
 # dev / test
 pytest==8.4.2

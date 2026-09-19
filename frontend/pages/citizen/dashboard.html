@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -18,40 +19,41 @@
     <div class="app-main">
       <header id="app-navbar" class="navbar"></header>
       <main class="app-content">
-        <div class="page-header">
+        <div class="dash-welcome np-topo">
           <div>
-            <h1 class="page-title">Citizen Dashboard</h1>
-            <p class="page-subtitle">Good morning, Sanjal — Kathmandu, Nepal</p>
+            <div class="dash-welcome-title" id="dash-greeting">Welcome</div>
+            <p class="dash-welcome-sub">Report what you see. Follow it until it is fixed.</p>
           </div>
-          <a href="report.html" class="btn btn-danger">+ Report Issue</a>
+          <a href="report.html" class="btn btn-primary btn-lg" data-i18n="nav.report">+ Report Issue</a>
         </div>
 
-        <div class="grid grid-3 gap-md" id="cit-stats"></div>
+        <div class="stat-strip" id="cit-stats"></div>
 
-        <div class="auth-layout mt-lg">
+        <div class="details-layout mt-lg">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title">Recent Reports</h2>
-              <a href="my-reports.html" class="text-sm">View all →</a>
+              <h2 class="card-title" data-i18n="dash.recentActivity">Recent Reports</h2>
+              <a href="my-reports.html" class="text-sm" data-i18n="common.viewAll">View all →</a>
             </div>
             <table class="table">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Date</th>
+                  <th data-i18n="report.field.title">Title</th>
+                  <th data-i18n="report.status">Status</th>
+                  <th data-i18n="report.filed">Date</th>
                 </tr>
               </thead>
               <tbody id="cit-recent"></tbody>
             </table>
+            <div id="cit-recent-empty"></div>
           </div>
 
           <aside>
             <div class="card">
               <div class="card-header">
-                <h2 class="card-title">Local Alerts</h2>
-                <a href="alerts.html" class="text-sm">All →</a>
+                <h2 class="card-title" data-i18n="nav.alerts">Local Alerts</h2>
+                <a href="alerts.html" class="text-sm" data-i18n="common.viewAll">All →</a>
               </div>
               <div id="cit-alerts"></div>
             </div>
@@ -61,16 +63,87 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/chatbot.js"></script>
   <script src="../../js/api.js"></script>
+  <script src="../../js/dashboard.js"></script>
   <script src="../../js/reports.js"></script>
   <script src="../../js/alerts.js"></script>
   <script>
     const role = requireRole("citizen");
     mountShell(role);
-    bootstrapMyReports("reports-body", "report-details.html");
+
+    // Greeting comes from the session, not a hardcoded name. Previously every
+    // user of the platform was greeted as "Sanjal".
+    (function greet() {
+      const el = document.getElementById("dash-greeting");
+      if (!el) return;
+      const user = getUser();
+      const render = () => {
+        const name = (user.name || "").split(" ")[0] || "";
+        el.textContent = name ? `${t("dash.welcome")}, ${name}` : t("dash.welcome");
+      };
+      render();
+      if (typeof BN_I18N !== "undefined") BN_I18N.onChange(render);
+      verifySession(role).then((fresh) => {
+        if (!fresh) return;
+        user.name = fresh.full_name;
+        render();
+      });
+    })();
+
+    // The alerts panel was rendered empty on every load - nothing ever
+    // populated it. It now reads the same advisories endpoint as the feed.
+    renderAlertList("cit-alerts", { limit: 5 });
+
+    // Own reports only - a citizen's dashboard shows what is theirs, not the
+    // platform-wide totals the authority/admin dashboards use. Computed
+    // client-side from the same list the table renders, so the two numbers
+    // can never disagree.
+    (async () => {
+      renderSkeletonTable("cit-recent", 4, 4);
+      try {
+        const reports = await fetchMyReports();
+        const pending = reports.filter((r) => r.status === "submitted" || r.status === "under_review").length;
+        const resolved = reports.filter((r) => r.status === "verified_as_incident").length;
+        renderStats("cit-stats", [
+          { value: reports.length, label: "Total reports" },
+          { value: pending, label: "Pending review" },
+          { value: resolved, label: "Resolved" },
+        ]);
+
+        const recent = reports.slice(0, 5);
+        const body = document.getElementById("cit-recent");
+        if (!recent.length) {
+          body.innerHTML = "";
+          renderEmpty(
+            "cit-recent-empty",
+            tr("state.empty.title", "Nothing here yet"),
+            tr("state.empty.reportsHint", "Reports you submit will appear here.")
+          );
+        } else {
+          body.innerHTML = recent
+            .map(
+              (r) => `
+            <tr>
+              <td><a href="report-details.html?id=${encodeURIComponent(r.id)}">#${escapeHtml(String(r.id).slice(0, 8))}</a></td>
+              <td><a href="report-details.html?id=${encodeURIComponent(r.id)}">${escapeHtml(r.title)}</a></td>
+              <td>${statusBadge(r.status)}</td>
+              <td>${escapeHtml(formatDate(r.created_at))}</td>
+            </tr>`
+            )
+            .join("");
+        }
+      } catch (error) {
+        renderError("cit-stats", reportApiError(error, "Could not load your reports."));
+      }
+    })();
   </script>
 </body>
 </html>

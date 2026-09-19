@@ -1,25 +1,44 @@
-<div class="sidebar-brand">
-  <div class="sidebar-brand-logo">NP</div>
-  <div class="sidebar-brand-text">
-    <span class="sidebar-brand-title">BETTER NEPAL</span>
-    <span class="sidebar-brand-sub">Unified Platform</span>
+<a class="sidebar-brand" href="#" id="sidebar-brand-link">
+  <span class="sidebar-brand-logo" aria-hidden="true">
+    <!-- A contour ring around a survey point: the platform's mark, and the
+         same motif the map markers and empty states use. -->
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M3 23 Q 10 16 16 20 T 29 17" stroke-opacity=".55"/>
+      <path d="M3 27 Q 10 20 16 24 T 29 21" stroke-opacity=".35"/>
+      <path d="M8 13 L16 4 L24 13 L16 17 Z" stroke-linejoin="round"/>
+      <circle cx="16" cy="11" r="1.6" fill="currentColor" stroke="none"/>
+    </svg>
+  </span>
+  <span class="sidebar-brand-text">
+    <span class="sidebar-brand-title" data-i18n="brand.name">Better Nepal</span>
+    <span class="sidebar-brand-sub" data-i18n="brand.tagline">Civic infrastructure, in the open</span>
+  </span>
+</a>
+
+<div class="sidebar-section">
+  <div class="sidebar-section-label">
+    <span data-i18n="nav.role">Role</span>
+    <span id="sidebar-role-label" class="sidebar-role-value">citizen</span>
   </div>
 </div>
 
-<div class="sidebar-section">
-  <div class="sidebar-section-label">Role: <span id="sidebar-role-label">citizen</span></div>
-</div>
-
-<div class="sidebar-section">
+<nav class="sidebar-section sidebar-scroll" aria-label="Main">
   <ul class="sidebar-nav" id="sidebar-nav-list"></ul>
-</div>
+</nav>
 
 <div class="sidebar-footer">
   <div class="sidebar-user">
-    <div class="sidebar-user-avatar" id="sidebar-user-avatar">SN</div>
+    <div class="sidebar-user-avatar" id="sidebar-user-avatar" aria-hidden="true">–</div>
     <div class="sidebar-user-info">
-      <span class="sidebar-user-name" id="sidebar-user-name">Sanjal Neupane</span>
+      <span class="sidebar-user-name" id="sidebar-user-name">—</span>
       <span class="sidebar-user-role" id="sidebar-user-role">citizen</span>
     </div>
   </div>
+  <button type="button" class="sidebar-signout" data-logout>
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+    </svg>
+    <span data-i18n="common.signOut">Sign out</span>
+  </button>
 </div>

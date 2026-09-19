@@ -11,6 +11,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from ..models.role import ROLE_NAMES
 from .helpers import ApiError
 
 # Deliberately permissive: the authoritative test of an address is sending mail
@@ -126,11 +127,22 @@ def validate_registration(payload: Any) -> dict[str, Any]:
     raw_password = payload.get("password")
     password = raw_password if isinstance(raw_password, str) else ""
 
+    permanent = _as_text(data, "permanent_district_id")
+    if not permanent:
+        errors.add("permanent_district_id", "Your permanent district is required.")
+
+    # Absent means "I am where I am from". Storing the permanent district here
+    # rather than NULL means "where are you now" always has an answer, so the
+    # local feed and chatbot context never have to guess.
+    temporary = _as_text(data, "temporary_district_id") or permanent
+
     result = {
         "email": validate_email(_as_text(data, "email"), errors),
         "password": validate_password(password, errors),
         "full_name": validate_full_name(_as_text(data, "full_name"), errors),
         "phone": validate_phone(_as_text(data, "phone"), errors),
+        "permanent_district_id": permanent or None,
+        "temporary_district_id": temporary or None,
     }
     errors.raise_if_any()
     return result
@@ -153,9 +165,21 @@ def validate_login(payload: Any) -> dict[str, str]:
         errors.add("email", "Email is required.")
     if not password:
         errors.add("password", "Password is required.")
+
+    # Optional: names the portal the credentials were entered on. Rejected when
+    # unrecognised rather than ignored - a typo'd role that silently falls
+    # through would fence nothing, which is the one failure this must not have.
+    expected_role = _as_text(data, "expected_role") or None
+    if expected_role is not None and expected_role not in ROLE_NAMES:
+        errors.add("expected_role", "Unknown role.")
+
     errors.raise_if_any()
 
-    return {"email": normalise_email(email), "password": password}
+    return {
+        "email": normalise_email(email),
+        "password": password,
+        "expected_role": expected_role,
+    }
 
 
 def validate_refresh(payload: Any) -> str:
@@ -653,3 +677,70 @@ def validate_progress_update(payload: Any) -> dict[str, Any]:
 
     errors.raise_if_any()
     return {"notes": notes, "new_status": new_status}
+
+
+# --- announcements ---------------------------------------------------------
+
+ANNOUNCEMENT_TITLE_MIN_LENGTH = 5
+ANNOUNCEMENT_TITLE_MAX_LENGTH = 200
+ANNOUNCEMENT_BODY_MIN_LENGTH = 10
+ANNOUNCEMENT_BODY_MAX_LENGTH = 10000
+
+
+def validate_announcement(payload: Any) -> dict[str, Any]:
+    """Validate an announcement or disaster-alert draft.
+
+    ``author_id`` is deliberately not read: the author is the authenticated
+    caller, so an alert always carries the name of someone accountable for it.
+    """
+    data = require_json(payload)
+    errors = ValidationErrors()
+
+    title = _as_text(data, "title")
+    if not title:
+        errors.add("title", "title is required.")
+    elif not (ANNOUNCEMENT_TITLE_MIN_LENGTH <= len(title) <= ANNOUNCEMENT_TITLE_MAX_LENGTH):
+        errors.add(
+            "title",
+            f"title must be between {ANNOUNCEMENT_TITLE_MIN_LENGTH} and "
+            f"{ANNOUNCEMENT_TITLE_MAX_LENGTH} characters.",
+        )
+
+    body = _as_text(data, "body")
+    if not body:
+        errors.add("body", "body is required.")
+    elif not (ANNOUNCEMENT_BODY_MIN_LENGTH <= len(body) <= ANNOUNCEMENT_BODY_MAX_LENGTH):
+        errors.add(
+            "body",
+            f"body must be between {ANNOUNCEMENT_BODY_MIN_LENGTH} and "
+            f"{ANNOUNCEMENT_BODY_MAX_LENGTH} characters.",
+        )
+
+    raw_draft = data.get("is_draft")
+    if isinstance(raw_draft, bool):
+        is_draft = raw_draft
+    elif isinstance(raw_draft, str):
+        is_draft = raw_draft.strip().lower() in {"1", "true", "yes", "on"}
+    else:
+        is_draft = False
+
+    errors.raise_if_any()
+    return {
+        "title": title,
+        "body": body,
+        # Blank means national scope, which is a real choice rather than a
+        # missing value.
+        "district_id": _as_text(data, "district_id") or None,
+        "is_draft": is_draft,
+    }
+
+
+def validate_chat(payload: Any) -> dict[str, Any]:
+    """Validate a chatbot request."""
+    from ..services.chat_service import validate_message
+
+    data = require_json(payload)
+    return {
+        "message": validate_message(data.get("message")),
+        "district_id": _as_text(data, "district_id") or None,
+    }

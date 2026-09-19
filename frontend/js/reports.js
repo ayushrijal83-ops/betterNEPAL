@@ -167,8 +167,8 @@ function renderReportsTable(tbodyId, reports, detailHref = "report-details.html"
   if (!reports || reports.length === 0) {
     el.innerHTML = `<tr><td colspan="7">
       <div class="empty-state">
-        <div class="empty-title">No reports yet</div>
-        <div class="empty-text">Reports you submit will appear here.</div>
+        <div class="empty-title">${tr("state.empty.title","Nothing here yet")}</div>
+        <div class="empty-text">${tr("state.empty.reportsHint","Reports you submit will appear here.")}</div>
       </div>
     </td></tr>`;
     return;

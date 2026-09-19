@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content" id="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-i18n="nav.reports">Reports</h1>
+            <p class="page-subtitle" data-i18n="dash.pendingVerification">Citizen submissions awaiting review</p>
+          </div>
+        </div>
+
+        <div class="stat-strip" id="report-stats"></div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="nav.reports">Reports</h2>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th data-i18n="report.column.title">Title</th>
+                  <th data-i18n="report.field.category">Category</th>
+                  <th data-i18n="report.status">Status</th>
+                  <th data-i18n="report.filed">Filed</th>
+                </tr>
+              </thead>
+              <tbody id="reports-body"></tbody>
+            </table>
+          </div>
+          <div id="reports-empty"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/dashboard.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    // Headline counts, then the queue itself.
+    (async () => {
+      try {
+        const overview = await fetchOverview();
+        renderStats("report-stats", [
+          { value: overview.reports.total, label: t("dash.totalReports") },
+          { value: overview.reports.pending, label: t("dash.pendingVerification") },
+          { value: overview.reports.verified, label: t("status.verified") },
+          { value: overview.reports.duplicates, label: t("report.duplicates") },
+        ]);
+      } catch (error) {
+        renderError("report-stats", reportApiError(error, t("state.error.generic")));
+      }
+    })();
+
+    (async () => {
+      renderSkeletonTable("reports-body", 5, 4);
+      try {
+        const data = await apiGet("/reports?per_page=50");
+        const reports = data.reports || [];
+        const body = document.getElementById("reports-body");
+
+        if (!reports.length) {
+          body.innerHTML = "";
+          renderEmpty("reports-empty", t("state.empty.title"), t("state.empty.reports"));
+          return;
+        }
+
+        body.innerHTML = reports
+          .map(
+            (r) => `
+            <tr>
+              <td><a href="report-details.html?id=${encodeURIComponent(r.id)}">${escapeHtml(r.title)}</a></td>
+              <td>${escapeHtml(t("category." + r.category))}</td>
+              <td><span class="badge ${statusBadgeClass(r.status)}">${escapeHtml(t("status." + toCamel(r.status)))}</span></td>
+              <td>${escapeHtml(formatDate(r.created_at))}</td>
+            </tr>`
+          )
+          .join("");
+      } catch (error) {
+        document.getElementById("reports-body").innerHTML = "";
+        renderError("reports-empty", reportApiError(error, t("state.error.generic")));
+      }
+    })();
+
+    // The API uses snake_case statuses; the dictionary keys are camelCase.
+    function toCamel(value) {
+      return String(value).replace(/_([a-z])/g, (m, c) => c.toUpperCase());
+    }
+
+    function statusBadgeClass(status) {
+      if (status === "verified_as_incident") return "badge-success";
+      if (status === "rejected") return "badge-critical";
+      if (status === "under_review") return "badge-warning";
+      return "badge-info";
+    }
+  </script>
+</body>
+</html>

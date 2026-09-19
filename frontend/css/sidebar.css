@@ -1,141 +1,240 @@
+/* ==========================================================================
+   Better Nepal — Sidebar
+   ==========================================================================
+   A dark forest column against the ivory workspace. That contrast separates
+   "where am I" from "what am I looking at" without needing a border.
+   ========================================================================== */
+
 .sidebar {
-  width: var(--sidebar-width);
-  background: var(--bn-navy);
-  color: var(--bn-white);
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
-  transition: transform 0.25s ease;
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--bn-forest-900) 0%, var(--bn-charcoal-900) 100%);
+  color: var(--bn-on-dark);
+  overflow: hidden;
 }
+
+/* Contour lines behind the nav - the same Nepal motif as the landing page,
+   at the opacity of a watermark so labels stay first. */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400' fill='none'%3E%3Cg stroke='%23b3d7c5' stroke-width='1' fill='none'%3E%3Cpath d='M-20 330 Q 60 290 130 318 T 320 300'/%3E%3Cpath d='M-20 356 Q 60 316 130 344 T 320 326'/%3E%3Cpath d='M-20 304 Q 62 262 134 292 T 320 274'/%3E%3Cpath d='M-20 150 Q 70 108 140 140 T 320 120'/%3E%3Cpath d='M-20 176 Q 70 134 140 166 T 320 146'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 300px 400px;
+  background-position: bottom left;
+  opacity: 0.09;
+}
+
+.sidebar > * { position: relative; }
+
+/* --- Brand --------------------------------------------------------------- */
 
 .sidebar-brand {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-lg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.sidebar-brand-logo {
-  width: 36px;
-  height: 36px;
-  background: var(--bn-red);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: var(--font-size-lg);
-}
-
-.sidebar-brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-
-.sidebar-brand-title {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.sidebar-brand-sub {
-  font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.sidebar-section {
-  padding: var(--space-md) 0;
-}
-
-.sidebar-section-label {
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.4);
-  padding: 0 var(--space-lg);
-  margin-bottom: var(--space-sm);
-}
-
-.sidebar-nav {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-nav a {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: 10px var(--space-lg);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  transition: all 0.15s ease;
+  gap: 11px;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: inherit;
   text-decoration: none;
 }
 
+.sidebar-brand:hover { text-decoration: none; color: inherit; }
+
+.sidebar-brand-logo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--bn-forest-200);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-brand-logo svg { width: 22px; height: 22px; }
+
+.sidebar-brand-text { display: flex; flex-direction: column; min-width: 0; }
+
+.sidebar-brand-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.sidebar-brand-sub {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--bn-on-dark-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Sections ------------------------------------------------------------ */
+
+.sidebar-section { padding: var(--space-md) var(--space-sm); }
+
+.sidebar-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--space-md) var(--space-sm);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.4);
+}
+
+.sidebar-role-value { color: var(--bn-forest-300); }
+
+.sidebar-scroll { flex: 1; overflow-y: auto; min-height: 0; }
+
+/* --- Navigation ---------------------------------------------------------- */
+
+.sidebar-nav { list-style: none; display: grid; gap: 2px; }
+
+.sidebar-nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: rgba(244, 239, 230, 0.72);
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
 .sidebar-nav a:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--bn-white);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
   text-decoration: none;
 }
 
 .sidebar-nav a.active {
-  background: rgba(30, 90, 168, 0.35);
-  color: var(--bn-white);
-  border-left: 3px solid var(--bn-blue);
-  padding-left: calc(var(--space-lg) - 3px);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 600;
 }
 
-.sidebar-nav .nav-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+/* A brass rule marks the current page - the one place the accent metal
+   appears anywhere in the chrome. */
+.sidebar-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2.5px;
+  border-radius: 0 2px 2px 0;
+  background: var(--bn-brass-500);
 }
+
+.nav-icon { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+.sidebar-nav a.active .nav-icon { opacity: 1; color: var(--bn-forest-300); }
+
+/* --- Footer -------------------------------------------------------------- */
 
 .sidebar-footer {
-  margin-top: auto;
-  padding: var(--space-md) var(--space-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
 }
 
-.sidebar-user {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
+.sidebar-user { display: flex; align-items: center; gap: 10px; min-width: 0; }
 
 .sidebar-user-avatar {
-  width: 36px;
-  height: 36px;
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  flex-shrink: 0;
   border-radius: var(--radius-full);
-  background: var(--bn-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: var(--font-size-sm);
+  background: var(--bn-forest-700);
+  color: var(--bn-forest-100);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
-.sidebar-user-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
+.sidebar-user-info { display: flex; flex-direction: column; min-width: 0; }
 
 .sidebar-user-name {
   font-size: var(--font-size-sm);
   font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-user-role {
-  font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 10.5px;
   text-transform: capitalize;
+  color: var(--bn-on-dark-dim);
+}
+
+.sidebar-signout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: var(--space-md);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: rgba(244, 239, 230, 0.75);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.sidebar-signout:hover {
+  background: rgba(173, 47, 54, 0.22);
+  border-color: rgba(196, 66, 63, 0.5);
+  color: #fff;
+}
+
+/* --- Mobile drawer -------------------------------------------------------
+   Off-canvas below 1024px. The backdrop element is created by the toggle
+   handler so the markup carries nothing that is unused on desktop. */
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-drawer) - 1);
+  background: rgba(26, 24, 20, 0.5);
+  animation: fade-in var(--dur-base) var(--ease-out);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--z-drawer);
+    transform: translateX(-100%);
+    transition: transform var(--dur-base) var(--ease-out);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .sidebar.open { transform: none; }
 }

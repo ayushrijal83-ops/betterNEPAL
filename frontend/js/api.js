@@ -10,24 +10,12 @@
 
 // --- token storage ---------------------------------------------------------
 //
-// The backend (Phase 3) returns both tokens in the JSON body and sets no
-// cookies, so an HttpOnly cookie is not available to us without a backend
-// change. Given that, the split below is the best available trade:
-//
-//   access token  -> sessionStorage, dies when the tab closes
-//   refresh token -> localStorage, so a reload or a second tab stays signed in
-//
-// Neither is proof against XSS - any script on this origin can read both. The
-// real fix is the backend setting the refresh token as an HttpOnly, Secure,
-// SameSite=Strict cookie and this file dropping its storage entirely; nothing
-// above would need to change, which is the point of putting it here.
-//
-// In-memory-only was rejected deliberately: this is a multi-page app, so every
-// navigation is a fresh JS context and it would sign the user out on each
-// click.
+// The backend sets the refresh token as an HttpOnly, Secure, SameSite=Lax
+// cookie scoped to /api/v1/auth. The browser sends it automatically on every
+// request to that path. The frontend only stores the short-lived access token
+// in sessionStorage. Nothing in localStorage is XSS-accessible anymore.
 
 const ACCESS_TOKEN_KEY = "bn_access_token";
-const REFRESH_TOKEN_KEY = "bn_refresh_token";
 const USER_KEY = "bn_user";
 
 const TokenStore = {
@@ -39,16 +27,12 @@ const TokenStore = {
     }
   },
   getRefresh() {
-    try {
-      return localStorage.getItem(REFRESH_TOKEN_KEY);
-    } catch (_) {
-      return null;
-    }
+    // Refresh token lives in an HttpOnly cookie; not accessible from JS.
+    return null;
   },
-  set(accessToken, refreshToken) {
+  set(accessToken, _refreshToken) {
     try {
       if (accessToken) sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-      if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
     } catch (_) {
       /* private browsing: the session simply will not persist */
     }
@@ -69,12 +53,11 @@ const TokenStore = {
     try {
       sessionStorage.removeItem(ACCESS_TOKEN_KEY);
       sessionStorage.removeItem(USER_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_KEY);
       localStorage.removeItem("bn_role");
     } catch (_) {}
   },
   isSignedIn() {
-    return Boolean(this.getAccess() || this.getRefresh());
+    return Boolean(this.getAccess());
   },
 };
 

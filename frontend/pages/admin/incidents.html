@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -36,9 +37,9 @@
             </select>
             <select id="filter-severity">
               <option value="">All Severities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
+              <option value="High" data-i18n="severity.high">High</option>
+              <option value="Medium" data-i18n="severity.medium">Medium</option>
+              <option value="Low" data-i18n="severity.low">Low</option>
             </select>
           </div>
 
@@ -46,11 +47,11 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
+                <th data-i18n="report.field.title">Title</th>
+                <th data-i18n="report.field.category">Category</th>
                 <th>District</th>
                 <th>Severity</th>
-                <th>Status</th>
+                <th data-i18n="report.status">Status</th>
                 <th>Assigned to</th>
                 <th class="actions"></th>
               </tr>
@@ -63,6 +64,10 @@
   </div>
 
   <script src="../../js/api.js"></script>
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>

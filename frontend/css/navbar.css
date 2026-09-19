@@ -1,143 +1,206 @@
-/* App layout wrapper */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-  background: var(--bn-bg);
-}
+/* ==========================================================================
+   Better Nepal — Top bar and language switcher
+   ==========================================================================
+   The layout wrapper itself lives in main.css; this file styles only the bar
+   and the controls in it.
+   ========================================================================== */
 
-.app-main {
-  margin-left: var(--sidebar-width);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.app-content {
-  padding: var(--space-lg);
-  flex: 1;
-}
-
-/* Navbar */
 .navbar {
-  height: var(--navbar-height);
-  background: var(--bn-white);
-  border-bottom: 1px solid var(--bn-border);
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-lg);
-  gap: var(--space-md);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: var(--navbar-height);
+  padding: 0 var(--space-lg);
+  background: rgba(250, 247, 241, 0.88);
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--bn-border);
 }
 
-.navbar-search {
-  flex: 1;
-  max-width: 480px;
-  position: relative;
+/* Without blur support the bar must go opaque, or content scrolls visibly
+   through it. */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .navbar { background: var(--bn-ivory); }
 }
 
-.navbar-search input {
-  width: 100%;
-  padding: 9px 14px 9px 38px;
+/* --- Sidebar toggle (mobile) --------------------------------------------- */
+
+.sidebar-toggle {
+  display: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
   border: 1px solid var(--bn-border);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  background: var(--bn-bg);
+  background: var(--bn-surface);
+  color: var(--bn-text);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.navbar-search input:focus {
-  outline: none;
-  border-color: var(--bn-blue);
-  background: var(--bn-white);
+.sidebar-toggle:hover { background: var(--bn-sand); }
+
+/* --- Search -------------------------------------------------------------- */
+
+.navbar-search {
+  position: relative;
+  flex: 1;
+  max-width: 420px;
 }
 
 .navbar-search-icon {
   position: absolute;
-  left: 12px;
+  left: 11px;
   top: 50%;
   transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
   color: var(--bn-text-muted);
-  width: 16px;
-  height: 16px;
+  pointer-events: none;
 }
+
+.navbar-search input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.navbar-search input::placeholder { color: var(--bn-text-muted); }
+
+.navbar-search input:focus {
+  outline: none;
+  border-color: var(--bn-forest-500);
+  box-shadow: 0 0 0 3px rgba(47, 117, 84, 0.13);
+}
+
+/* --- Actions ------------------------------------------------------------- */
 
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   margin-left: auto;
 }
 
 .navbar-alert {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #fee2e2;
-  color: var(--bn-red);
-  padding: 6px 12px;
+  padding: 5px 11px;
+  border: 1px solid var(--bn-crimson-100);
   border-radius: var(--radius-full);
+  background: var(--bn-crimson-50);
+  color: var(--bn-crimson-700);
   font-size: var(--font-size-xs);
   font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
 }
 
-.navbar-role-select {
-  padding: 6px 12px;
+.navbar-alert:hover {
+  background: var(--bn-crimson-100);
+  color: var(--bn-crimson-800);
+  text-decoration: none;
+}
+
+/* A plain label, not a control - the account's role is not something to
+   change from the navbar. See auth.js: this used to be a <select> that
+   would navigate straight into another role's dashboard with no
+   authorization check behind it. */
+.navbar-role-badge {
+  padding: 7px 11px;
   border: 1px solid var(--bn-border);
   border-radius: var(--radius-md);
+  background-color: var(--bn-surface);
   font-size: var(--font-size-sm);
-  background: var(--bn-white);
-  cursor: pointer;
-}
-
-/* Page header */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-lg);
-  flex-wrap: wrap;
-  gap: var(--space-md);
-}
-
-.page-title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--bn-navy);
-}
-
-.page-subtitle {
-  font-size: var(--font-size-sm);
+  font-weight: 500;
   color: var(--bn-text-light);
-  margin-top: 4px;
 }
 
-/* Mobile */
-.sidebar-toggle {
-  display: none;
-  background: none;
+/* ==========================================================================
+   Language switcher
+   ==========================================================================
+   A segmented control, not a dropdown. Three languages fit inline, and a
+   visible EN | नेपाली | मैथिली tells a Nepali or Maithili speaker at a glance
+   that the site speaks their language - a globe icon does not.
+   ========================================================================== */
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface-2);
+}
+
+.lang-switch-btn {
+  padding: 4px 10px;
   border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--bn-text-light);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
   cursor: pointer;
-  padding: 6px;
-  color: var(--bn-navy);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
 }
 
-@media (max-width: 900px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  .app-main {
-    margin-left: 0;
-  }
-  .sidebar-toggle {
-    display: flex;
-    align-items: center;
-  }
-  .navbar-search {
-    max-width: none;
-  }
+.lang-switch-btn:hover { color: var(--bn-text); }
+
+.lang-switch-btn.is-active {
+  background: var(--bn-surface);
+  color: var(--bn-forest-700);
+  box-shadow: var(--shadow-xs);
+}
+
+/* On dark grounds (landing nav, footer, auth panels). */
+.lang-switch--dark {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-switch--dark .lang-switch-btn { color: rgba(244, 239, 230, 0.66); }
+.lang-switch--dark .lang-switch-btn:hover { color: #fff; }
+
+.lang-switch--dark .lang-switch-btn.is-active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .sidebar-toggle { display: grid; }
+  .app-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .navbar { padding: 0 var(--space-md); gap: var(--space-sm); }
+
+  /* Search is the first thing to go: on a phone the nav needs the width for
+     the language switcher and the role control, and search has its own
+     entry point on each list page. */
+  .navbar-search { display: none; }
+
+  .navbar-alert span { display: none; }
+  .navbar-alert { padding: 6px 8px; }
+
+  /* Stack the language codes tighter rather than hiding them - a Maithili
+     speaker on a phone is exactly who needs the switcher visible. */
+  .lang-switch-btn { padding: 4px 7px; font-size: 11px; }
 }

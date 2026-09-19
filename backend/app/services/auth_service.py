@@ -26,7 +26,7 @@ from typing import Any
 import jwt
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
-from flask import current_app
+from flask import current_app, has_request_context, request
 from sqlalchemy import select
 
 from ..extensions import db
@@ -153,7 +153,14 @@ def _find_usable_refresh_token(token: str) -> RefreshToken:
 # --- operations ------------------------------------------------------------
 
 
-def register_user(email: str, password: str, full_name: str, phone: str | None) -> User:
+def register_user(
+    email: str,
+    password: str,
+    full_name: str,
+    phone: str | None,
+    permanent_district_id: Any = None,
+    temporary_district_id: Any = None,
+) -> User:
     """Create a citizen account.
 
     The role is fixed here rather than read from the request: that is the only
@@ -166,6 +173,15 @@ def register_user(email: str, password: str, full_name: str, phone: str | None) 
             status=409,
             code="email_already_registered",
         )
+
+    permanent = _resolve_district(permanent_district_id, "permanent_district_id")
+    # Falls back to the permanent district, so the field is never left empty
+    # just because the form omitted it.
+    temporary = (
+        _resolve_district(temporary_district_id, "temporary_district_id")
+        if temporary_district_id
+        else permanent
+    )
 
     role = db.session.scalar(select(Role).where(Role.name == DEFAULT_ROLE))
     if role is None:
@@ -183,6 +199,8 @@ def register_user(email: str, password: str, full_name: str, phone: str | None) 
         full_name=full_name,
         phone=phone,
         is_active=True,
+        permanent_district_id=permanent,
+        temporary_district_id=temporary,
     )
     user.roles.append(role)
 
@@ -191,11 +209,39 @@ def register_user(email: str, password: str, full_name: str, phone: str | None) 
     return user
 
 
-def authenticate(email: str, password: str) -> User:
+def _resolve_district(value: Any, field: str) -> uuid.UUID | None:
+    """Turn a district id from a form into a verified id, or refuse it.
+
+    Checked against the table rather than trusted: an unknown district would
+    otherwise fail later at the foreign key as an opaque 500, instead of here
+    as a message naming the field.
+    """
+    if not value:
+        return None
+
+    from ..models.district import District
+
+    try:
+        parsed = uuid.UUID(str(value))
+    except (ValueError, AttributeError, TypeError):
+        raise ApiError(
+            f"{field} is not a valid identifier.", status=400, code="invalid_identifier"
+        ) from None
+
+    if db.session.get(District, parsed) is None:
+        raise ApiError("District not found.", status=404, code="district_not_found")
+    return parsed
+
+
+def authenticate(email: str, password: str, expected_role: str | None = None) -> User:
     """Verify credentials and stamp ``last_login_at``.
 
     A wrong password and an unknown email raise the identical 401: a distinct
     "no such user" would turn this endpoint into an account enumerator.
+
+    ``expected_role`` fences a login to one portal. It is the *server* that
+    decides whether the account holds that role - the caller only says which
+    door was knocked on, never who it belongs to.
     """
     user = db.session.scalar(select(User).where(User.email == email))
 
@@ -211,9 +257,36 @@ def authenticate(email: str, password: str) -> User:
         # someone who already proved they know the password for it.
         raise ApiError("This account is disabled.", status=403, code="account_disabled")
 
+    if expected_role is not None and not user.has_role(expected_role):
+        # Same placement argument as is_active: the check runs only once the
+        # password is proven, so this endpoint cannot be used to ask "is this
+        # address an authority account?" without the credentials to match.
+        _log_portal_mismatch(user, expected_role)
+        raise ApiError(
+            f"This account does not have {expected_role.replace('_', ' ')} access.",
+            status=403,
+            code="role_not_permitted",
+        )
+
     user.last_login_at = utcnow()
     db.session.commit()
     return user
+
+
+def _log_portal_mismatch(user: User, expected_role: str) -> None:
+    """Record a correct-password login aimed at the wrong portal.
+
+    Worth a warning rather than an info: valid credentials presented at an
+    official door the account has no claim to is either a confused staff member
+    or someone probing the fence, and the two are indistinguishable from here.
+    """
+    current_app.logger.warning(
+        "security: portal role mismatch - user=%s expected=%s actual=%s ip=%s",
+        user.id,
+        expected_role,
+        ",".join(user.role_names) or "none",
+        request.remote_addr if has_request_context() else "n/a",
+    )
 
 
 def issue_token_pair(user: User) -> dict[str, Any]:

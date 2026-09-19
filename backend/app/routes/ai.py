@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from flask import Blueprint, request
 
+from ..extensions import limiter
 from ..models.role import ROLE_ADMIN, ROLE_AUTHORITY
 from ..services import report_analysis_service
 from ..utils.decorators import require_roles
@@ -26,8 +27,14 @@ from ..utils.validators import ValidationErrors, _as_text, require_json
 
 ai_bp = Blueprint("ai", __name__, url_prefix="/reports")
 
+# Every call here occupies a model. On a self-hosted node that means a GPU or a
+# CPU core is busy for the duration, so this protects capacity rather than a
+# bill - one impatient dashboard must not starve everyone else's analysis.
+AI_LIMIT = "20 per minute"
+
 
 @ai_bp.post("/<report_id>/analyze")
+@limiter.limit(AI_LIMIT)
 @require_roles(ROLE_AUTHORITY, ROLE_ADMIN)
 def analyze(report_id: str):
     """Classify a report with the AI and store the suggestion.
@@ -39,6 +46,7 @@ def analyze(report_id: str):
 
 
 @ai_bp.get("/<report_id>/potential-duplicates")
+@limiter.limit(AI_LIMIT)
 @require_roles(ROLE_AUTHORITY, ROLE_ADMIN)
 def potential_duplicates(report_id: str):
     """Nearby reports the AI believes describe the same problem.

@@ -1,4 +1,5 @@
 """Phase 3: users, roles, authentication and authorization."""
+import logging
 import uuid
 from datetime import timedelta
 
@@ -20,6 +21,38 @@ REGISTRATION = {
     "full_name": "Sita Gurung",
     "phone": "+977 9801234567",
 }
+
+
+@pytest.fixture(autouse=True)
+def _home_district(request):
+    """Seed a district and point REGISTRATION at it.
+
+    Phase 14 made a permanent district mandatory at registration. Every test
+    here builds its payload from the module-level REGISTRATION dict, so the id
+    is injected once per test rather than threaded through thirty call sites.
+    The id changes each test because each gets a fresh in-memory database.
+
+    Skipped for tests that never touch the database.
+    """
+    if "db" not in request.fixturenames:
+        yield
+        return
+
+    # getfixturevalue rather than a declared parameter: `db` is what opens the
+    # app context, and requesting it here guarantees it is set up *before* this
+    # fixture touches the session. A plain autouse fixture can otherwise run
+    # first and fail outside the context.
+    session = request.getfixturevalue("db").session
+
+    from app.models import District
+
+    district = District(name="Registration Test District", code="RT-01")
+    session.add(district)
+    session.commit()
+
+    REGISTRATION["permanent_district_id"] = str(district.id)
+    yield
+    REGISTRATION.pop("permanent_district_id", None)
 
 
 # --- roles -----------------------------------------------------------------
@@ -122,6 +155,8 @@ def test_public_dict_never_contains_the_password_hash(make_user):
     payload = make_user().to_public_dict()
     assert "password_hash" not in payload
     assert PASSWORD not in str(payload)
+    # Exact set equality, deliberately: it fails the moment a field is added to
+    # the public serialiser without someone deciding it belongs there.
     assert set(payload) == {
         "id",
         "email",
@@ -131,6 +166,10 @@ def test_public_dict_never_contains_the_password_hash(make_user):
         "is_active",
         "created_at",
         "last_login_at",
+        "permanent_district_id",
+        "permanent_district",
+        "temporary_district_id",
+        "temporary_district",
     }
 
 
@@ -897,3 +936,129 @@ def test_logout_cannot_revoke_another_users_refresh_token(client, make_user, log
         "/api/v1/auth/refresh", json={"refresh_token": sita["refresh_token"]}
     )
     assert still_valid.status_code == 200
+
+
+# --- portal role fencing (Phase 15) ----------------------------------------
+#
+# `expected_role` names the portal the credentials were typed into. The server
+# decides whether the account actually holds that role; the client only says
+# which door was knocked on.
+
+
+def test_login_with_matching_expected_role_succeeds(client, make_user):
+    make_user(email="dio@betternepal.np", role_names=("authority",))
+    response = client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "dio@betternepal.np",
+            "password": PASSWORD,
+            "expected_role": "authority",
+        },
+    )
+    assert response.status_code == 200
+
+
+def test_citizen_is_blocked_from_the_authority_portal(client, make_user):
+    """The headline rule: right password, wrong door, still refused."""
+    make_user(email="ram@betternepal.np", role_names=("citizen",))
+    response = client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "ram@betternepal.np",
+            "password": PASSWORD,
+            "expected_role": "authority",
+        },
+    )
+    assert response.status_code == 403
+    assert response.get_json()["error"]["code"] == "role_not_permitted"
+
+
+def test_blocked_portal_login_issues_no_tokens(client, make_user):
+    """A 403 must not hand back a usable session as a consolation prize."""
+    make_user(email="ram@betternepal.np", role_names=("citizen",))
+    body = client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "ram@betternepal.np",
+            "password": PASSWORD,
+            "expected_role": "admin",
+        },
+    ).get_json()
+    assert "access_token" not in (body.get("data") or {})
+    assert "refresh_token" not in (body.get("data") or {})
+
+
+def test_expected_role_is_not_a_role_oracle(client, make_user):
+    """A wrong password must 401 before the role is ever considered.
+
+    Otherwise the endpoint answers "is this address an authority account?" for
+    anyone willing to submit a junk password.
+    """
+    make_user(email="dio@betternepal.np", role_names=("authority",))
+    response = client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "dio@betternepal.np",
+            "password": "wrong",
+            "expected_role": "authority",
+        },
+    )
+    assert response.status_code == 401
+    assert response.get_json()["error"]["code"] == "invalid_credentials"
+
+
+def test_unknown_expected_role_is_rejected_not_ignored(client, make_user):
+    """Fail closed: a typo'd portal name must never fence nothing."""
+    make_user(email="ram@betternepal.np", role_names=("citizen",))
+    response = client.post(
+        "/api/v1/auth/login",
+        json={
+            "email": "ram@betternepal.np",
+            "password": PASSWORD,
+            "expected_role": "Authority",  # correct role, wrong case
+        },
+    )
+    assert response.status_code == 400
+    assert "expected_role" in response.get_json()["error"]["details"]
+
+
+def test_login_without_expected_role_is_unfenced(client, make_user):
+    """Omitting it keeps the pre-Phase-15 behaviour for every existing caller."""
+    make_user(email="dio@betternepal.np", role_names=("authority",))
+    response = client.post(
+        "/api/v1/auth/login",
+        json={"email": "dio@betternepal.np", "password": PASSWORD},
+    )
+    assert response.status_code == 200
+
+
+def test_multi_role_user_passes_the_portal_it_holds(client, make_user):
+    make_user(email="both@betternepal.np", role_names=("citizen", "authority"))
+    for role in ("citizen", "authority"):
+        response = client.post(
+            "/api/v1/auth/login",
+            json={
+                "email": "both@betternepal.np",
+                "password": PASSWORD,
+                "expected_role": role,
+            },
+        )
+        assert response.status_code == 200, role
+
+
+def test_blocked_portal_login_is_logged_as_a_security_anomaly(client, make_user, caplog):
+    make_user(email="ram@betternepal.np", role_names=("citizen",))
+    with caplog.at_level(logging.WARNING):
+        client.post(
+            "/api/v1/auth/login",
+            json={
+                "email": "ram@betternepal.np",
+                "password": PASSWORD,
+                "expected_role": "admin",
+            },
+        )
+    assert any(
+        "portal role mismatch" in record.getMessage() for record in caplog.records
+    )
+    # The log line is for an operator chasing an anomaly, not a credential dump.
+    assert not any(PASSWORD in (record.getMessage()) for record in caplog.records)

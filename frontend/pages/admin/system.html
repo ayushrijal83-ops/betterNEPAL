@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -21,7 +22,7 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">System Settings</h1>
+            <h1 class="page-title" data-i18n="nav.system">System Settings</h1>
             <p class="page-subtitle">Platform configuration, API keys, and integrations</p>
           </div>
         </div>
@@ -53,94 +54,30 @@
               <div class="card-header"><h2 class="card-title">API & Integrations</h2></div>
               <div class="form-group">
                 <label class="form-label">Backend API URL</label>
-                <input class="form-input" type="text" value="http://localhost:8000/api" />
+                <input class="form-input" type="text" id="sys-api-url" readonly />
               </div>
               <div class="form-group">
-                <label class="form-label">Mapbox / Leaflet provider</label>
-                <select class="form-select">
-                  <option>OpenStreetMap (default)</option>
-                  <option>Mapbox</option>
-                  <option>Google Maps</option>
-                </select>
+                <label class="form-label">Map tiles</label>
+                <input class="form-input" type="text" value="OpenStreetMap" readonly />
               </div>
-              <div class="form-group">
-                <label class="form-label">AI Services API key</label>
-                <input class="form-input" type="password" value="******************" />
-              </div>
-            </div>
-
-            <div class="card mt-lg">
-              <div class="card-header"><h2 class="card-title">Feature Flags</h2></div>
-              <label class="layer-toggle">
-                <input type="checkbox" checked />
-                Enable AI classification for new reports
-              </label>
-              <label class="layer-toggle">
-                <input type="checkbox" checked />
-                Enable duplicate incident detection
-              </label>
-              <label class="layer-toggle">
-                <input type="checkbox" checked />
-                Enable automatic authority routing
-              </label>
-              <label class="layer-toggle">
-                <input type="checkbox" />
-                Enable public beta map
-              </label>
-              <label class="layer-toggle">
-                <input type="checkbox" checked />
-                Enable disaster alerts to citizens
-              </label>
+              <p class="text-sm text-muted mt-sm">
+                Read-only - both are fixed by <code>js/config.js</code>, not stored server-side.
+              </p>
             </div>
 
             <div class="form-actions">
-              <button class="btn btn-outline">Reset</button>
-              <button class="btn btn-primary">Save Settings</button>
+              <p class="text-sm text-muted" style="flex:1">
+                Settings persistence isn't wired to a backend endpoint yet, so this form doesn't
+                save anything - shown as a mockup of the intended layout rather than pretending
+                a click here changes real configuration.
+              </p>
             </div>
           </div>
 
           <aside>
             <div class="card">
               <div class="card-header"><h2 class="card-title">System Health</h2></div>
-              <div class="budget-row">
-                <span class="budget-label">API uptime</span>
-                <span class="budget-value">99.98%</span>
-              </div>
-              <div class="budget-row">
-                <span class="budget-label">Avg response</span>
-                <span class="budget-value">142 ms</span>
-              </div>
-              <div class="budget-row">
-                <span class="budget-label">DB size</span>
-                <span class="budget-value">3.2 GB</span>
-              </div>
-              <div class="budget-row">
-                <span class="budget-label">Last deploy</span>
-                <span class="budget-value">2 days ago</span>
-              </div>
-            </div>
-
-            <div class="card mt-lg">
-              <div class="card-header"><h2 class="card-title">Recent Activity</h2></div>
-              <div class="timeline" style="padding-left:0">
-                <ul class="timeline" style="padding-left:28px">
-                  <li class="timeline-item done">
-                    <span class="timeline-dot"></span>
-                    <div class="timeline-title">Backup completed</div>
-                    <div class="timeline-meta">2 hours ago</div>
-                  </li>
-                  <li class="timeline-item done">
-                    <span class="timeline-dot"></span>
-                    <div class="timeline-title">AI service redeployed</div>
-                    <div class="timeline-meta">Yesterday</div>
-                  </li>
-                  <li class="timeline-item done">
-                    <span class="timeline-dot"></span>
-                    <div class="timeline-title">77 district dataset refreshed</div>
-                    <div class="timeline-meta">3 days ago</div>
-                  </li>
-                </ul>
-              </div>
+              <div id="sys-health"></div>
             </div>
           </aside>
         </div>
@@ -148,12 +85,48 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
+
+    document.getElementById("sys-api-url").value = API_BASE_URL;
+
+    // Real signals only: whether the API answered, and the real per-node AI
+    // status GET /health already exposes. No uptime/response-time/deploy
+    // history is invented - this backend does not track any of that.
+    function healthRow(label, ok, detail) {
+      return `<div class="budget-row">
+        <span class="budget-label">${escapeHtml(label)}</span>
+        <span class="budget-value"><span class="badge ${ok ? "badge-success" : "badge-critical"}">${escapeHtml(detail)}</span></span>
+      </div>`;
+    }
+
+    (async () => {
+      let html = "";
+      try {
+        const status = await apiGet("/health", { auth: false });
+        html += healthRow("API", true, "Reachable");
+        html += healthRow("Environment", true, status.environment);
+        const ai = status.ai || {};
+        const nodeUp = ai.nodes && Object.values(ai.nodes).some((n) => n.reachable);
+        html += healthRow(
+          "AI services",
+          ai.available && nodeUp,
+          ai.available ? (nodeUp ? "Reachable" : "Configured, unreachable") : "Not configured"
+        );
+      } catch (_) {
+        html = healthRow("API", false, "Unreachable");
+      }
+      document.getElementById("sys-health").innerHTML = html;
+    })();
   </script>
 </body>
 </html>

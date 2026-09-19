@@ -1,54 +1,392 @@
+/* ==========================================================================
+   Better Nepal — Design Tokens
+   ==========================================================================
+
+   The palette is drawn from the physical country rather than from a SaaS
+   template: the deep green of middle-hill forest, the fired terracotta of
+   valley brick, the crimson of rhododendron, and the brass of temple
+   fittings, laid on warm stone and ivory rather than cool grey.
+
+   Two rules keep it from becoming decoration:
+
+   1. Green carries the interface. Terracotta, crimson and brass are accents
+      measured in square centimetres, not screenfuls.
+   2. Neutrals are warm. A cool grey next to these greens reads as dirty, and
+      is the fastest way to make the whole thing look generic again.
+
+   Blue is deliberately absent as an identity colour. It survives only inside
+   map water and the "info" status, where its meaning is conventional.
+   ========================================================================== */
+
+/* Devanagari faces are not optional extras here - the interface ships in
+   Nepali and Maithili, and a missing face would fall back to a system font
+   with different metrics, wrecking every heading it touched. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap");
+
 :root {
-  /* Brand Colors */
-  --bn-navy: #0b1f3a;
-  --bn-navy-light: #1e3a5f;
-  --bn-blue: #1e5aa8;
-  --bn-blue-light: #e8f0fe;
+  /* --- Forest: the primary. Middle-hill pine and rhododendron canopy. --- */
+  --bn-forest-900: #0c2419;
+  --bn-forest-800: #123324;
+  --bn-forest-700: #1a4732;
+  --bn-forest-600: #225c41;    /* primary action */
+  --bn-forest-500: #2f7554;
+  --bn-forest-400: #4a9573;
+  --bn-forest-300: #7bb79b;
+  --bn-forest-200: #b3d7c5;
+  --bn-forest-100: #d9ebe2;
+  --bn-forest-50:  #eff7f3;
 
-  /* Status Colors */
-  --bn-red: #d32f2f;
-  --bn-orange: #f57c00;
-  --bn-green: #2e7d32;
-  --bn-yellow: #fbc02d;
+  /* --- Earth: valley brick and fired terracotta. Secondary. ------------- */
+  --bn-earth-800: #6d3820;
+  --bn-earth-700: #8a4726;
+  --bn-earth-600: #a65c33;
+  --bn-earth-500: #c07444;
+  --bn-earth-300: #e0a87f;
+  --bn-earth-100: #f6e6d9;
+  --bn-earth-50:  #fbf3ec;
 
-  /* Neutrals */
-  --bn-white: #ffffff;
-  --bn-bg: #f5f7fa;
-  --bn-border: #e2e8f0;
-  --bn-text: #1a202c;
-  --bn-text-light: #64748b;
-  --bn-text-muted: #94a3b8;
+  /* --- Crimson: rhododendron. Accent and danger, used sparingly. -------- */
+  --bn-crimson-800: #7a1f2a;
+  --bn-crimson-700: #93262f;
+  --bn-crimson-600: #ad2f36;
+  --bn-crimson-500: #c4423f;
+  --bn-crimson-100: #f7dee0;
+  --bn-crimson-50:  #fdf0f0;
 
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
+  /* --- Brass: temple fittings. Warnings, and the one "premium" accent. -- */
+  --bn-brass-700: #7a5f1f;
+  --bn-brass-600: #a3832c;
+  --bn-brass-500: #bd9a35;
+  --bn-brass-300: #dcc173;
+  --bn-brass-100: #f5ecd2;
 
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
+  /* --- Warm neutrals: lokta paper, river stone, charcoal. -------------- */
+  --bn-ivory:      #faf7f1;
+  --bn-paper:      #ffffff;
+  --bn-sand:       #f3ede2;
+  --bn-stone-100:  #ece5d9;
+  --bn-stone-200:  #ddd4c5;
+  --bn-stone-300:  #c5bbaa;
+  --bn-stone-400:  #a59a88;
+  --bn-stone-500:  #85796a;
+  --bn-stone-600:  #6a5f52;
+  --bn-charcoal-700: #3d392f;
+  --bn-charcoal-800: #2a2721;
+  --bn-charcoal-900: #1a1814;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  /* --- Semantic aliases: what the components actually reference. -------- */
+  --bn-primary:        var(--bn-forest-600);
+  --bn-primary-hover:  var(--bn-forest-700);
+  --bn-primary-soft:   var(--bn-forest-50);
+  --bn-primary-border: var(--bn-forest-200);
+  --bn-on-primary:     #ffffff;
 
-  /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-md: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
+  --bn-accent:         var(--bn-earth-600);
+  --bn-accent-soft:    var(--bn-earth-50);
+
+  --bn-bg:        var(--bn-ivory);
+  --bn-surface:   var(--bn-paper);
+  --bn-surface-2: var(--bn-sand);
+  --bn-border:    var(--bn-stone-200);
+  --bn-border-strong: var(--bn-stone-300);
+
+  --bn-text:        var(--bn-charcoal-900);
+  --bn-text-light:  var(--bn-stone-600);
+  /* Darkened from stone-400, which measured 2.77:1 on white. These are
+     the small uppercase labels, so they need to clear AA outright. */
+  --bn-text-muted:  #7a6e60;
+  --bn-on-dark:     #f4efe6;
+  --bn-on-dark-dim: rgba(244, 239, 230, 0.66);
+
+  /* Status. Success reads as forest so "primary" and "all clear" are the
+     same idea; info is a muted slate-teal rather than a corporate blue. */
+  --bn-success:      var(--bn-forest-600);
+  --bn-success-soft: var(--bn-forest-50);
+  --bn-warning:      var(--bn-brass-600);
+  --bn-warning-soft: var(--bn-brass-100);
+  --bn-danger:       var(--bn-crimson-600);
+  --bn-danger-soft:  var(--bn-crimson-50);
+  --bn-info:         #2f5d63;
+  --bn-info-soft:    #e4eff0;
+  --bn-info-border:  #c4dcdf;
+
+  /* Severity shares the status ramp, so a badge and a map pin never
+     disagree about what "high" looks like. */
+  --bn-sev-low:      var(--bn-forest-500);
+  --bn-sev-medium:   var(--bn-brass-600);
+  --bn-sev-high:     var(--bn-earth-600);
+  --bn-sev-critical: var(--bn-crimson-600);
+
+  /* --- Legacy aliases -------------------------------------------------
+     35 pages were written against the old blue vocabulary. Remapping the
+     names here re-themes every one of them without touching their markup,
+     and keeps any reference I missed looking deliberate instead of broken. */
+  --bn-navy:       var(--bn-forest-900);
+  --bn-navy-light: var(--bn-forest-700);
+  --bn-blue:       var(--bn-forest-600);
+  --bn-blue-light: var(--bn-forest-50);
+  --bn-red:        var(--bn-crimson-600);
+  --bn-orange:     var(--bn-earth-600);
+  --bn-green:      var(--bn-forest-600);
+  --bn-yellow:     var(--bn-brass-500);
+  --bn-white:      var(--bn-paper);
+
+  /* --- Typography ------------------------------------------------------
+     A serif for display and a sans for everything else. The Devanagari
+     faces sit in the same stacks so a Nepali or Maithili heading keeps the
+     editorial weight instead of dropping to a system fallback. */
+  --font-display: "Source Serif 4", "Noto Serif Devanagari", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", "Noto Sans Devanagari", -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --font-family: var(--font-sans); /* legacy alias */
+
+  --font-size-xs:  0.75rem;
+  --font-size-sm:  0.8125rem;
+  --font-size-md:  0.9375rem;
+  --font-size-lg:  1.0625rem;
+  --font-size-xl:  1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
+  --font-size-4xl: 2.75rem;
+  --font-size-5xl: 3.75rem;
 
-  /* Layout */
-  --sidebar-width: 260px;
-  --navbar-height: 64px;
+  --leading-tight: 1.15;
+  --leading-snug:  1.35;
+  --leading-body:  1.65;
+
+  /* Display type is set tight and slightly negative-tracked; body text is
+     left alone, because tracking a 15px UI label only makes it harder to
+     read at a glance. */
+  --tracking-display: -0.022em;
+  --tracking-wide: 0.08em;
+
+  /* --- Spacing --------------------------------------------------------- */
+  --space-2xs: 2px;
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 72px;
+  --space-4xl: 112px;
+
+  /* --- Radius ----------------------------------------------------------
+     Restrained on purpose. Everything at 24px is the house style of every
+     generated interface; 6-14px reads as considered rather than soft. */
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-xl:   14px;
+  --radius-full: 9999px;
+
+  /* --- Elevation -------------------------------------------------------
+     Warm-tinted rather than neutral black. A pure-black shadow over ivory
+     reads grey and slightly dead; tinting it toward charcoal brown keeps
+     the surface feeling lit rather than dirty. */
+  --shadow-xs: 0 1px 2px rgba(42, 39, 33, 0.06);
+  --shadow-sm: 0 1px 3px rgba(42, 39, 33, 0.08), 0 1px 2px rgba(42, 39, 33, 0.04);
+  --shadow-md: 0 4px 12px rgba(42, 39, 33, 0.08), 0 1px 3px rgba(42, 39, 33, 0.05);
+  --shadow-lg: 0 12px 28px rgba(42, 39, 33, 0.10), 0 4px 8px rgba(42, 39, 33, 0.05);
+  --shadow-xl: 0 24px 56px rgba(42, 39, 33, 0.14), 0 8px 16px rgba(42, 39, 33, 0.06);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* --- Motion ----------------------------------------------------------
+     Short. A 400ms UI transition feels broken once you have used it twice. */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.26, 0.64, 1);
+  --dur-fast: 120ms;
+  --dur-base: 190ms;
+  --dur-slow: 340ms;
+
+  /* --- Layout ---------------------------------------------------------- */
+  --sidebar-width: 256px;
+  --navbar-height: 60px;
+  --content-max: 1240px;
+  --prose-max: 66ch;
+
+  --z-base: 1;
+  --z-sticky: 40;
+  --z-drawer: 60;
+  --z-modal: 80;
+  --z-toast: 100;
+}
+
+/* ==========================================================================
+   Dark theme
+   ==========================================================================
+   Every token above has a dark counterpart here - not a body{background:#111}
+   override. Two guards, matching the three states a viewer can be in:
+
+   * no explicit choice -> the OS preference decides (prefers-color-scheme),
+     unless the page carries an explicit data-theme (see js/theme.js).
+   * data-theme="dark"  -> forced dark regardless of OS.
+   * data-theme="light" -> forced light regardless of OS (excluded from the
+     media-query block below so it always wins over a dark OS preference).
+
+   What moved and what didn't:
+   - The neutral/surface scale (bg, surface, border, text) inverts fully -
+     that is the actual "dark mode" work.
+   - The brand ramps (forest/earth/crimson/brass) invert too, because
+     components reference specific steps of them directly as badge
+     backgrounds and as text - a stat-value in forest-800 text needs a light
+     green in the dark, not the same near-black green sitting unreadably on
+     a dark card.
+   - forest-900 and charcoal-900 are deliberately left close to their light
+     values: every deliberately-dark decorative band (sidebar, the
+     dashboard welcome banner, auth screens' visual panel) anchors its
+     gradient on these two, and they are already "as dark as this palette
+     gets" - there is nothing to invert.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bn-forest-900: #0a1710;
+    --bn-forest-800: #a8dbc0;
+    --bn-forest-700: #8fcbaa;
+    --bn-forest-600: #4f9973;
+    --bn-forest-500: #5aab80;
+    --bn-forest-400: #4a9573;
+    --bn-forest-300: #3a5f49;
+    --bn-forest-200: #24402f;
+    --bn-forest-100: #1a2b22;
+    --bn-forest-50:  #14201a;
+
+    --bn-earth-800: #e8bd96;
+    --bn-earth-700: #d9a67c;
+    --bn-earth-600: #c07444;
+    --bn-earth-500: #c98a5c;
+    --bn-earth-300: #6b4a32;
+    --bn-earth-100: #2b1f15;
+    --bn-earth-50:  #221810;
+
+    --bn-crimson-800: #eeb0ad;
+    --bn-crimson-700: #e0908d;
+    --bn-crimson-600: #c4423f;
+    --bn-crimson-500: #d9615d;
+    --bn-crimson-100: #331a1d;
+    --bn-crimson-50:  #241214;
+
+    --bn-brass-700: #e0c583;
+    --bn-brass-600: #cbaa4e;
+    --bn-brass-500: #cbaa4e;
+    --bn-brass-300: #7a6636;
+    --bn-brass-100: #2b2515;
+
+    --bn-stone-600:  #a89b87;
+    --bn-stone-400:  #6b6152;
+    --bn-stone-300:  #3f372c;
+    --bn-stone-200:  #322b22;
+    --bn-stone-100:  #262019;
+    --bn-charcoal-700: #d8d2c4;
+    /* --bn-charcoal-900 intentionally unchanged - see note above. */
+
+    --bn-ivory: #17140f;
+    --bn-paper: #201c16;
+    --bn-sand:  #29241c;
+
+    --bn-bg:        var(--bn-ivory);
+    --bn-surface:   var(--bn-paper);
+    --bn-surface-2: var(--bn-sand);
+    --bn-border:        #34302a;
+    --bn-border-strong: #46402f;
+
+    --bn-text:        #f0ece2;
+    --bn-text-light:  #b0a692;
+    --bn-text-muted:  #8a806e;
+
+    --bn-info:      #7fb8c0;
+    --bn-info-soft: #16262a;
+    --bn-info-border: #274046;
+
+    /* Photographs get a slightly stronger scrim in the dark: the same
+       overlay strength that met AA against ivory body text needs a touch
+       more to hold against a page that is already dark around it. */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.34), 0 1px 3px rgba(0, 0, 0, 0.22);
+    --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.24);
+    --shadow-xl: 0 24px 56px rgba(0, 0, 0, 0.48), 0 8px 16px rgba(0, 0, 0, 0.28);
+    --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bn-forest-900: #0a1710;
+  --bn-forest-800: #a8dbc0;
+  --bn-forest-700: #8fcbaa;
+  --bn-forest-600: #4f9973;
+  --bn-forest-500: #5aab80;
+  --bn-forest-400: #4a9573;
+  --bn-forest-300: #3a5f49;
+  --bn-forest-200: #24402f;
+  --bn-forest-100: #1a2b22;
+  --bn-forest-50:  #14201a;
+
+  --bn-earth-800: #e8bd96;
+  --bn-earth-700: #d9a67c;
+  --bn-earth-600: #c07444;
+  --bn-earth-500: #c98a5c;
+  --bn-earth-300: #6b4a32;
+  --bn-earth-100: #2b1f15;
+  --bn-earth-50:  #221810;
+
+  --bn-crimson-800: #eeb0ad;
+  --bn-crimson-700: #e0908d;
+  --bn-crimson-600: #c4423f;
+  --bn-crimson-500: #d9615d;
+  --bn-crimson-100: #331a1d;
+  --bn-crimson-50:  #241214;
+
+  --bn-brass-700: #e0c583;
+  --bn-brass-600: #cbaa4e;
+  --bn-brass-500: #cbaa4e;
+  --bn-brass-300: #7a6636;
+  --bn-brass-100: #2b2515;
+
+  --bn-stone-600:  #a89b87;
+  --bn-stone-400:  #6b6152;
+  --bn-stone-300:  #3f372c;
+  --bn-stone-200:  #322b22;
+  --bn-stone-100:  #262019;
+  --bn-charcoal-700: #d8d2c4;
+
+  --bn-ivory: #17140f;
+  --bn-paper: #201c16;
+  --bn-sand:  #29241c;
+
+  --bn-bg:        var(--bn-ivory);
+  --bn-surface:   var(--bn-paper);
+  --bn-surface-2: var(--bn-sand);
+  --bn-border:        #34302a;
+  --bn-border-strong: #46402f;
+
+  --bn-text:        #f0ece2;
+  --bn-text-light:  #b0a692;
+  --bn-text-muted:  #8a806e;
+
+  --bn-info:      #7fb8c0;
+  --bn-info-soft: #16262a;
+    --bn-info-border: #274046;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.34), 0 1px 3px rgba(0, 0, 0, 0.22);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.24);
+  --shadow-xl: 0 24px 56px rgba(0, 0, 0, 0.48), 0 8px 16px rgba(0, 0, 0, 0.28);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Anyone who has asked the system for less motion gets a static interface.
+   Applied globally here so no component has to remember to opt in. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

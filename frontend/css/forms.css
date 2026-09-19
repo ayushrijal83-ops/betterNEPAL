@@ -1,166 +1,352 @@
-/* Forms */
-.form-group {
-  margin-bottom: var(--space-md);
-}
+/* ==========================================================================
+   Better Nepal — Authentication layout
+   ==========================================================================
+   The form controls themselves live in components.css. This file is only the
+   split-screen authentication shell: an immersive Nepal panel on one side, a
+   plain usable form on the other.
 
-.form-label {
-  display: block;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  margin-bottom: var(--space-xs);
-  color: var(--bn-text);
-}
+   The decoration is strictly on the left. Nothing in the visual column can
+   overlap, tint or animate the fields - signing in is the one flow where a
+   design flourish that costs usability is never worth it.
+   ========================================================================== */
 
-.form-input,
-.form-select,
-.form-textarea {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--bn-border);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  font-family: inherit;
-  background: var(--bn-white);
-  transition: border-color 0.2s;
-  color: var(--bn-text);
-}
-
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: var(--bn-blue);
-  box-shadow: 0 0 0 3px rgba(30, 90, 168, 0.1);
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 110px;
-}
-
-.form-row {
+.auth-layout,
+.auth-wrap {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
-}
-
-@media (max-width: 700px) {
-  .form-row { grid-template-columns: 1fr; }
-}
-
-/* Form layout with sidebar */
-.form-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--space-lg);
-  align-items: start;
-}
-
-@media (max-width: 1000px) {
-  .form-layout { grid-template-columns: 1fr; }
-}
-
-/* Upload zone */
-.upload-zone {
-  border: 2px dashed var(--bn-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-2xl);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
+  grid-template-columns: 1.05fr 1fr;
+  min-height: 100vh;
   background: var(--bn-bg);
+}
+
+/* --- Visual column ------------------------------------------------------- */
+
+.auth-visual {
   position: relative;
-}
-
-.upload-zone:hover {
-  border-color: var(--bn-blue);
-  background: var(--bn-blue-light);
-}
-
-.upload-zone.has-image {
-  padding: 0;
   overflow: hidden;
-  border-style: solid;
-  background: var(--bn-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-2xl);
+  background: linear-gradient(165deg, var(--bn-forest-800) 0%, var(--bn-forest-900) 55%, var(--bn-charcoal-900) 100%);
+  color: var(--bn-on-dark);
 }
 
-.upload-zone img {
-  width: 100%;
-  height: auto;
-  display: block;
-  max-height: 320px;
-  object-fit: cover;
+/* Layered ridgelines along the bottom of the panel. Three depth layers, each
+   paler and lower - atmospheric haze is what makes distance read. */
+.auth-ridge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  pointer-events: none;
 }
 
-.upload-icon {
-  width: 42px;
-  height: 42px;
-  color: var(--bn-text-muted);
-  margin: 0 auto var(--space-sm);
+.auth-ridge svg { width: 100%; height: 100%; }
+
+.auth-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none'%3E%3Cg stroke='%23b3d7c5' stroke-width='1' fill='none'%3E%3Cpath d='M-20 120 Q 110 70 210 108 T 400 78 T 620 115'/%3E%3Cpath d='M-20 145 Q 110 95 210 133 T 400 103 T 620 140'/%3E%3Cpath d='M-20 170 Q 110 120 210 158 T 400 128 T 620 165'/%3E%3Cpath d='M-20 60 Q 120 15 230 52 T 420 25 T 620 62'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 600px 400px;
+  opacity: 0.1;
 }
 
-/* Severity picker */
-.severity-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-sm);
-}
+/* `picture` must be excluded along with the ridge: it is an inline element,
+   and making it position:relative turns it into the containing block for the
+   absolutely-positioned photo inside it, which then sizes to 0x0. */
+.auth-visual > *:not(.auth-ridge):not(picture) { position: relative; z-index: 2; }
 
-.severity-option {
-  padding: var(--space-md);
-  border: 2px solid var(--bn-border);
-  border-radius: var(--radius-md);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  background: var(--bn-white);
-}
+/* Take the wrapper out of the box tree entirely so the img is laid out
+   against .auth-visual itself. */
+.auth-visual > picture { display: contents; }
 
-.severity-option:hover { border-color: var(--bn-blue); }
-
-.severity-option.selected {
-  border-color: var(--bn-blue);
-  background: var(--bn-blue-light);
-}
-
-.severity-option input { display: none; }
-
-.severity-option .sev-label {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  margin-top: var(--space-xs);
-}
-
-.severity-option .sev-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-bottom: var(--space-xs);
-}
-
-.sev-low    { background: var(--bn-green); }
-.sev-medium { background: var(--bn-orange); }
-.sev-high   { background: var(--bn-red); }
-
-/* GPS chip */
-.gps-chip {
+.auth-visual-brand {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--bn-blue-light);
-  color: var(--bn-blue);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  margin-top: 6px;
+  gap: 11px;
+  color: #fff;
+  text-decoration: none;
 }
 
-/* Action row */
-.form-actions {
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: flex-end;
-  margin-top: var(--space-md);
+.auth-visual-brand:hover { color: #fff; text-decoration: none; }
+
+.auth-visual-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--bn-forest-200);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
+
+.auth-visual-mark svg { width: 23px; height: 23px; }
+
+.auth-visual-name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.auth-visual-copy { max-width: 30ch; }
+
+.auth-visual-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 1.1rem + 1.7vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  color: #fff;
+}
+
+.auth-visual-text {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-md);
+  line-height: var(--leading-body);
+  color: var(--bn-on-dark-dim);
+}
+
+.auth-visual-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  font-size: var(--font-size-xs);
+  color: rgba(244, 239, 230, 0.5);
+}
+
+/* --- Form column --------------------------------------------------------- */
+
+.auth-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-2xl);
+  background: var(--bn-bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.auth-brand { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+
+.auth-brand-logo {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--bn-forest-600);
+  color: #fff;
+  font-weight: 700;
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
+}
+
+.auth-sub {
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-md);
+  color: var(--bn-text-light);
+}
+
+.auth-footer {
+  margin-top: var(--space-lg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--bn-text-light);
+}
+
+.auth-back {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  color: var(--bn-text-muted);
+}
+
+/* Security notice used by the three official portals. */
+.auth-notice {
+  display: flex;
+  gap: 11px;
+  padding: 11px var(--space-md);
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--bn-border);
+  border-left-width: 3px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  line-height: var(--leading-snug);
+}
+
+.auth-notice svg { flex-shrink: 0; margin-top: 1px; }
+.auth-notice-title { font-weight: 700; }
+.auth-notice-body { margin-top: 3px; color: var(--bn-text-light); }
+
+.auth-notice--authority { border-left-color: var(--bn-forest-600); background: var(--bn-forest-50); color: var(--bn-forest-800); }
+.auth-notice--contractor { border-left-color: var(--bn-brass-600); background: var(--bn-brass-100); color: var(--bn-brass-700); }
+.auth-notice--admin { border-left-color: var(--bn-crimson-600); background: var(--bn-crimson-50); color: var(--bn-crimson-800); }
+
+.auth-lang { margin-top: var(--space-lg); display: flex; justify-content: center; }
+
+/* --- District picker (registration) -------------------------------------- */
+
+.district-picker { position: relative; }
+
+.district-results {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  max-height: 230px;
+  overflow-y: auto;
+  border: 1px solid var(--bn-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.district-results button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.district-results button:hover,
+.district-results button:focus-visible { background: var(--bn-forest-50); }
+
+.district-results .district-province { color: var(--bn-text-muted); font-size: var(--font-size-xs); }
+
+/* --- Responsive ----------------------------------------------------------
+   Below 900px the visual column becomes a short banner rather than
+   disappearing: it keeps the brand present without pushing the form off
+   the first screen, which is what stacking it full-height would do. */
+
+@media (max-width: 900px) {
+  .auth-layout,
+  .auth-wrap {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  .auth-visual {
+    min-height: 210px;
+    padding: var(--space-lg);
+    justify-content: flex-end;
+  }
+
+  .auth-visual-copy { max-width: none; }
+  .auth-visual-title { font-size: var(--font-size-xl); }
+  .auth-visual-text { display: none; }
+  .auth-visual-foot { display: none; }
+  .auth-ridge { height: 70%; }
+  .auth-panel { padding: var(--space-xl) var(--space-lg) var(--space-2xl); }
+}
+
+@media (max-width: 480px) {
+  .auth-panel { padding: var(--space-lg) var(--space-md) var(--space-xl); }
+  .auth-visual { min-height: 160px; }
+}
+
+
+/* --- Autofill ------------------------------------------------------------
+   Chrome paints autofilled fields with its own pale blue and ignores
+   background-color outright. An inset shadow is the only way to cover it,
+   and -webkit-text-fill-color the only way to recolour the text. The long
+   transition delay is the usual Safari workaround. */
+.auth-panel input:-webkit-autofill,
+.auth-panel input:-webkit-autofill:hover,
+.auth-panel input:-webkit-autofill:focus,
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--bn-paper) inset !important;
+  box-shadow: 0 0 0 1000px var(--bn-paper) inset !important;
+  -webkit-text-fill-color: var(--bn-text) !important;
+  caret-color: var(--bn-text);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Result rows inside a district picker. */
+.district-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.district-result:hover,
+.district-result:focus-visible,
+.district-result.is-highlighted { background: var(--bn-forest-50); outline: none; }
+
+.district-name { font-weight: 500; color: var(--bn-text); }
+
+.district-results-empty {
+  padding: 11px 12px;
+  font-size: var(--font-size-sm);
+  color: var(--bn-text-muted);
+}
+
+/* --- Photographic media panel --------------------------------------------
+   The drawn ridgeline stays underneath as the ground. If the photograph is
+   slow or fails, the panel is still a designed surface rather than an empty
+   rectangle, which is why the SVG was not removed when the photo went in. */
+
+.auth-visual--photo .auth-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Over the photograph, the panel's own gradient becomes the scrim that keeps
+   the brand and copy legible. Bottom-weighted, because that is where the
+   copy sits. */
+.auth-visual--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top,
+    rgba(10, 30, 21, 0.94) 6%,
+    rgba(10, 30, 21, 0.74) 42%,
+    rgba(10, 30, 21, 0.42) 100%);
+}
+
+/* The contour texture would fight the photograph - it reads as a dirty
+   screen over a real image rather than as a motif. */
+.auth-visual--photo::before { display: none; }
+
+/* The ridgeline sits between photo and scrim: still present, now a tonal
+   anchor at the foot of the frame rather than the whole subject. */
+.auth-visual--photo .auth-ridge { z-index: 0; opacity: 0.55; }
+
+.auth-visual--photo > *:not(.auth-photo):not(.auth-ridge):not(picture) { z-index: 2; }

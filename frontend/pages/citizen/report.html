@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -21,7 +22,7 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Report an Issue</h1>
+            <h1 class="page-title" data-i18n="nav.report">Report an Issue</h1>
             <p class="page-subtitle">Take photo → GPS location → Select issue → Submit</p>
           </div>
           <a href="dashboard.html" class="btn btn-outline">← Back</a>
@@ -35,7 +36,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">Photo</label>
+                <label class="form-label" data-i18n="report.field.photo">Photo</label>
                 <div class="upload-zone" id="upload-zone">
                   <svg class="upload-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
@@ -46,14 +47,14 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">Title</label>
+                <label class="form-label" data-i18n="report.field.title">Title</label>
                 <input class="form-input" type="text" id="report-title"
                        placeholder="e.g. Broken streetlight on main road" />
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label">Location</label>
+                  <label class="form-label" data-i18n="report.field.location">Location</label>
                   <input class="form-input" type="text" id="location"
                          value="Kathmandu, Bagmati Province" />
                   <div class="gps-chip">
@@ -66,7 +67,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Category</label>
+                  <label class="form-label" data-i18n="report.field.category">Category</label>
                   <select class="form-select" id="category"></select>
                 </div>
               </div>
@@ -77,30 +78,30 @@
                   <label class="severity-option">
                     <input type="radio" name="severity" value="Low" />
                     <span class="sev-dot sev-low"></span>
-                    <div class="sev-label">Low</div>
+                    <div class="sev-label" data-i18n="severity.low">Low</div>
                   </label>
                   <label class="severity-option selected">
                     <input type="radio" name="severity" value="Medium" checked />
                     <span class="sev-dot sev-medium"></span>
-                    <div class="sev-label">Medium</div>
+                    <div class="sev-label" data-i18n="severity.medium">Medium</div>
                   </label>
                   <label class="severity-option">
                     <input type="radio" name="severity" value="High" />
                     <span class="sev-dot sev-high"></span>
-                    <div class="sev-label">High</div>
+                    <div class="sev-label" data-i18n="severity.high">High</div>
                   </label>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Description</label>
+                <label class="form-label" data-i18n="report.field.description">Description</label>
                 <textarea class="form-textarea" id="description"
                   placeholder="Describe the issue in detail..."></textarea>
               </div>
 
               <div class="form-actions">
-                <a href="dashboard.html" class="btn btn-outline">Cancel</a>
-                <button type="submit" class="btn btn-danger btn-lg" id="submit-btn">Submit Report</button>
+                <a href="dashboard.html" class="btn btn-outline" data-i18n="common.cancel">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">Submit Report</button>
               </div>
             </div>
           </form>
@@ -109,17 +110,13 @@
             <div class="ai-panel">
               <div class="ai-panel-header">
                 <span class="ai-badge">AI</span>
-                Smart Classification Preview
+                What happens after you submit
               </div>
-              <div class="ai-result-row">
-                <span class="ai-result-label">Category</span>
-                <span class="ai-result-value">Infrastructure</span>
-              </div>
-              <div class="ai-result-row">
-                <span class="ai-result-label">Department</span>
-                <span class="ai-result-value">Municipality</span>
-              </div>
-              <p class="text-muted text-sm mt-sm">Human verification required.</p>
+              <p class="text-sm" style="color:var(--bn-earth-800)">
+                The platform's AI reviews new reports for severity and duplicates once submitted,
+                and an authority verifies the result before anything is routed. Nothing is
+                classified until then - this is not a live preview.
+              </p>
             </div>
           </aside>
         </div>
@@ -127,9 +124,14 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/chatbot.js"></script>
   <script src="../../js/api.js"></script>
   <script src="../../js/reports.js"></script>
   <script>

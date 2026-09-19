@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -20,7 +21,7 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Alerts</h1>
+            <h1 class="page-title" data-i18n="nav.alerts">Alerts</h1>
             <p class="page-subtitle">Emergency and information alerts for your area</p>
           </div>
         </div>
@@ -34,13 +35,13 @@
           <div class="card-header"><h2 class="card-title">Alert History</h2></div>
           <table class="table">
             <thead>
-              <tr><th>Type</th><th>Title</th><th>District</th><th>Time</th></tr>
+              <tr><th>Type</th><th data-i18n="report.field.title">Title</th><th>District</th><th>Time</th></tr>
             </thead>
             <tbody>
-              <tr><td><span class="badge badge-critical">Critical</span></td><td>Monsoon flood warning</td><td>Sunsari</td><td>20 mins ago</td></tr>
+              <tr><td><span class="badge badge-critical" data-i18n="severity.critical">Critical</span></td><td>Monsoon flood warning</td><td>Sunsari</td><td>20 mins ago</td></tr>
               <tr><td><span class="badge badge-warning">Warning</span></td><td>Bridge closure — Prithvi Highway</td><td>Chitwan</td><td>1 hour ago</td></tr>
               <tr><td><span class="badge badge-info">Info</span></td><td>New road project Kalanki Underpass</td><td>Kathmandu</td><td>3 hours ago</td></tr>
-              <tr><td><span class="badge badge-success">Resolved</span></td><td>Water supply restored</td><td>Lalitpur</td><td>Yesterday</td></tr>
+              <tr><td><span class="badge badge-success" data-i18n="status.resolved">Resolved</span></td><td>Water supply restored</td><td>Lalitpur</td><td>Yesterday</td></tr>
             </tbody>
           </table>
         </div>
@@ -48,14 +49,20 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/chatbot.js"></script>
   <script src="../../js/alerts.js"></script>
   <script>
     const role = requireRole("citizen");
     mountShell(role);
-    renderAlertList("alert-list", getAlerts());
+    renderAlertList("alert-list", { limit: 30 });
   </script>
 </body>
 </html>

@@ -1,4 +1,7 @@
-<!-- Incident card template. Used by js/incidents.js -> renderIncidentCard() -->
+<!-- REFERENCE ONLY - not loaded at runtime.
+     js/incidents.js renderIncidentCard() builds this markup itself; nothing fetches this file.
+     Kept as a readable reference for the intended structure. Edit the
+     JS renderer to change what users actually see. -->
 <a href="incident-details.html?id={{id}}" class="incident-card">
   <div class="incident-icon {{iconClass}}">{{iconLetter}}</div>
   <div class="incident-body">

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Official Access — Better Nepal</title>
+  <meta name="robots" content="noindex" />
+
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/nepal.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/site.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body class="np-deep" data-no-chatbot>
+
+<main class="gateway photo photo-overlay-flat">
+    <picture>
+      <source type="image/webp" srcset="../assets/photography/auth/durbar-square-crowd-800.webp 656w, ../assets/photography/auth/durbar-square-crowd-1200.webp 983w" sizes="100vw">
+      <img src="../assets/photography/auth/durbar-square-crowd-1200.jpg" srcset="../assets/photography/auth/durbar-square-crowd-800.jpg 656w, ../assets/photography/auth/durbar-square-crowd-1200.jpg 983w" sizes="100vw"
+           width="983" height="1311"
+           alt="A multi-tiered Newari temple in a durbar square, with a crowd gathered in the plaza below." data-i18n-alt="photo.durbar-square-crowd"
+           style="--photo-focus:center 35%" loading="eager" fetchpriority="high">
+    </picture>
+    <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/_Rdqpya1Fgc" target="_blank" rel="noopener noreferrer">Binaya Photography</a> / Unsplash</span>
+
+  <div class="shell shell--narrow">
+
+    <div class="gateway-head">
+      <span class="badge badge-warning" data-i18n="auth.official.restricted">Restricted area</span>
+      <h1 class="display-sm mt-md" data-i18n="auth.official.title">Official Access</h1>
+      <p class="lede mt-md" data-i18n="auth.official.subtitle">
+        Select your workspace. Each portal is fenced to its own role — signing in at the wrong
+        one is refused even with valid credentials.
+      </p>
+    </div>
+
+    <div class="gateway-grid">
+      <a class="gateway-card gateway-card--authority" href="authority/login.html">
+        <span class="np-marker" aria-hidden="true">
+          <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M12 2 3 7v6c0 5 3.8 8.6 9 9 5.2-.4 9-4 9-9V7Z"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+        </span>
+        <h2 data-i18n="auth.authority.name">Authority Portal</h2>
+        <p data-i18n="auth.authority.desc">Verify reports, assign responsibility and publish advisories.</p>
+        <span class="gateway-link"><span data-i18n="common.signIn">Sign in</span> &rarr;</span>
+      </a>
+
+      <a class="gateway-card gateway-card--contractor" href="contractor/login.html">
+        <span class="np-marker np-marker--brass" aria-hidden="true">
+          <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 1 5.4-5.4l-2.5 2.5"/>
+          </svg>
+        </span>
+        <h2 data-i18n="auth.contractor.name">Contractor Workspace</h2>
+        <p data-i18n="auth.contractor.desc">Track assigned projects and file progress from the field.</p>
+        <span class="gateway-link"><span data-i18n="common.signIn">Sign in</span> &rarr;</span>
+      </a>
+
+      <a class="gateway-card gateway-card--admin" href="admin/login.html">
+        <span class="np-marker np-marker--crimson" aria-hidden="true">
+          <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4M12 16v2"/>
+          </svg>
+        </span>
+        <h2 data-i18n="auth.admin.name">System Administration</h2>
+        <p data-i18n="auth.admin.desc">Platform administration, roles and authority records.</p>
+        <span class="gateway-link"><span data-i18n="common.signIn">Sign in</span> &rarr;</span>
+      </a>
+    </div>
+
+    <div class="gateway-foot">
+      <div id="gateway-lang"></div>
+      <p class="mt-lg">
+        <span data-i18n="auth.official.publicService">Looking for the public service?</span>
+        <a href="citizen/login.html" data-i18n="nav.citizenPortal">Citizen Portal</a>
+        &nbsp;·&nbsp;
+        <a href="../index.html" data-i18n="common.backHome">Back to home</a>
+      </p>
+      <p class="gateway-note mt-md" data-i18n="auth.official.noSelfReg">
+        Official accounts are created by an administrator. There is no self-registration here.
+      </p>
+    </div>
+  </div>
+</main>
+
+<script src="../i18n/en.js"></script>
+<script src="../i18n/ne.js"></script>
+<script src="../i18n/mai.js"></script>
+<script src="../i18n/index.js"></script>
+<script>
+  document.getElementById("gateway-lang").innerHTML =
+    BN_I18N.switcherMarkup().replace("lang-switch", "lang-switch lang-switch--dark");
+</script>
+</body>
+</html>

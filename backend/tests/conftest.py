@@ -49,15 +49,18 @@ def make_user(db, roles):
     """
     from app.models import User
     from app.services.auth_service import hash_password
+    import uuid
 
     def _make_user(
-        email: str = "citizen@betternepal.np",
+        email: str | None = None,
         password: str = "correct-horse-battery",
         full_name: str = "Test User",
         role_names: tuple[str, ...] = ("citizen",),
         is_active: bool = True,
         phone: str | None = None,
     ) -> User:
+        if email is None:
+            email = f"user_{uuid.uuid4().hex[:8]}@test.np"
         user = User(
             email=email,
             password_hash=hash_password(password),

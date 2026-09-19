@@ -1,0 +1,433 @@
+{
+  "_meta": {
+    "dataset": "nepal_rivers_roads_reference",
+    "description": "Major rivers per district, national road corridors, and province-level road authority responsibility. Extracted from the project's own research file.",
+    "source": "BETTER_NEPAL_Rivers_Roads_7_Provinces_77_Districts.docx",
+    "source_type": "research_reference",
+    "verification_status": "reference_only",
+    "notes": "Major-river and major-road reference only, not a complete inventory of every stream, trail or local road, and not live traffic/closure/flood data. Static planning context - see the source document's own data-limitation section."
+  },
+  "rivers_by_district": {
+    "Taplejung": [
+      "Tamor",
+      "Mewa",
+      "Kabeli"
+    ],
+    "Panchthar": [
+      "Tamor",
+      "Kabeli",
+      "Hewa"
+    ],
+    "Ilam": [
+      "Mai",
+      "Jogmai",
+      "Deumai",
+      "Puwa",
+      "Kankai"
+    ],
+    "Jhapa": [
+      "Mechi",
+      "Kankai",
+      "Biring",
+      "Ratuwa"
+    ],
+    "Morang": [
+      "Singhiya",
+      "Lohandra",
+      "Budhi Khola",
+      "Keshaliya"
+    ],
+    "Sunsari": [
+      "Saptakoshi",
+      "Budhi Khola",
+      "Sardu",
+      "Seuti"
+    ],
+    "Dhankuta": [
+      "Tamor",
+      "Arun",
+      "Tangkhuwa"
+    ],
+    "Terhathum": [
+      "Tamor and tributaries"
+    ],
+    "Sankhuwasabha": [
+      "Arun",
+      "Barun",
+      "Sabha",
+      "Induwa"
+    ],
+    "Bhojpur": [
+      "Arun",
+      "Dudh Koshi",
+      "Sunkoshi tributaries"
+    ],
+    "Solukhumbu": [
+      "Dudh Koshi",
+      "Bhote Koshi",
+      "Imja",
+      "Hinku"
+    ],
+    "Okhaldhunga": [
+      "Likhu",
+      "Sunkoshi",
+      "Dudh Koshi tributaries"
+    ],
+    "Khotang": [
+      "Dudh Koshi",
+      "Sunkoshi",
+      "Rawa"
+    ],
+    "Udayapur": [
+      "Triyuga",
+      "Tawa",
+      "Sunkoshi/Koshi system"
+    ],
+    "Saptari": [
+      "Koshi",
+      "Balan",
+      "Khado"
+    ],
+    "Siraha": [
+      "Kamala",
+      "Balan",
+      "Gagan"
+    ],
+    "Dhanusha": [
+      "Kamala",
+      "Ratu",
+      "Aurahi"
+    ],
+    "Mahottari": [
+      "Ratu",
+      "Bigahi"
+    ],
+    "Sarlahi": [
+      "Bagmati",
+      "Lakhandei"
+    ],
+    "Rautahat": [
+      "Bagmati",
+      "Lalbakaiya"
+    ],
+    "Bara": [
+      "Bakaiya",
+      "Pasaha",
+      "Bangari"
+    ],
+    "Parsa": [
+      "Sirsiya",
+      "Bhata",
+      "local Terai streams"
+    ],
+    "Kathmandu": [
+      "Bagmati",
+      "Bishnumati",
+      "Manohara",
+      "Tukucha",
+      "Dhobi Khola",
+      "Nakkhu"
+    ],
+    "Lalitpur": [
+      "Bagmati",
+      "Nakkhu",
+      "Godavari",
+      "Karmanasha"
+    ],
+    "Bhaktapur": [
+      "Hanumante",
+      "Manohara",
+      "Khasyang Khusung"
+    ],
+    "Kavrepalanchok": [
+      "Sunkoshi",
+      "Indrawati",
+      "Roshi",
+      "Punyamata"
+    ],
+    "Sindhupalchok": [
+      "Sunkoshi",
+      "Bhote Koshi",
+      "Indrawati",
+      "Balephi",
+      "Melamchi"
+    ],
+    "Dolakha": [
+      "Tamakoshi",
+      "Bhote Koshi",
+      "Rolwaling"
+    ],
+    "Ramechhap": [
+      "Tamakoshi",
+      "Likhu",
+      "Sunkoshi"
+    ],
+    "Sindhuli": [
+      "Kamala",
+      "Sunkoshi",
+      "Marin",
+      "Bagmati"
+    ],
+    "Makwanpur": [
+      "Bagmati",
+      "Rapti",
+      "Kulekhani",
+      "Karra"
+    ],
+    "Chitwan": [
+      "Narayani",
+      "Rapti",
+      "Reu",
+      "Kali"
+    ],
+    "Dhading": [
+      "Trishuli",
+      "Budhi Gandaki",
+      "Ankhu Khola"
+    ],
+    "Nuwakot": [
+      "Trishuli",
+      "Tadi",
+      "Likhu"
+    ],
+    "Rasuwa": [
+      "Trishuli",
+      "Bhote Koshi",
+      "Langtang Khola"
+    ],
+    "Mustang": [
+      "Kali Gandaki"
+    ],
+    "Myagdi": [
+      "Khola"
+    ],
+    "Parbat": [
+      "Kali Gandaki",
+      "Modi"
+    ],
+    "Baglung": [
+      "Kali Gandaki",
+      "Badigad",
+      "Kathe Khola"
+    ],
+    "Syangja": [
+      "Kali Gandaki",
+      "Aandhikhola"
+    ],
+    "Kaski": [
+      "Seti Gandaki",
+      "Modi",
+      "Madi"
+    ],
+    "Tanahun": [
+      "Seti Gandaki",
+      "Marsyangdi",
+      "Madi"
+    ],
+    "Lamjung": [
+      "Marsyangdi",
+      "Dordi",
+      "Midim"
+    ],
+    "Manang": [
+      "Marsyangdi",
+      "Dudh Khola"
+    ],
+    "Gorkha": [
+      "Budhi Gandaki",
+      "Daraudi",
+      "Chepe"
+    ],
+    "Nawalpur": [
+      "Narayani/Gandaki",
+      "Binayi",
+      "Arun"
+    ],
+    "Rukum East": [
+      "Madi/West Rapti",
+      "Sani Bheri tributaries"
+    ],
+    "Rolpa": [
+      "Madi/West Rapti",
+      "Lungri"
+    ],
+    "Pyuthan": [
+      "Jhimruk",
+      "Madi/West Rapti"
+    ],
+    "Dang": [
+      "West Rapti",
+      "Babai tributaries"
+    ],
+    "Arghakhanchi": [
+      "Banganga",
+      "West Rapti tributaries"
+    ],
+    "Gulmi": [
+      "Badigad",
+      "Kali Gandaki tributaries"
+    ],
+    "Palpa": [
+      "Kali Gandaki",
+      "Tinau"
+    ],
+    "Rupandehi": [
+      "Tinau",
+      "Rohini",
+      "Dano"
+    ],
+    "Kapilvastu": [
+      "Banganga",
+      "Koili",
+      "local Terai rivers"
+    ],
+    "Nawalparasi West": [
+      "Narayani/Gandaki",
+      "Jharahi"
+    ],
+    "Banke": [
+      "Rapti",
+      "Duduwa",
+      "Maan"
+    ],
+    "Bardiya": [
+      "Karnali",
+      "Babai",
+      "Geruwa",
+      "Orahi"
+    ],
+    "Humla": [
+      "Karnali"
+    ],
+    "Mugu": [
+      "Karnali",
+      "Tila tributaries"
+    ],
+    "Jumla": [
+      "Tila",
+      "Sinja"
+    ],
+    "Kalikot": [
+      "Karnali",
+      "Tila"
+    ],
+    "Dolpa": [
+      "Bheri",
+      "Thuli Bheri"
+    ],
+    "Jajarkot": [
+      "Bheri",
+      "Nalgad"
+    ],
+    "Rukum West": [
+      "Bheri",
+      "Sani Bheri"
+    ],
+    "Dailekh": [
+      "Karnali",
+      "Lohare",
+      "Bhairabi"
+    ],
+    "Surkhet": [
+      "Bheri",
+      "Karnali",
+      "Itram"
+    ],
+    "Salyan": [
+      "Bheri",
+      "Sharada"
+    ],
+    "Darchula": [
+      "Mahakali",
+      "Chameliya"
+    ],
+    "Baitadi": [
+      "Mahakali",
+      "Chameliya tributaries"
+    ],
+    "Bajhang": [
+      "Seti",
+      "Bauligad"
+    ],
+    "Bajura": [
+      "Budhiganga",
+      "Karnali tributaries"
+    ],
+    "Dadeldhura": [
+      "Mahakali",
+      "Rangun",
+      "Rupali Gad"
+    ],
+    "Doti": [
+      "Seti",
+      "Thuli Gad"
+    ],
+    "Achham": [
+      "Seti",
+      "Budhiganga",
+      "Karnali tributaries"
+    ],
+    "Kailali": [
+      "Karnali",
+      "Mohana",
+      "Pathariya",
+      "Kandra"
+    ],
+    "Kanchanpur": [
+      "Mahakali",
+      "Doda",
+      "Sihali"
+    ]
+  },
+  "road_corridors": [
+    {
+      "name": "East–West / Mahendra Highway",
+      "description": "Major east-west national corridor across the Terai."
+    },
+    {
+      "name": "Prithvi Highway",
+      "description": "Kathmandu–Mugling–Pokhara corridor."
+    },
+    {
+      "name": "Tribhuvan Highway",
+      "description": "Kathmandu–Naubise–Hetauda route."
+    },
+    {
+      "name": "Arniko Highway",
+      "description": "Kathmandu–Dolalghat–Kodari corridor."
+    },
+    {
+      "name": "BP Highway",
+      "description": "Banepa–Sindhuli–Bardibas corridor."
+    },
+    {
+      "name": "Mid-Hill / Pushpalal Highway",
+      "description": "Major east-west hill corridor."
+    },
+    {
+      "name": "Postal Highway",
+      "description": "Southern Terai corridor."
+    },
+    {
+      "name": "Kali Gandaki Corridor",
+      "description": "Gandaki/Lumbini north-south corridor."
+    },
+    {
+      "name": "Karnali Corridor",
+      "description": "Karnali-region north-south corridor."
+    },
+    {
+      "name": "Mahakali Corridor",
+      "description": "Far-west north-south corridor."
+    }
+  ],
+  "province_road_authority": {
+    "Koshi": "Ministry of Physical Infrastructure Development",
+    "Madhesh": "Ministry of Physical Infrastructure Development",
+    "Bagmati": "Ministry of Physical Infrastructure Development",
+    "Gandaki": "Ministry of Physical Infrastructure Development and Transport Management",
+    "Lumbini": "Ministry of Physical Infrastructure Development",
+    "Karnali": "Ministry of Physical Infrastructure and Urban Development",
+    "Sudurpashchim": "Ministry of Physical Infrastructure Development"
+  }
+}
