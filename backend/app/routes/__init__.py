@@ -13,6 +13,8 @@ from .auth import auth_bp
 from .chat import chat_bp
 from .authorities import authorities_bp
 from .disaster import disaster_bp
+from .districts import districts_bp
+from .emergency import emergency_bp
 from .health import health_bp
 from .incidents import incidents_bp
 from .map import map_bp
@@ -33,8 +35,10 @@ api_v1.register_blueprint(media_bp)
 api_v1.register_blueprint(ai_bp)
 api_v1.register_blueprint(analytics_bp)
 api_v1.register_blueprint(announcements_bp)
+api_v1.register_blueprint(districts_bp)
 api_v1.register_blueprint(travel_bp)
 api_v1.register_blueprint(chat_bp)
 api_v1.register_blueprint(disaster_bp)
+api_v1.register_blueprint(emergency_bp)
 
 __all__ = ["api_v1"]

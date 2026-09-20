@@ -155,6 +155,67 @@ class MediaType(str, enum.Enum):
     DOCUMENT = "document"
 
 
+class SignalSourceType(str, enum.Enum):
+    """Origin of a threat signal."""
+
+    CITIZEN_REPORT = "citizen_report"
+    AUTHORITY_REPORT = "authority_report"
+    SENSOR = "sensor"
+    WEATHER_SIGNAL = "weather_signal"
+    INCIDENT_CLUSTER = "incident_cluster"
+    ROAD_STATUS = "road_status"
+    FLOOD_SIGNAL = "flood_signal"
+    LANDSLIDE_SIGNAL = "landslide_signal"
+    EARTHQUAKE_SIGNAL = "earthquake_signal"
+    FIRE_SIGNAL = "fire_signal"
+    SYSTEM_SIGNAL = "system_signal"
+
+
+class SignalReliability(str, enum.Enum):
+    """Trust level of a signal based on its verification state."""
+
+    VERIFIED_AUTHORITY = "verified_authority"
+    VERIFIED_SENSOR = "verified_sensor"
+    MULTI_SOURCE_CORROBORATED = "multi_source_corroborated"
+    TRUSTED_REPORT = "trusted_report"
+    UNVERIFIED_CITIZEN_REPORT = "unverified_citizen_report"
+    UNKNOWN = "unknown"
+
+
+class ThreatStatus(str, enum.Enum):
+    """Lifecycle of a threat assessment."""
+
+    OBSERVING = "observing"
+    POSSIBLE = "possible"
+    CORROBORATED = "corroborated"
+    WARNING = "warning"
+    CRITICAL = "critical"
+    DISMISSED = "dismissed"
+    EXPIRED = "expired"
+    RESOLVED = "resolved"
+
+
+class BroadcastAuthorizationState(str, enum.Enum):
+    """Authorization state for an emergency broadcast."""
+
+    PENDING_REVIEW = "pending_review"
+    AUTO_APPROVED = "auto_approved"
+    AUTHORITY_APPROVED = "authority_approved"
+    REJECTED = "rejected"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"
+
+
+class BroadcastDeliveryStatus(str, enum.Enum):
+    """Delivery status per platform."""
+
+    PENDING = "pending"
+    PUBLISHED = "published"
+    FAILED = "failed"
+    RETRYING = "retrying"
+    DISABLED = "disabled"
+
+
 class EntityType(str, enum.Enum):
     """What an attachment is evidence for.
 

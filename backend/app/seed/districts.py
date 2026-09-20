@@ -37,7 +37,8 @@ from ..models.district import District
 from ..models.municipality import MUNICIPALITY_TYPES, Municipality
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-DISTRICT_REFERENCE_FILE = DATA_DIR / "districts" / "nepal_districts_reference.json"
+DISTRICT_REFERENCE_FILE = DATA_DIR / "districts" / "nepal_districts_enhanced.json"
+DISTRICT_ENRICHMENT_FILE = DATA_DIR / "districts" / "nepal_district_enrichment.json"
 
 
 def _apply_provenance(record, provenance: dict) -> None:
@@ -69,7 +70,13 @@ def import_district_reference(path: str | Path | None = None) -> dict[str, int]:
             updated += 1
 
         district.name_ne = record["name_ne"] or district.name_ne
+        district.name_mai = record["name_mai"] or district.name_mai
         district.province = record["province"] or district.province
+        district.headquarters = record["headquarters"] or district.headquarters
+        if record["latitude"] is not None:
+            district.latitude = record["latitude"]
+        if record["longitude"] is not None:
+            district.longitude = record["longitude"]
         # A reference import must never overwrite an official code with NULL.
         if record["code"]:
             district.code = record["code"]
@@ -77,6 +84,118 @@ def import_district_reference(path: str | Path | None = None) -> dict[str, int]:
 
     db.session.commit()
     return {"created": created, "updated": updated, "total": len(records)}
+
+
+def import_district_enrichment(path: str | Path | None = None) -> dict[str, int]:
+    """Load the small, honestly-incomplete highway/emergency-contact/corridor
+    dataset (``DISTRICT_ENRICHMENT_FILE`` by default).
+
+    Idempotent per row: a highway is matched on ``(district, code)``, a
+    contact on ``(district, kind)``, a corridor on ``(district, name)`` - a
+    second run updates the same rows rather than duplicating them. Districts
+    named in the file that do not exist yet are a hard error (nothing here
+    guesses a parent district), matching ``import_municipality_reference``.
+    """
+    from ..models.district_extras import (
+        DistrictCorridor,
+        DistrictEmergencyContact,
+        DistrictHighway,
+    )
+
+    file_path = Path(path) if path else DISTRICT_ENRICHMENT_FILE
+    payload = load_json_file(file_path)
+    meta = payload.get("_meta", {})
+    default_provenance = {
+        "source": meta.get("source"),
+        "source_url": None,
+        "source_type": meta.get("source_type"),
+        "verification_status": meta.get("verification_status", "reference_only"),
+    }
+
+    districts = {
+        d.name.casefold(): d for d in db.session.scalars(select(District)).all()
+    }
+
+    def _resolve(name: str) -> District:
+        district = districts.get(name.casefold())
+        if district is None:
+            raise DatasetError(
+                "Enrichment dataset references a district that is not in the database",
+                [f"unknown district: {name}"],
+            )
+        return district
+
+    created = updated = 0
+
+    for row in payload.get("highways", []):
+        district = _resolve(row["district"])
+        existing = db.session.scalar(
+            select(DistrictHighway).where(
+                DistrictHighway.district_id == district.id,
+                DistrictHighway.code == row["code"],
+            )
+        )
+        if existing is None:
+            existing = DistrictHighway(district_id=district.id, code=row["code"])
+            db.session.add(existing)
+            created += 1
+        else:
+            updated += 1
+        existing.name = row["name"]
+        _apply_provenance(existing, default_provenance)
+
+    for row in payload.get("emergency_contacts", []):
+        district = _resolve(row["district"])
+        existing = db.session.scalar(
+            select(DistrictEmergencyContact).where(
+                DistrictEmergencyContact.district_id == district.id,
+                DistrictEmergencyContact.kind == row["kind"],
+            )
+        )
+        if existing is None:
+            existing = DistrictEmergencyContact(district_id=district.id, kind=row["kind"])
+            db.session.add(existing)
+            created += 1
+        else:
+            updated += 1
+        existing.name = row.get("name")
+        existing.phone = row.get("phone")
+        _apply_provenance(
+            existing,
+            {
+                "source": row.get("source", default_provenance["source"]),
+                "source_url": row.get("source_url"),
+                "source_type": default_provenance["source_type"],
+                "verification_status": row.get(
+                    "verification_status", default_provenance["verification_status"]
+                ),
+            },
+        )
+
+    for row in payload.get("corridors", []):
+        district = _resolve(row["district"])
+        existing = db.session.scalar(
+            select(DistrictCorridor).where(
+                DistrictCorridor.district_id == district.id,
+                DistrictCorridor.name == row["name"],
+            )
+        )
+        if existing is None:
+            existing = DistrictCorridor(district_id=district.id, name=row["name"])
+            db.session.add(existing)
+            created += 1
+        else:
+            updated += 1
+        existing.description = row.get("description")
+        _apply_provenance(existing, default_provenance)
+
+    db.session.commit()
+    total = (
+        len(payload.get("highways", []))
+        + len(payload.get("emergency_contacts", []))
+        + len(payload.get("corridors", []))
+    )
+    return {"created": created, "updated": updated, "total": total}
 
 
 def import_municipality_reference(path: str | Path) -> dict[str, int]:

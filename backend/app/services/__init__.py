@@ -12,6 +12,7 @@ from . import (
     report_analysis_service,
     report_service,
     storage_service,
+    threat_correlator,
     travel_service,
 )
 
@@ -28,5 +29,6 @@ __all__ = [
     "report_analysis_service",
     "report_service",
     "storage_service",
+    "threat_correlator",
     "travel_service",
 ]

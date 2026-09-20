@@ -1,0 +1,786 @@
+{
+  "_meta": {
+    "dataset": "nepal_districts_enhanced",
+    "description": "Nepal's 77 districts with administrative codes, multilingual names, province, headquarters, and reference point coordinates. Compiled from project research files and general geographic knowledge.",
+    "source": "Better_Nepal_FULL_77_District_Contact_Database.txt; BETTER_NEPAL_Rivers_Roads_7_Provinces_77_Districts.docx; general geographic knowledge for headquarters and coordinates",
+    "source_type": "research_reference",
+    "verification_status": "reference_only",
+    "contains_geometry": false,
+    "contains_official_codes": false,
+    "notes": "Official administrative codes (code) are not from an authoritative government dataset; they follow a project-internal convention (D-XXX) for reference only. Headquarters town names are the commonly recognised district administrative centres. Coordinates are approximate headquarters locations, not surveyed centroids. name_ne and name_mai are Devanagari script renderings of the district name; where a distinct Maithili form is not established, the Nepali form is used.",
+    "district_count": 77,
+    "province_count": 7
+  },
+  "districts": [
+    {
+      "code": "D-TAP",
+      "name_en": "Taplejung",
+      "name_ne": "ताप्लेजुङ",
+      "name_mai": "ताप्लेजुङ",
+      "province": "Koshi",
+      "headquarters": "Taplejung",
+      "latitude": 27.35,
+      "longitude": 87.67
+    },
+    {
+      "code": "D-PAN",
+      "name_en": "Panchthar",
+      "name_ne": "पाँचथर",
+      "name_mai": "पाँचथर",
+      "province": "Koshi",
+      "headquarters": "Phidim",
+      "latitude": 27.14,
+      "longitude": 87.8
+    },
+    {
+      "code": "D-ILA",
+      "name_en": "Ilam",
+      "name_ne": "इलाम",
+      "name_mai": "इलाम",
+      "province": "Koshi",
+      "headquarters": "Ilam",
+      "latitude": 26.91,
+      "longitude": 87.93
+    },
+    {
+      "code": "D-JHA",
+      "name_en": "Jhapa",
+      "name_ne": "झापा",
+      "name_mai": "झापा",
+      "province": "Koshi",
+      "headquarters": "Bhadrapur",
+      "latitude": 26.55,
+      "longitude": 87.98
+    },
+    {
+      "code": "D-MOR",
+      "name_en": "Morang",
+      "name_ne": "मोरङ",
+      "name_mai": "मोरङ",
+      "province": "Koshi",
+      "headquarters": "Biratnagar",
+      "latitude": 26.45,
+      "longitude": 87.28
+    },
+    {
+      "code": "D-SUN",
+      "name_en": "Sunsari",
+      "name_ne": "सुनसरी",
+      "name_mai": "सुनसरी",
+      "province": "Koshi",
+      "headquarters": "Inaruwa",
+      "latitude": 26.65,
+      "longitude": 87.28
+    },
+    {
+      "code": "D-DHA",
+      "name_en": "Dhankuta",
+      "name_ne": "धनकुटा",
+      "name_mai": "धनकुटा",
+      "province": "Koshi",
+      "headquarters": "Dhankuta",
+      "latitude": 26.98,
+      "longitude": 87.35
+    },
+    {
+      "code": "D-TER",
+      "name_en": "Terhathum",
+      "name_ne": "तेह्रथुम",
+      "name_mai": "तेह्रथुम",
+      "province": "Koshi",
+      "headquarters": "Myanglung",
+      "latitude": 27.12,
+      "longitude": 87.55
+    },
+    {
+      "code": "D-SNK",
+      "name_en": "Sankhuwasabha",
+      "name_ne": "संखुवासभा",
+      "name_mai": "संखुवासभा",
+      "province": "Koshi",
+      "headquarters": "Khandbari",
+      "latitude": 27.35,
+      "longitude": 87.2
+    },
+    {
+      "code": "D-BHO",
+      "name_en": "Bhojpur",
+      "name_ne": "भोजपुर",
+      "name_mai": "भोजपुर",
+      "province": "Koshi",
+      "headquarters": "Bhojpur",
+      "latitude": 27.17,
+      "longitude": 87.05
+    },
+    {
+      "code": "D-SOL",
+      "name_en": "Solukhumbu",
+      "name_ne": "सोलुखुम्बु",
+      "name_mai": "सोलुखुम्बु",
+      "province": "Koshi",
+      "headquarters": "Salleri",
+      "latitude": 27.55,
+      "longitude": 86.72
+    },
+    {
+      "code": "D-OKH",
+      "name_en": "Okhaldhunga",
+      "name_ne": "ओखलढुङ्गा",
+      "name_mai": "ओखलढुङ्गा",
+      "province": "Koshi",
+      "headquarters": "Okhaldhunga",
+      "latitude": 27.32,
+      "longitude": 86.5
+    },
+    {
+      "code": "D-KHO",
+      "name_en": "Khotang",
+      "name_ne": "खोटाङ",
+      "name_mai": "खोटाङ",
+      "province": "Koshi",
+      "headquarters": "Diktel",
+      "latitude": 27.2,
+      "longitude": 86.8
+    },
+    {
+      "code": "D-UDA",
+      "name_en": "Udayapur",
+      "name_ne": "उदयपुर",
+      "name_mai": "उदयपुर",
+      "province": "Koshi",
+      "headquarters": "Gaighat",
+      "latitude": 26.87,
+      "longitude": 86.7
+    },
+    {
+      "code": "D-SAP",
+      "name_en": "Saptari",
+      "name_ne": "सप्तरी",
+      "name_mai": "सप्तरी",
+      "province": "Madhesh",
+      "headquarters": "Rajbiraj",
+      "latitude": 26.6,
+      "longitude": 86.75
+    },
+    {
+      "code": "D-SIR",
+      "name_en": "Siraha",
+      "name_ne": "सिराहा",
+      "name_mai": "सिराहा",
+      "province": "Madhesh",
+      "headquarters": "Siraha",
+      "latitude": 26.65,
+      "longitude": 86.2
+    },
+    {
+      "code": "D-DHN",
+      "name_en": "Dhanusha",
+      "name_ne": "धनुषा",
+      "name_mai": "धनुषा",
+      "province": "Madhesh",
+      "headquarters": "Janakpur",
+      "latitude": 26.73,
+      "longitude": 85.92
+    },
+    {
+      "code": "D-MAH",
+      "name_en": "Mahottari",
+      "name_ne": "महोत्तरी",
+      "name_mai": "महोत्तरी",
+      "province": "Madhesh",
+      "headquarters": "Jaleshwar",
+      "latitude": 26.65,
+      "longitude": 85.8
+    },
+    {
+      "code": "D-SAR",
+      "name_en": "Sarlahi",
+      "name_ne": "सर्लाही",
+      "name_mai": "सर्लाही",
+      "province": "Madhesh",
+      "headquarters": "Malangwa",
+      "latitude": 26.85,
+      "longitude": 85.55
+    },
+    {
+      "code": "D-RAU",
+      "name_en": "Rautahat",
+      "name_ne": "रौतहट",
+      "name_mai": "रौतहट",
+      "province": "Madhesh",
+      "headquarters": "Gaur",
+      "latitude": 26.83,
+      "longitude": 85.3
+    },
+    {
+      "code": "D-BAR",
+      "name_en": "Bara",
+      "name_ne": "बारा",
+      "name_mai": "बारा",
+      "province": "Madhesh",
+      "headquarters": "Kalaiya",
+      "latitude": 27.03,
+      "longitude": 85.05
+    },
+    {
+      "code": "D-PAR",
+      "name_en": "Parsa",
+      "name_ne": "पर्सा",
+      "name_mai": "पर्सा",
+      "province": "Madhesh",
+      "headquarters": "Birgunj",
+      "latitude": 27.05,
+      "longitude": 84.87
+    },
+    {
+      "code": "D-KTM",
+      "name_en": "Kathmandu",
+      "name_ne": "काठमाडौँ",
+      "name_mai": "काठमाडौँ",
+      "province": "Bagmati",
+      "headquarters": "Kathmandu",
+      "latitude": 27.7172,
+      "longitude": 85.324
+    },
+    {
+      "code": "D-LAL",
+      "name_en": "Lalitpur",
+      "name_ne": "ललितपुर",
+      "name_mai": "ललितपुर",
+      "province": "Bagmati",
+      "headquarters": "Lalitpur",
+      "latitude": 27.6644,
+      "longitude": 85.3188
+    },
+    {
+      "code": "D-BHA",
+      "name_en": "Bhaktapur",
+      "name_ne": "भक्तपुर",
+      "name_mai": "भक्तपुर",
+      "province": "Bagmati",
+      "headquarters": "Bhaktapur",
+      "latitude": 27.671,
+      "longitude": 85.4298
+    },
+    {
+      "code": "D-KAV",
+      "name_en": "Kavrepalanchok",
+      "name_ne": "काभ्रेपलाञ्चोक",
+      "name_mai": "काभ्रेपलाञ्चोक",
+      "province": "Bagmati",
+      "headquarters": "Dhulikhel",
+      "latitude": 27.63,
+      "longitude": 85.55
+    },
+    {
+      "code": "D-SIN",
+      "name_en": "Sindhupalchok",
+      "name_ne": "सिन्धुपाल्चोक",
+      "name_mai": "सिन्धुपाल्चोक",
+      "province": "Bagmati",
+      "headquarters": "Chautara",
+      "latitude": 27.85,
+      "longitude": 85.68
+    },
+    {
+      "code": "D-DOL",
+      "name_en": "Dolakha",
+      "name_ne": "दोलखा",
+      "name_mai": "दोलखा",
+      "province": "Bagmati",
+      "headquarters": "Charikot",
+      "latitude": 27.65,
+      "longitude": 86.17
+    },
+    {
+      "code": "D-RAM",
+      "name_en": "Ramechhap",
+      "name_ne": "रामेछाप",
+      "name_mai": "रामेछाप",
+      "province": "Bagmati",
+      "headquarters": "Manthali",
+      "latitude": 27.33,
+      "longitude": 86.08
+    },
+    {
+      "code": "D-SIND",
+      "name_en": "Sindhuli",
+      "name_ne": "सिन्धुली",
+      "name_mai": "सिन्धुली",
+      "province": "Bagmati",
+      "headquarters": "Sindhuli",
+      "latitude": 27.25,
+      "longitude": 85.97
+    },
+    {
+      "code": "D-MAK",
+      "name_en": "Makwanpur",
+      "name_ne": "मकवानपुर",
+      "name_mai": "मकवानपुर",
+      "province": "Bagmati",
+      "headquarters": "Hetauda",
+      "latitude": 27.42,
+      "longitude": 85.03
+    },
+    {
+      "code": "D-CHI",
+      "name_en": "Chitwan",
+      "name_ne": "चितवन",
+      "name_mai": "चितवन",
+      "province": "Bagmati",
+      "headquarters": "Bharatpur",
+      "latitude": 27.6262,
+      "longitude": 84.4335
+    },
+    {
+      "code": "D-DHG",
+      "name_en": "Dhading",
+      "name_ne": "धादिङ",
+      "name_mai": "धादिङ",
+      "province": "Bagmati",
+      "headquarters": "Dhading Besi",
+      "latitude": 27.86,
+      "longitude": 84.9
+    },
+    {
+      "code": "D-NUW",
+      "name_en": "Nuwakot",
+      "name_ne": "नुवाकोट",
+      "name_mai": "नुवाकोट",
+      "province": "Bagmati",
+      "headquarters": "Bidur",
+      "latitude": 27.92,
+      "longitude": 85.17
+    },
+    {
+      "code": "D-RAS",
+      "name_en": "Rasuwa",
+      "name_ne": "रसुवा",
+      "name_mai": "रसुवा",
+      "province": "Bagmati",
+      "headquarters": "Dhunche",
+      "latitude": 28.1,
+      "longitude": 85.28
+    },
+    {
+      "code": "D-MUS",
+      "name_en": "Mustang",
+      "name_ne": "मुस्ताङ",
+      "name_mai": "मुस्ताङ",
+      "province": "Gandaki",
+      "headquarters": "Jomsom",
+      "latitude": 28.98,
+      "longitude": 83.83
+    },
+    {
+      "code": "D-MYA",
+      "name_en": "Myagdi",
+      "name_ne": "म्याग्दी",
+      "name_mai": "म्याग्दी",
+      "province": "Gandaki",
+      "headquarters": "Beni",
+      "latitude": 28.6,
+      "longitude": 83.58
+    },
+    {
+      "code": "D-PRT",
+      "name_en": "Parbat",
+      "name_ne": "पर्वत",
+      "name_mai": "पर्वत",
+      "province": "Gandaki",
+      "headquarters": "Kusma",
+      "latitude": 28.23,
+      "longitude": 83.68
+    },
+    {
+      "code": "D-BAG",
+      "name_en": "Baglung",
+      "name_ne": "बागलुङ",
+      "name_mai": "बागलुङ",
+      "province": "Gandaki",
+      "headquarters": "Baglung",
+      "latitude": 28.27,
+      "longitude": 83.6
+    },
+    {
+      "code": "D-SYA",
+      "name_en": "Syangja",
+      "name_ne": "स्याङ्जा",
+      "name_mai": "स्याङ्जा",
+      "province": "Gandaki",
+      "headquarters": "Syangja",
+      "latitude": 28.1,
+      "longitude": 83.88
+    },
+    {
+      "code": "D-KAS",
+      "name_en": "Kaski",
+      "name_ne": "कास्की",
+      "name_mai": "कास्की",
+      "province": "Gandaki",
+      "headquarters": "Pokhara",
+      "latitude": 28.2096,
+      "longitude": 83.9856
+    },
+    {
+      "code": "D-TAN",
+      "name_en": "Tanahun",
+      "name_ne": "तनहुँ",
+      "name_mai": "तनहुँ",
+      "province": "Gandaki",
+      "headquarters": "Damauli",
+      "latitude": 27.93,
+      "longitude": 84.25
+    },
+    {
+      "code": "D-LAM",
+      "name_en": "Lamjung",
+      "name_ne": "लमजुङ",
+      "name_mai": "लमजुङ",
+      "province": "Gandaki",
+      "headquarters": "Besisahar",
+      "latitude": 28.28,
+      "longitude": 84.42
+    },
+    {
+      "code": "D-MAN",
+      "name_en": "Manang",
+      "name_ne": "मनाङ",
+      "name_mai": "मनाङ",
+      "province": "Gandaki",
+      "headquarters": "Chame",
+      "latitude": 28.66,
+      "longitude": 84.02
+    },
+    {
+      "code": "D-GOR",
+      "name_en": "Gorkha",
+      "name_ne": "गोरखा",
+      "name_mai": "गोरखा",
+      "province": "Gandaki",
+      "headquarters": "Gorkha",
+      "latitude": 28.0,
+      "longitude": 84.63
+    },
+    {
+      "code": "D-NAW",
+      "name_en": "Nawalpur",
+      "name_ne": "नवलपुर",
+      "name_mai": "नवलपुर",
+      "province": "Gandaki",
+      "headquarters": "Kawasoti",
+      "latitude": 27.8,
+      "longitude": 84.3
+    },
+    {
+      "code": "D-RUE",
+      "name_en": "Rukum East",
+      "name_ne": "रुकुम पूर्व",
+      "name_mai": "रुकुम पूर्व",
+      "province": "Lumbini",
+      "headquarters": "Rukumkot",
+      "latitude": 28.6,
+      "longitude": 82.75
+    },
+    {
+      "code": "D-ROL",
+      "name_en": "Rolpa",
+      "name_ne": "रोल्पा",
+      "name_mai": "रोल्पा",
+      "province": "Lumbini",
+      "headquarters": "Libang",
+      "latitude": 28.3,
+      "longitude": 82.63
+    },
+    {
+      "code": "D-PYU",
+      "name_en": "Pyuthan",
+      "name_ne": "प्युठान",
+      "name_mai": "प्युठान",
+      "province": "Lumbini",
+      "headquarters": "Pyuthan",
+      "latitude": 28.1,
+      "longitude": 82.85
+    },
+    {
+      "code": "D-DAN",
+      "name_en": "Dang",
+      "name_ne": "दाङ",
+      "name_mai": "दाङ",
+      "province": "Lumbini",
+      "headquarters": "Ghorahi",
+      "latitude": 28.03,
+      "longitude": 82.3
+    },
+    {
+      "code": "D-ARG",
+      "name_en": "Arghakhanchi",
+      "name_ne": "अर्घाखाँची",
+      "name_mai": "अर्घाखाँची",
+      "province": "Lumbini",
+      "headquarters": "Sandhikharka",
+      "latitude": 27.93,
+      "longitude": 83.1
+    },
+    {
+      "code": "D-GUL",
+      "name_en": "Gulmi",
+      "name_ne": "गुल्मी",
+      "name_mai": "गुल्मी",
+      "province": "Lumbini",
+      "headquarters": "Tamghas",
+      "latitude": 28.07,
+      "longitude": 83.25
+    },
+    {
+      "code": "D-PAL",
+      "name_en": "Palpa",
+      "name_ne": "पल्पा",
+      "name_mai": "पल्पा",
+      "province": "Lumbini",
+      "headquarters": "Tansen",
+      "latitude": 27.87,
+      "longitude": 83.55
+    },
+    {
+      "code": "D-RUP",
+      "name_en": "Rupandehi",
+      "name_ne": "रुपन्देही",
+      "name_mai": "रुपन्देही",
+      "province": "Lumbini",
+      "headquarters": "Butwal",
+      "latitude": 27.68,
+      "longitude": 83.45
+    },
+    {
+      "code": "D-KAP",
+      "name_en": "Kapilvastu",
+      "name_ne": "कपिलवस्तु",
+      "name_mai": "कपिलवस्तु",
+      "province": "Lumbini",
+      "headquarters": "Taulihawa",
+      "latitude": 27.55,
+      "longitude": 83.05
+    },
+    {
+      "code": "D-NPW",
+      "name_en": "Nawalparasi West",
+      "name_ne": "नवलपरासी पश्चिम",
+      "name_mai": "नवलपरासी पश्चिम",
+      "province": "Lumbini",
+      "headquarters": "Parasi",
+      "latitude": 27.62,
+      "longitude": 83.9
+    },
+    {
+      "code": "D-BAN",
+      "name_en": "Banke",
+      "name_ne": "बाँके",
+      "name_mai": "बाँके",
+      "province": "Lumbini",
+      "headquarters": "Nepalgunj",
+      "latitude": 28.05,
+      "longitude": 81.62
+    },
+    {
+      "code": "D-BRD",
+      "name_en": "Bardiya",
+      "name_ne": "बर्दिया",
+      "name_mai": "बर्दिया",
+      "province": "Lumbini",
+      "headquarters": "Gulariya",
+      "latitude": 28.3,
+      "longitude": 81.45
+    },
+    {
+      "code": "D-HUM",
+      "name_en": "Humla",
+      "name_ne": "हुम्ला",
+      "name_mai": "हुम्ला",
+      "province": "Karnali",
+      "headquarters": "Simikot",
+      "latitude": 29.97,
+      "longitude": 81.83
+    },
+    {
+      "code": "D-MUG",
+      "name_en": "Mugu",
+      "name_ne": "मुगु",
+      "name_mai": "मुगु",
+      "province": "Karnali",
+      "headquarters": "Gamgadhi",
+      "latitude": 29.68,
+      "longitude": 82.1
+    },
+    {
+      "code": "D-JUM",
+      "name_en": "Jumla",
+      "name_ne": "जुम्ला",
+      "name_mai": "जुम्ला",
+      "province": "Karnali",
+      "headquarters": "Khalanga",
+      "latitude": 29.27,
+      "longitude": 82.18
+    },
+    {
+      "code": "D-KAL",
+      "name_en": "Kalikot",
+      "name_ne": "कालिकोट",
+      "name_mai": "कालिकोट",
+      "province": "Karnali",
+      "headquarters": "Manma",
+      "latitude": 29.13,
+      "longitude": 81.6
+    },
+    {
+      "code": "D-DOLP",
+      "name_en": "Dolpa",
+      "name_ne": "डोल्पा",
+      "name_mai": "डोल्पा",
+      "province": "Karnali",
+      "headquarters": "Dunai",
+      "latitude": 28.98,
+      "longitude": 82.82
+    },
+    {
+      "code": "D-JAJ",
+      "name_en": "Jajarkot",
+      "name_ne": "जाजरकोट",
+      "name_mai": "जाजरकोट",
+      "province": "Karnali",
+      "headquarters": "Khalanga",
+      "latitude": 28.7,
+      "longitude": 82.2
+    },
+    {
+      "code": "D-RUW",
+      "name_en": "Rukum West",
+      "name_ne": "रुकुम पश्चिम",
+      "name_mai": "रुकुम पश्चिम",
+      "province": "Karnali",
+      "headquarters": "Musikot",
+      "latitude": 28.63,
+      "longitude": 82.3
+    },
+    {
+      "code": "D-DAI",
+      "name_en": "Dailekh",
+      "name_ne": "दैलेख",
+      "name_mai": "दैलेख",
+      "province": "Karnali",
+      "headquarters": "Dailekh",
+      "latitude": 28.85,
+      "longitude": 81.72
+    },
+    {
+      "code": "D-SUR",
+      "name_en": "Surkhet",
+      "name_ne": "सुर्खेत",
+      "name_mai": "सुर्खेत",
+      "province": "Karnali",
+      "headquarters": "Birendranagar",
+      "latitude": 28.6,
+      "longitude": 81.62
+    },
+    {
+      "code": "D-SAL",
+      "name_en": "Salyan",
+      "name_ne": "सल्यान",
+      "name_mai": "सल्यान",
+      "province": "Karnali",
+      "headquarters": "Khalanga",
+      "latitude": 28.38,
+      "longitude": 82.17
+    },
+    {
+      "code": "D-DAR",
+      "name_en": "Darchula",
+      "name_ne": "दार्चुला",
+      "name_mai": "दार्चुला",
+      "province": "Sudurpashchim",
+      "headquarters": "Darchula",
+      "latitude": 29.85,
+      "longitude": 80.55
+    },
+    {
+      "code": "D-BAI",
+      "name_en": "Baitadi",
+      "name_ne": "बैतडी",
+      "name_mai": "बैतडी",
+      "province": "Sudurpashchim",
+      "headquarters": "Dasharathchand",
+      "latitude": 29.53,
+      "longitude": 80.47
+    },
+    {
+      "code": "D-BAJ",
+      "name_en": "Bajhang",
+      "name_ne": "बझाङ",
+      "name_mai": "बझाङ",
+      "province": "Sudurpashchim",
+      "headquarters": "Chainpur",
+      "latitude": 29.55,
+      "longitude": 81.2
+    },
+    {
+      "code": "D-BAU",
+      "name_en": "Bajura",
+      "name_ne": "बाजुरा",
+      "name_mai": "बाजुरा",
+      "province": "Sudurpashchim",
+      "headquarters": "Martadi",
+      "latitude": 29.53,
+      "longitude": 81.5
+    },
+    {
+      "code": "D-DAD",
+      "name_en": "Dadeldhura",
+      "name_ne": "डडेलधुरा",
+      "name_mai": "डडेलधुरा",
+      "province": "Sudurpashchim",
+      "headquarters": "Dadeldhura",
+      "latitude": 29.3,
+      "longitude": 80.58
+    },
+    {
+      "code": "D-DOT",
+      "name_en": "Doti",
+      "name_ne": "डोटी",
+      "name_mai": "डोटी",
+      "province": "Sudurpashchim",
+      "headquarters": "Dipayal",
+      "latitude": 29.27,
+      "longitude": 80.93
+    },
+    {
+      "code": "D-ACH",
+      "name_en": "Achham",
+      "name_ne": "अछाम",
+      "name_mai": "अछाम",
+      "province": "Sudurpashchim",
+      "headquarters": "Mangalsen",
+      "latitude": 29.07,
+      "longitude": 81.18
+    },
+    {
+      "code": "D-KAI",
+      "name_en": "Kailali",
+      "name_ne": "कैलाली",
+      "name_mai": "कैलाली",
+      "province": "Sudurpashchim",
+      "headquarters": "Dhangadhi",
+      "latitude": 28.68,
+      "longitude": 80.62
+    },
+    {
+      "code": "D-KAN",
+      "name_en": "Kanchanpur",
+      "name_ne": "कञ्चनपुर",
+      "name_mai": "कञ्चनपुर",
+      "province": "Sudurpashchim",
+      "headquarters": "Bhimdatta",
+      "latitude": 28.83,
+      "longitude": 80.18
+    }
+  ]
+}

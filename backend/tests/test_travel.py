@@ -1,6 +1,8 @@
 """Tests for the travel planner: hazard-along-a-route, and the trip planner."""
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import pytest
 
 from app.models.district import District
@@ -97,3 +99,134 @@ def test_plan_trip_road_corridor_matches_named_district(client, db, kaski):
     data = response.get_json()["data"]
     names = [c["name"] for c in data["geography"]["road_corridors"]]
     assert "Prithvi Highway" in names
+
+
+# --- corridor-analysis: real route geometry, direct vs. buffer-adjacent ------
+
+
+@pytest.fixture
+def corridor_districts(db):
+    """Kathmandu-Kaski corridor districts, at their real approximate
+    headquarters coordinates (see app/data/districts/nepal_districts_enhanced.json),
+    plus Gorkha - which the spec explicitly warns must NOT be hardcoded as
+    traversed unless the route geometry actually reaches it (Phase 19 §13)."""
+    rows = {
+        "Kathmandu": (27.7172, 85.3240),
+        "Dhading": (27.86, 84.90),
+        "Tanahun": (27.93, 84.25),
+        "Kaski": (28.2096, 83.9856),
+        "Gorkha": (28.00, 84.63),
+    }
+    districts = {}
+    for name, (lat, lng) in rows.items():
+        d = District(name=name, province="Bagmati", latitude=lat, longitude=lng)
+        db.session.add(d)
+        districts[name] = d
+    db.session.commit()
+    return districts
+
+
+# A simplified but topologically real waypoint set along Kathmandu -> Naubise
+# -> (near Dhading) -> (near Tanahun/Damauli) -> Pokhara, calibrated so the
+# named corridor districts sit within DIRECT_TRAVERSAL_METRES of the line and
+# Gorkha - a real neighbouring district, deliberately off this road - does
+# not.
+_OSRM_KTM_KASKI_PAYLOAD = {
+    "code": "Ok",
+    "routes": [
+        {
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [85.324, 27.7172],
+                    [84.95, 27.80],
+                    [84.55, 27.90],
+                    [84.27, 27.92],
+                    [84.10, 28.05],
+                    [83.9856, 28.2096],
+                ],
+            },
+            "distance": 199840.0,
+            "duration": 10440.0,
+        }
+    ],
+}
+
+
+def test_corridor_analysis_defaults_to_straight_line_when_osrm_unconfigured(
+    client, corridor_districts
+):
+    """TestConfig blanks OSRM_BASE_URL - the endpoint must still work."""
+    response = client.post(
+        "/api/v1/travel/corridor-analysis",
+        json={
+            "start_lat": 27.7172, "start_lng": 85.3240,
+            "end_lat": 28.2096, "end_lng": 83.9856,
+        },
+    )
+    assert response.status_code == 200
+    data = response.get_json()["data"]
+    assert data["route"]["provider"] == "straight_line_fallback"
+    assert data["route"]["is_straight_line_corridor"] is True
+    assert data["route"]["geometry"] is None
+
+
+def test_corridor_analysis_kathmandu_to_kaski_direct_vs_buffer(
+    client, app, corridor_districts
+):
+    """The Phase 19 §13 acceptance shape: Kathmandu/Dhading/Tanahun/Kaski
+    directly traversed per the real route geometry; Gorkha - a real
+    neighbour never hardcoded here - shows up only if the route buffer
+    actually reaches it, and is never claimed as directly traversed."""
+    app.config["OSRM_BASE_URL"] = "https://router.project-osrm.org"
+    with patch("app.services.routing_service.requests.get") as mock_get:
+        mock_response = mock_get.return_value
+        mock_response.status_code = 200
+        mock_response.json.return_value = _OSRM_KTM_KASKI_PAYLOAD
+
+        response = client.post(
+            "/api/v1/travel/corridor-analysis",
+            json={
+                "start_lat": 27.7172, "start_lng": 85.3240,
+                "end_lat": 28.2096, "end_lng": 83.9856,
+                "corridor": 20000,
+            },
+        )
+
+    assert response.status_code == 200
+    data = response.get_json()["data"]
+    assert data["route"]["provider"] == "osrm"
+    assert data["route"]["is_straight_line_corridor"] is False
+    assert data["route"]["geometry"] is not None
+    # Real routed figures, not the crude haversine/40kmh estimate.
+    assert data["summary"]["distance_km"] == 199.84
+
+    traversed = {d["name"] for d in data["districts_by_proximity"]["directly_traversed"]}
+    buffer_adjacent = {d["name"] for d in data["districts_by_proximity"]["buffer_adjacent"]}
+
+    assert {"Kathmandu", "Dhading", "Tanahun", "Kaski"} <= traversed
+    assert "Gorkha" not in traversed
+    assert "Gorkha" in buffer_adjacent
+
+
+def test_corridor_analysis_osrm_failure_falls_back_without_500(
+    client, app, corridor_districts
+):
+    app.config["OSRM_BASE_URL"] = "https://router.project-osrm.org"
+    with patch("app.services.routing_service.requests.get") as mock_get:
+        import requests
+
+        mock_get.side_effect = requests.Timeout("simulated timeout")
+
+        response = client.post(
+            "/api/v1/travel/corridor-analysis",
+            json={
+                "start_lat": 27.7172, "start_lng": 85.3240,
+                "end_lat": 28.2096, "end_lng": 83.9856,
+            },
+        )
+
+    assert response.status_code == 200
+    data = response.get_json()["data"]
+    assert data["route"]["provider"] == "straight_line_fallback"
+    assert data["district_count"] > 0  # the fallback still finds real districts

@@ -130,6 +130,7 @@ def validate_district_reference(records: Iterable[Any]) -> list[dict]:
     cleaned: list[dict] = []
     errors: list[str] = []
     seen_names: set[str] = set()
+    seen_codes: set[str] = set()
 
     for index, record in enumerate(records):
         label = f"districts[{index}]"
@@ -137,9 +138,10 @@ def validate_district_reference(records: Iterable[Any]) -> list[dict]:
             errors.append(f"{label} is not an object")
             continue
 
-        name = _text(record.get("name"))
+        # Support both "name" (legacy) and "name_en" (enhanced dataset)
+        name = _text(record.get("name") or record.get("name_en"))
         if not name:
-            errors.append(f"{label} is missing 'name'")
+            errors.append(f"{label} is missing 'name' or 'name_en'")
             continue
         if len(name) > MAX_NAME_LENGTH:
             errors.append(f"{label} name exceeds {MAX_NAME_LENGTH} characters")
@@ -152,16 +154,47 @@ def validate_district_reference(records: Iterable[Any]) -> list[dict]:
         seen_names.add(key)
 
         code = _text(record.get("code"))
-        if code and len(code) > MAX_CODE_LENGTH:
-            errors.append(f"{label} code exceeds {MAX_CODE_LENGTH} characters")
-            continue
+        if code:
+            if len(code) > MAX_CODE_LENGTH:
+                errors.append(f"{label} code exceeds {MAX_CODE_LENGTH} characters")
+                continue
+            code_key = code.casefold()
+            if code_key in seen_codes:
+                errors.append(f"{label} duplicates code {code!r}")
+                continue
+            seen_codes.add(code_key)
+
+        latitude = record.get("latitude")
+        longitude = record.get("longitude")
+        if latitude is not None:
+            try:
+                latitude = float(latitude)
+                if not (-90 <= latitude <= 90):
+                    errors.append(f"{label} latitude out of range")
+                    continue
+            except (TypeError, ValueError):
+                errors.append(f"{label} latitude must be a number")
+                continue
+        if longitude is not None:
+            try:
+                longitude = float(longitude)
+                if not (-180 <= longitude <= 180):
+                    errors.append(f"{label} longitude out of range")
+                    continue
+            except (TypeError, ValueError):
+                errors.append(f"{label} longitude must be a number")
+                continue
 
         cleaned.append(
             {
                 "name": name,
                 "name_ne": _text(record.get("name_ne")),
+                "name_mai": _text(record.get("name_mai")),
                 "province": _text(record.get("province")),
                 "code": code,
+                "headquarters": _text(record.get("headquarters")),
+                "latitude": latitude,
+                "longitude": longitude,
             }
         )
 
