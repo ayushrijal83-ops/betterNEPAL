@@ -288,9 +288,14 @@ def test_a_citizen_cannot_trigger_analysis(client, citizen_headers, located, ai,
 
 
 def test_analysis_refused_for_a_citizen_calls_no_model(client, citizen_headers, located, ai):
+    """A citizen's own explicit /analyze call must still be refused and must
+    not invoke the model - separate from automatic analysis on creation
+    (report_service.create_report), which legitimately calls it once."""
     report_id = _make_report(client, citizen_headers)
-    client.post(f"/api/v1/reports/{report_id}/analyze", headers=citizen_headers)
-    assert ai.analyze_calls == 0
+    calls_after_creation = ai.analyze_calls  # auto-triggered by creation itself
+    response = client.post(f"/api/v1/reports/{report_id}/analyze", headers=citizen_headers)
+    assert response.status_code == 403
+    assert ai.analyze_calls == calls_after_creation
 
 
 def test_unauthenticated_analysis_is_401(client, citizen_headers, located, ai):

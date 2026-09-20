@@ -79,6 +79,19 @@ def analyze_report(report_id: Any) -> dict[str, Any]:
     except AIUnavailable as exc:
         raise _unavailable(exc) from None
 
+    # Department is not something the model is asked for - it is looked up
+    # from the existing CATEGORY_TO_TYPES mapping (the same one
+    # suggest_authorities() already ranks candidates by) using the category
+    # the model just suggested, so it can only ever be one of this project's
+    # real, existing authority types - never an invented organisation name.
+    if analysis.suggested_category:
+        from ..models.enums import ReportCategory, parse_enum
+        from .authority_service import likely_department_label
+
+        category = parse_enum(ReportCategory, analysis.suggested_category)
+        if category is not None:
+            analysis.department = likely_department_label(category)
+
     metadata = dict(report.ai_metadata or {})
     metadata["analysis"] = {
         **analysis.to_dict(),

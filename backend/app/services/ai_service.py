@@ -77,6 +77,11 @@ class ReportAnalysis:
     requires_field_verification: bool = True
     model: str | None = None
     raw_response: str | None = None
+    # Not set by the model itself - filled in by report_analysis_service from
+    # the existing CATEGORY_TO_TYPES mapping once suggested_category is known.
+    # Lives here (not a separate field on the report) so it travels with the
+    # rest of the advisory analysis and stays exactly as non-authoritative.
+    department: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -87,6 +92,7 @@ class ReportAnalysis:
             "summary": self.summary,
             "requires_field_verification": self.requires_field_verification,
             "model": self.model,
+            "department": self.department,
         }
 
 

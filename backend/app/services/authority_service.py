@@ -53,6 +53,30 @@ CATEGORY_TO_TYPES: dict[ReportCategory, tuple[AuthorityType, ...]] = {
     ReportCategory.OTHER: (),
 }
 
+# Human-readable form of the same AuthorityType values used above and stored
+# on Authority.type - not a new list, just how an existing enum member reads
+# to a person instead of a person_snake_case token.
+AUTHORITY_TYPE_LABELS: dict[AuthorityType, str] = {
+    AuthorityType.DEPARTMENT_OF_ROADS: "Department of Roads",
+    AuthorityType.MUNICIPAL_OFFICE: "Municipal Office",
+    AuthorityType.WATER_AUTHORITY: "Water Authority",
+    AuthorityType.ELECTRICITY_AUTHORITY: "Electricity Authority",
+    AuthorityType.OTHER: "Other",
+}
+
+
+def likely_department_label(category: ReportCategory) -> str | None:
+    """The most plausible responsible authority *type*, by name, for a report
+    category - reusing CATEGORY_TO_TYPES, the same mapping suggest_authorities()
+    already ranks candidates by. Advisory only, same as everything else in
+    this module: never written as a real Authority assignment, only ever
+    shown as a suggestion (see the module docstring above).
+    """
+    types = CATEGORY_TO_TYPES.get(category, ())
+    if not types:
+        return None
+    return AUTHORITY_TYPE_LABELS.get(types[0])
+
 
 def _parse_uuid(value: Any, field: str) -> uuid.UUID:
     try:

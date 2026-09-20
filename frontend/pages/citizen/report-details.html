@@ -152,11 +152,11 @@
           "ai-class",
           analysis && analysis.suggested_category ? humanise(analysis.suggested_category) : "Not analyzed yet"
         );
-        // Report has no department field, and AI analysis does not assign
-        // one - a report only gets a responsible department once it is
-        // verified into an incident and routed to an authority. Saying so
-        // plainly here beats inventing a value this record does not have.
-        setText("ai-dept", "Not assigned yet");
+        // AI-suggested department (report_analysis_service looks this up
+        // from the existing CATEGORY_TO_TYPES mapping - never invented).
+        // Absent whenever there is no analysis yet, same honest fallback
+        // as the other AI fields above.
+        setText("ai-dept", analysis && analysis.department ? analysis.department : "Not assigned yet");
 
         const mediaEl = document.getElementById("report-media");
         if (mediaEl) {

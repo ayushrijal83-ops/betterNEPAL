@@ -147,6 +147,25 @@ def create_report(user_id: uuid.UUID | str, data: dict[str, Any]) -> Report:
 
     db.session.add(report)
     db.session.commit()
+
+    # Auto-trigger the same AI analysis an authority would otherwise have to
+    # click "Evaluate" for (report_analysis_service.analyze_report - the
+    # verified, existing implementation; nothing new here). Best-effort: a
+    # citizen's report must exist whether or not the AI node is reachable, so
+    # failure here is logged and swallowed, never surfaced as a failed
+    # submission. ai_metadata stays None until this succeeds, which the
+    # Report Details page already renders as an honest "not analyzed yet".
+    try:
+        from . import report_analysis_service
+
+        report_analysis_service.analyze_report(report.id)
+    except Exception as exc:
+        from flask import current_app
+
+        current_app.logger.warning(
+            "Automatic AI analysis failed for report %s: %s", report.id, exc
+        )
+
     return report
 
 
