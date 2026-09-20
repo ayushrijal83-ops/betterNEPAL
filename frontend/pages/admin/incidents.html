@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All Incidents — Admin — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -36,9 +38,9 @@
             </select>
             <select id="filter-severity">
               <option value="">All Severities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
+              <option value="High" data-i18n="severity.high">High</option>
+              <option value="Medium" data-i18n="severity.medium">Medium</option>
+              <option value="Low" data-i18n="severity.low">Low</option>
             </select>
           </div>
 
@@ -46,11 +48,12 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Reported</th>
+                <th data-i18n="report.field.title">Title</th>
+                <th data-i18n="report.field.category">Category</th>
+                <th>District</th>
+                <th>Severity</th>
+                <th data-i18n="report.status">Status</th>
+                <th>Assigned to</th>
                 <th class="actions"></th>
               </tr>
             </thead>
@@ -61,28 +64,25 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/reports.js"></script>
   <script src="../../js/incidents.js"></script>
+  <script src="../../js/authorities.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
-
-    function applyFilters() {
-      const status = document.getElementById("filter-status").value;
-      const severity = document.getElementById("filter-severity").value;
-      let list = getIncidents();
-      if (status) list = list.filter((i) => i.status === status);
-      if (severity) list = list.filter((i) => i.severity === severity);
-      renderIncidentsTable("incidents-body", list);
-    }
-
-    document.getElementById("filter-status").addEventListener("change", applyFilters);
-    document.getElementById("filter-severity").addEventListener("change", applyFilters);
-
-    applyFilters();
+    bootstrapIncidentsPage("incidents-body", {
+      statusFilterId: "filter-status",
+      severityFilterId: "filter-severity",
+    });
   </script>
 </body>
 </html>

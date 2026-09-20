@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Report Details — Citizen — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -33,13 +35,15 @@
                 <h2 class="card-title">Report Media</h2>
                 <span id="status-badge"></span>
               </div>
-              <div class="report-media">
-                <img id="report-image" alt="Report media" />
-              </div>
+              <!-- The id is what js below targets. It previously sat on the
+                   class only, so getElementById("report-media") returned null
+                   and evidence never rendered; the bare <img> beneath it had
+                   no src and drew a broken-image icon on every visit. -->
+              <div class="report-media" id="report-media"></div>
               <div class="meta-row">
                 <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="meta-type">—</span></div>
                 <div class="meta-item"><span class="meta-label">Severity</span><span class="meta-value" id="meta-severity">—</span></div>
-                <div class="meta-item"><span class="meta-label">Location</span><span class="meta-value" id="meta-location">—</span></div>
+                <div class="meta-item"><span class="meta-label" data-i18n="report.field.location">Location</span><span class="meta-value" id="meta-location">—</span></div>
                 <div class="meta-item"><span class="meta-label">Coordinates</span><span class="meta-value" id="meta-coords">—</span></div>
               </div>
               <p class="text-muted" id="report-description"></p>
@@ -74,33 +78,77 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/chatbot.js"></script>
   <script src="../../js/api.js"></script>
   <script src="../../js/reports.js"></script>
   <script>
-    const role = requireRole("citizen");
+    const role = requireRole(["citizen", "admin"]);
     mountShell(role);
 
-    const params = new URLSearchParams(window.location.search);
-    const report = getReportById(params.get("id") || "BNP1098");
+    const reportId = new URLSearchParams(window.location.search).get("id");
+    const root = document.querySelector(".page-content") || document.body;
 
-    document.getElementById("report-title").textContent = report.title;
-    document.getElementById("report-id-line").textContent =
-      `#${report.id} • ${formatDate(report.date)} • ${report.location}`;
-    document.getElementById("status-badge").innerHTML = statusBadge(report.status);
-    document.getElementById("report-image").src = report.image || "";
-    document.getElementById("meta-type").textContent = report.category;
-    document.getElementById("meta-severity").textContent = report.severity;
-    document.getElementById("meta-location").textContent = report.location;
-    document.getElementById("meta-coords").textContent = report.coordinates;
-    document.getElementById("report-description").textContent = report.description;
-    document.getElementById("timeline-container").innerHTML = renderTimeline(report.timeline);
-    document.getElementById("conf-value").textContent =
-      Math.round((report.ai.confidence || 0) * 100) + "%";
-    document.getElementById("ai-class").textContent = report.ai.classification;
-    document.getElementById("ai-dept").textContent = report.ai.department;
+    (async () => {
+      if (!reportId) {
+        showToast("No report selected.", "error");
+        return;
+      }
+      try {
+        const report = await fetchReport(reportId);
+
+        // Fill any element the page marks with data-field.
+        const fields = {
+          title: report.title,
+          description: report.description,
+          category: humanise(report.category),
+          district: report.district || "Location pending",
+          created: formatDate(report.created_at),
+          id: String(report.id).slice(0, 8),
+        };
+        Object.entries(fields).forEach(([key, value]) => {
+          root.querySelectorAll(`[data-field="${key}"]`).forEach((el) => {
+            el.textContent = value;
+          });
+        });
+
+        root.querySelectorAll("[data-field=status]").forEach((el) => {
+          el.innerHTML = statusBadge(report.status);
+        });
+
+        const timelineEl = document.getElementById("report-timeline");
+        if (timelineEl) timelineEl.innerHTML = reportTimeline(report);
+
+        const mediaEl = document.getElementById("report-media");
+        if (mediaEl) {
+          const media = await fetchReportMedia(report.id);
+          const origin = API_BASE_URL.replace("/api/v1", "");
+          mediaEl.innerHTML = media.length
+            ? media
+                .map((m) => {
+                  const href = `${origin}${m.url}`;
+                  const name = escapeHtml(m.original_filename || "");
+                  // Images are shown; anything else stays a download link.
+                  return /\.(jpe?g|png|webp|gif)$/i.test(m.original_filename || "")
+                    ? `<a href="${href}" target="_blank" rel="noopener">
+                         <img src="${href}" alt="${name}" class="report-media-img" loading="lazy">
+                       </a>`
+                    : `<a href="${href}" target="_blank" rel="noopener">${name}</a>`;
+                })
+                .join("")
+            : `<div class="empty-text">${tr("state.empty.hint", "No evidence attached.")}</div>`;
+        }
+      } catch (error) {
+        reportApiError(error, "Could not load this report.");
+      }
+    })();
   </script>
 </body>
 </html>

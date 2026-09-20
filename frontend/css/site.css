@@ -1,0 +1,992 @@
+/* ==========================================================================
+   Better Nepal — Public site (landing, gateway)
+   ==========================================================================
+   Only the marketing surfaces. The application shell uses sidebar.css and
+   navbar.css; everything shared lives in components.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: transparent;
+  transition: background-color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+
+/* Transparent over the hero, solid once the page moves - so the ridgeline
+   is never cut by a bar on first paint. */
+.site-header.is-scrolled {
+  background: rgba(250, 247, 241, 0.92);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom-color: var(--bn-border);
+  box-shadow: var(--shadow-xs);
+}
+
+@supports not ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .site-header.is-scrolled { background: var(--bn-ivory); }
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-xl);
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.site-brand:hover { text-decoration: none; color: #fff; }
+
+.site-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--bn-forest-200);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.site-brand-mark svg { width: 22px; height: 22px; }
+
+.site-brand-name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-left: auto;
+}
+
+.site-nav a {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: rgba(244, 239, 230, 0.78);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.site-nav a:hover { color: #fff; text-decoration: none; }
+
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+/* Once the header goes solid, its contents have to flip to dark ink. */
+.site-header.is-scrolled .site-brand,
+.site-header.is-scrolled .site-brand:hover { color: var(--bn-text); }
+
+.site-header.is-scrolled .site-brand-mark {
+  background: var(--bn-forest-50);
+  color: var(--bn-forest-700);
+  box-shadow: inset 0 0 0 1px var(--bn-forest-100);
+}
+
+.site-header.is-scrolled .site-nav a { color: var(--bn-text-light); }
+.site-header.is-scrolled .site-nav a:hover { color: var(--bn-forest-700); }
+
+.site-header .lang-switch {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.site-header .lang-switch-btn { color: rgba(244, 239, 230, 0.68); }
+.site-header .lang-switch-btn:hover { color: #fff; }
+
+.site-header .lang-switch-btn.is-active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  box-shadow: none;
+}
+
+.site-header.is-scrolled .lang-switch {
+  border-color: var(--bn-border);
+  background: var(--bn-surface-2);
+}
+
+.site-header.is-scrolled .lang-switch-btn { color: var(--bn-text-light); }
+.site-header.is-scrolled .lang-switch-btn:hover { color: var(--bn-text); }
+
+.site-header.is-scrolled .lang-switch-btn.is-active {
+  background: var(--bn-surface);
+  color: var(--bn-forest-700);
+  box-shadow: var(--shadow-xs);
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  /* Pulled up under the transparent header. */
+  margin-top: calc((var(--navbar-height) + 6px) * -1);
+  padding-top: calc(var(--navbar-height) + var(--space-3xl));
+  overflow: hidden;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: var(--space-2xl);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-xl) var(--space-4xl);
+}
+
+.hero-title { margin-top: var(--space-lg); color: #fff; }
+
+/* Each clause on its own line: the three-beat headline is the brand's
+   rhythm, and letting it reflow arbitrarily loses it. */
+.hero-title span { display: block; }
+
+.hero-title-accent {
+  background: linear-gradient(94deg, var(--bn-forest-300) 0%, var(--bn-brass-300) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--bn-brass-300); /* fallback where background-clip is unsupported */
+}
+
+.hero-lede { margin-top: var(--space-lg); color: var(--bn-on-dark-dim); }
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.hero-note {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  color: rgba(244, 239, 230, 0.44);
+}
+
+/* --- The terrain scene --------------------------------------------------- */
+
+.hero-scene { position: relative; min-width: 0; max-width: 100%; }
+
+.hero-scene-stage {
+  position: relative;
+  aspect-ratio: 8 / 5;
+  min-height: 330px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.hero-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 70% 12%, rgba(220, 193, 115, 0.22) 0%, transparent 56%),
+    linear-gradient(180deg, #123324 0%, #0c2419 48%, #14261d 100%);
+}
+
+/* Every ridge layer is absolutely stacked and anchored to the bottom, which
+   is what lets the parallax offsets read as depth rather than drift. */
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-layer .ridge-far  { fill: #1d4634; opacity: 0.62; }
+.hero-layer .ridge-mid  { fill: #17382a; opacity: 0.82; }
+.hero-layer .ridge-near { fill: #102a1f; }
+
+.hero-contours { stroke: var(--bn-forest-300); opacity: 0.2; }
+
+/* Atmospheric haze between the far ranges and the near slope - the single
+   cheapest thing that makes flat SVG read as distance. */
+.hero-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 38%, rgba(122, 165, 143, 0.14) 62%, transparent 86%);
+}
+
+.hero-markers { position: absolute; inset: 0; }
+
+.hero-marker {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.hero-marker::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 1.5px solid currentColor;
+  opacity: 0;
+  animation: hero-marker-ring 3.4s var(--ease-out) infinite;
+}
+
+.hero-marker--crimson { background: var(--bn-crimson-500); color: var(--bn-crimson-500); }
+.hero-marker--brass   { background: var(--bn-brass-500);   color: var(--bn-brass-500); }
+.hero-marker--forest  { background: var(--bn-forest-400);  color: var(--bn-forest-400); }
+.hero-marker--earth   { background: var(--bn-earth-500);   color: var(--bn-earth-500); }
+
+.hero-marker--brass::after  { animation-delay: 0.9s; }
+.hero-marker--forest::after { animation-delay: 1.8s; }
+.hero-marker--earth::after  { animation-delay: 2.6s; }
+
+@keyframes hero-marker-ring {
+  0%        { transform: scale(0.7); opacity: 0.55; }
+  60%, 100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* --- Metrics strip ------------------------------------------------------- */
+
+.hero-metrics {
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.hero-metrics-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.hero-metrics-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.5);
+}
+
+.live-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bn-forest-400);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: live-ping 2.2s var(--ease-out) infinite;
+}
+
+@keyframes live-ping {
+  0%        { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+.hero-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+}
+
+.hero-metric-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.hero-metric-label {
+  margin-top: 3px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Problem
+   -------------------------------------------------------------------------- */
+
+.problem-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-2xl);
+  align-items: end;
+}
+
+.problem-head > * + * { margin-top: 0; }
+
+.problem-grid {
+  display: grid;
+  /* Fixed at three, not auto-fit: six cells in a four-column track leaves two
+     empty cells that show the grid's own border colour and read as a
+     rendering fault. Three columns divides the six exactly. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  list-style: none;
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bn-border);
+}
+
+/* Cells sharing hairlines rather than six separate floating cards - the
+   difference between a designed table of contents and a card dump. */
+.problem-card {
+  padding: var(--space-lg);
+  background: var(--bn-surface);
+  transition: background-color var(--dur-base) var(--ease-out);
+}
+
+.problem-card:hover { background: var(--bn-forest-50); }
+
+.problem-card h3 {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.problem-card p {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  color: var(--bn-text-light);
+}
+
+/* --------------------------------------------------------------------------
+   Journey
+   -------------------------------------------------------------------------- */
+
+.journey-track {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-lg);
+  list-style: none;
+  counter-reset: journey;
+  position: relative;
+}
+
+/* The connecting line through the step markers. */
+.journey-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(179, 215, 197, 0.32) 8%,
+    rgba(179, 215, 197, 0.32) 92%, transparent);
+}
+
+.journey-step { position: relative; padding-top: var(--space-xl); }
+
+.journey-step::before {
+  content: attr(data-step);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: var(--bn-forest-800);
+  border: 1px solid var(--bn-forest-500);
+  color: var(--bn-forest-200);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.journey-step h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: #fff;
+}
+
+.journey-step p {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  color: var(--bn-on-dark-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Geography
+   -------------------------------------------------------------------------- */
+
+.geo-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.geo-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--bn-border);
+}
+
+.geo-figures dt {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--bn-text-muted);
+}
+
+.geo-figures dd {
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--bn-forest-800);
+}
+
+.geo-panel {
+  padding: var(--space-lg);
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-lg);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.geo-panel-head { margin-bottom: var(--space-md); }
+
+.geo-provinces { list-style: none; display: grid; gap: 9px; }
+
+.geo-province {
+  display: grid;
+  grid-template-columns: 1fr 88px 26px;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.geo-province-name { color: var(--bn-text); }
+
+.geo-province-bar {
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--bn-stone-100);
+  overflow: hidden;
+}
+
+.geo-province-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--bn-forest-400), var(--bn-forest-600));
+}
+
+.geo-province-count {
+  text-align: right;
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--bn-text-light);
+}
+
+.geo-province-empty { font-size: var(--font-size-sm); color: var(--bn-text-muted); }
+
+/* --------------------------------------------------------------------------
+   Roles
+   -------------------------------------------------------------------------- */
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--space-md);
+}
+
+.role-card {
+  position: relative;
+  padding: var(--space-lg);
+  padding-top: calc(var(--space-lg) + 4px);
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-lg);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+
+/* A coloured cap identifies the role at a glance. This is the one place the
+   full palette appears together, and it is doing identification work rather
+   than decoration. */
+.role-card::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: -1px;
+  height: 4px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.role-card--citizen::before    { background: var(--bn-forest-600); }
+.role-card--guide::before      { background: var(--bn-forest-400); }
+.role-card--authority::before  { background: var(--bn-info); }
+.role-card--contractor::before { background: var(--bn-brass-600); }
+.role-card--admin::before      { background: var(--bn-crimson-600); }
+
+.role-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--bn-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.role-card h3 { font-size: var(--font-size-lg); font-weight: 600; }
+
+.role-card p {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  color: var(--bn-text-light);
+}
+
+.role-link {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--bn-forest-700);
+}
+
+/* --------------------------------------------------------------------------
+   Transparency
+   -------------------------------------------------------------------------- */
+
+.transparency-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.ledger {
+  padding: var(--space-lg);
+  border: 1px solid var(--bn-border);
+  border-radius: var(--radius-lg);
+  background: var(--bn-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.ledger-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--bn-stone-100);
+}
+
+.ledger-row:last-child { border-bottom: none; }
+
+.ledger-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bn-stone-300);
+  box-shadow: 0 0 0 3px var(--bn-stone-100);
+}
+
+.ledger-dot--done {
+  background: var(--bn-forest-500);
+  box-shadow: 0 0 0 3px var(--bn-forest-100);
+}
+
+.ledger-label { font-size: var(--font-size-sm); color: var(--bn-text-light); }
+
+.ledger-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--bn-forest-800);
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+
+.cta {
+  position: relative;
+  padding: var(--space-4xl) var(--space-xl) var(--space-3xl);
+  text-align: center;
+  overflow: hidden;
+}
+
+.cta-ridge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 120px;
+  transform: scaleY(-1);
+}
+
+.cta-inner { position: relative; }
+.cta-inner .lede { margin-inline: auto; }
+
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--bn-charcoal-900);
+  color: var(--bn-on-dark);
+}
+
+.site-footer-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-2xl);
+  padding: var(--space-3xl) var(--space-xl) var(--space-xl);
+}
+
+.site-footer .site-brand,
+.site-footer .site-brand:hover { color: #fff; }
+
+.site-footer-tagline {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-sm);
+  color: rgba(244, 239, 230, 0.5);
+  max-width: 34ch;
+}
+
+.site-footer-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-xl);
+}
+
+.site-footer-nav h4 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--bn-brass-300);
+  margin-bottom: var(--space-sm);
+}
+
+.site-footer-nav a {
+  display: block;
+  padding: 4px 0;
+  font-size: var(--font-size-sm);
+  color: rgba(244, 239, 230, 0.66);
+  text-decoration: none;
+}
+
+.site-footer-nav a:hover { color: #fff; text-decoration: underline; }
+
+.site-footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl) var(--space-2xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: var(--font-size-xs);
+  line-height: var(--leading-snug);
+  color: rgba(244, 239, 230, 0.42);
+}
+
+.site-footer-legal p { max-width: 64ch; }
+.site-footer-rights { white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .problem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-inner { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
+  .hero-scene-stage { min-height: 280px; }
+  .journey-track { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--space-xl); }
+  .journey-track::before { display: none; }
+  .geo-inner,
+  .transparency-inner,
+  .problem-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .problem-head { align-items: start; }
+}
+
+@media (max-width: 860px) {
+  .site-header-inner { gap: var(--space-md); padding: var(--space-sm) var(--space-lg); }
+  /* The links live in the footer and in the page itself; on a tablet the bar
+     needs its width for the language switcher and the portal button. */
+  .site-nav { display: none; }
+  .site-footer-inner { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+}
+
+@media (max-width: 640px) {
+  /* Brand + language switcher + portal button does not fit at phone widths,
+     and the overflow was pushing the whole document sideways. The button goes
+     rather than the switcher: the hero's primary CTA sits immediately below
+     and says the same thing, whereas the language switcher has no other
+     entry point on this page. */
+  .site-header-actions .btn { display: none; }
+  .site-header-inner { padding: var(--space-sm) var(--space-md); gap: var(--space-sm); }
+
+  .hero { padding-top: calc(var(--navbar-height) + var(--space-xl)); }
+  .hero-inner { padding: 0 var(--space-md) var(--space-2xl); }
+  .hero-scene-stage { min-height: 210px; aspect-ratio: 4 / 3; }
+  .hero-actions .btn { width: 100%; }
+  .hero-metrics-inner { padding: var(--space-md); }
+  .hero-metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
+  .hero-metric-value { font-size: var(--font-size-2xl); }
+  .journey-track { grid-template-columns: minmax(0, 1fr); }
+  .problem-grid { grid-template-columns: minmax(0, 1fr); }
+  .geo-figures { gap: var(--space-lg); }
+  .cta { padding: var(--space-3xl) var(--space-md) var(--space-2xl); }
+  .cta-actions .btn { width: 100%; }
+  .site-footer-inner,
+  .site-footer-legal { padding-inline: var(--space-md); }
+}
+
+/* --------------------------------------------------------------------------
+   Official access gateway
+   -------------------------------------------------------------------------- */
+
+.gateway {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--space-3xl) var(--space-xl);
+}
+
+.gateway-head { text-align: center; margin-bottom: var(--space-2xl); }
+.gateway-head .lede { margin-inline: auto; color: var(--bn-on-dark-dim); }
+
+.gateway-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.gateway-card {
+  display: block;
+  padding: var(--space-lg);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--bn-on-dark);
+  text-decoration: none;
+  transition: background-color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+
+.gateway-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--bn-on-dark);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.gateway-card--authority:hover { border-color: var(--bn-forest-400); }
+.gateway-card--contractor:hover { border-color: var(--bn-brass-500); }
+.gateway-card--admin:hover { border-color: var(--bn-crimson-500); }
+
+.gateway-card h2 {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: #fff;
+}
+
+.gateway-card p {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  color: var(--bn-on-dark-dim);
+}
+
+.gateway-link {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--bn-forest-300);
+}
+
+.gateway-foot {
+  margin-top: var(--space-2xl);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--bn-on-dark-dim);
+}
+
+.gateway-foot > div:first-child { display: flex; justify-content: center; }
+.gateway-foot a { color: var(--bn-forest-300); }
+
+.gateway-note {
+  font-size: var(--font-size-xs);
+  color: rgba(244, 239, 230, 0.36);
+}
+
+@media (max-width: 860px) {
+  .gateway-grid { grid-template-columns: minmax(0, 1fr); }
+  .gateway { padding: var(--space-2xl) var(--space-md); }
+}
+
+/* ==========================================================================
+   Photographic surfaces on the landing page
+   ========================================================================== */
+
+/* The hero is now a photograph rather than a drawn scene, so its copy gets
+   the full column instead of sharing the row with an illustration. */
+.hero-inner--photo {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 60vh;
+  align-content: center;
+}
+
+.hero-inner--photo .hero-copy { max-width: 46rem; }
+
+/* Over a photograph, display type needs a shadow as well as the overlay:
+   the gradient handles the average case, a shadow handles the bright cloud
+   that happens to fall behind one word. */
+.hero-inner--photo .hero-title,
+.hero-inner--photo .hero-lede {
+  text-shadow: 0 1px 24px rgba(12, 36, 25, 0.5);
+}
+
+/* --- Role cards ---------------------------------------------------------- */
+
+.role-card {
+  overflow: hidden;
+  padding-top: 0;
+}
+
+/* Bleeds to the card's edges. The negative margin has to cancel the card's
+   horizontal padding as well as its border, or the photograph sits in a
+   white mount and the card stops reading as a single object. */
+.role-card-photo {
+  display: block;
+  width: calc(100% + 2 * var(--space-lg) + 2px);
+  margin: -1px calc(var(--space-lg) * -1 - 1px) var(--space-md);
+  height: 124px;
+  object-fit: cover;
+  background: var(--bn-forest-800);
+}
+
+/* The coloured role cap sits over the photograph's top edge. */
+.role-card::before { z-index: 1; }
+
+/* --- Problem card with photography --------------------------------------- */
+
+.problem-card--photo { padding-top: 0; }
+
+.problem-photo {
+  display: block;
+  width: calc(100% + 2 * var(--space-lg));
+  margin: 0 calc(var(--space-lg) * -1) var(--space-lg);
+  height: 150px;
+  object-fit: cover;
+  object-position: center 58%;
+  background: var(--bn-forest-800);
+}
+
+.problem-card--photo .np-marker { margin-top: 0; }
+
+/* --- Photographic section bands ------------------------------------------ */
+
+/* These sections carry a photo behind them, so their text flips to light and
+   the paper/topo textures come off - a grain overlay on a photograph just
+   looks like a dirty screen. */
+.section.photo .section-head h2,
+.section.photo .display-sm,
+.section.photo .geo-figures dd,
+.cta.photo h2 {
+  color: #fff;
+}
+
+.section.photo .lede,
+.cta.photo .lede { color: rgba(244, 239, 230, 0.82); }
+
+.section.photo .eyebrow { color: var(--bn-brass-300); }
+
+.section.photo .geo-figures {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}
+
+.section.photo .geo-figures dt { color: rgba(244, 239, 230, 0.6); }
+
+/* The geography panel stays an opaque card - a translucent panel over a
+   photograph makes the figures inside it unreadable. */
+.section.photo .geo-panel {
+  background: rgba(250, 247, 241, 0.97);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 860px) {
+  .hero-inner--photo { min-height: auto; }
+  .role-card-photo { height: 150px; }
+}
+
+/* The hero copy is held inside the strong end of the overlay ramp. Letting a
+   headline run past ~62% of the viewport puts its last words over thin
+   overlay and bright sky, which is exactly where the contrast measurement
+   failed. */
+.hero-inner--photo .hero-copy { max-width: min(46rem, 62%); }
+
+@media (max-width: 860px) {
+  .hero-inner--photo .hero-copy { max-width: none; }
+}

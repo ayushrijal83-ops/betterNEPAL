@@ -2,6 +2,7 @@
 from . import (
     ai_service,
     analytics_service,
+    announcement_service,
     auth_service,
     authority_service,
     geolocation_service,
@@ -11,11 +12,13 @@ from . import (
     report_analysis_service,
     report_service,
     storage_service,
+    travel_service,
 )
 
 __all__ = [
     "ai_service",
     "analytics_service",
+    "announcement_service",
     "auth_service",
     "authority_service",
     "geolocation_service",
@@ -25,4 +28,5 @@ __all__ = [
     "report_analysis_service",
     "report_service",
     "storage_service",
+    "travel_service",
 ]

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile — Guide — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -32,7 +34,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Full name</label>
-                <input class="form-input" type="text" value="Sanjal Neupane" />
+                <input class="form-input" type="text" id="profile-name" value="" />
               </div>
               <div class="form-group">
                 <label class="form-label">Guide License ID</label>
@@ -64,16 +66,49 @@
             </div>
           </aside>
         </div>
+        <div class="card mt-lg">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="profile.preferences">Preferences</h2>
+          </div>
+          <div class="form-group">
+            <span class="form-label" data-i18n="profile.language">Interface language</span>
+            <div id="profile-lang"></div>
+            <p class="form-hint" data-i18n="profile.languageHint">Applies across the whole site and is remembered on this device.</p>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script>
     const role = requireRole("guide");
     mountShell(role);
+
+    // The navbar switcher is always present; this is the same control in
+    // the place a user goes looking for a saved preference.
+    document.getElementById("profile-lang").innerHTML = BN_I18N.switcherMarkup();
+
+
+    // Populated from /auth/me. The field previously shipped with a real-looking
+    // name baked into the markup, which every account saw as their own.
+    verifySession(role).then((user) => {
+      if (!user) return;
+      const name = document.getElementById("profile-name");
+      const email = document.getElementById("profile-email");
+      if (name) name.value = user.full_name || "";
+      if (email) email.value = user.email || "";
+    });
+
   </script>
 </body>
 </html>

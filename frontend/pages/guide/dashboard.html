@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guide Dashboard — Better Nepal</title>
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/responsive.css" />
@@ -22,25 +24,40 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Guide Dashboard</h1>
-            <p class="page-subtitle">Good morning, Sanjal</p>
+            <h1 class="page-title" data-i18n="nav.dashboard">Guide Dashboard</h1>
+            <p class="page-subtitle" id="dash-greeting"></p>
           </div>
-          <a href="report.html" class="btn btn-danger">+ Report Issue</a>
+          <a href="report.html" class="btn btn-primary" data-i18n="nav.report">+ Report Issue</a>
+        </div>
+
+        <div class="photo-banner">
+          <picture>
+            <source type="image/webp" srcset="../../assets/photography/trekking/alpine-lake-700.webp 700w, ../../assets/photography/trekking/alpine-lake-1400.webp 1400w" sizes="(max-width: 1024px) 100vw, 1200px">
+            <img src="../../assets/photography/trekking/alpine-lake-1400.jpg" srcset="../../assets/photography/trekking/alpine-lake-700.jpg 700w, ../../assets/photography/trekking/alpine-lake-1400.jpg 1400w" sizes="(max-width: 1024px) 100vw, 1200px"
+                 width="1400" height="934"
+                 alt="A partly frozen alpine lake among boulders, with prayer flags strung low and snow peaks behind." data-i18n-alt="photo.alpine-lake"
+                 class="" style="--photo-focus:center 45%" loading="eager" fetchpriority="high">
+          </picture>
+          <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/dstd4DoLQ90" target="_blank" rel="noopener noreferrer">Sergey Pesterev</a> / Unsplash</span>
+          <div>
+            <div class="photo-banner-title" data-i18n="nav.dashboard">Dashboard</div>
+            <p class="photo-banner-sub" data-i18n="dash.trailConditions"></p>
+          </div>
         </div>
 
         <div class="grid grid-3 gap-md" id="guide-stats"></div>
 
         <div class="card mt-lg">
           <div class="card-header">
-            <h2 class="card-title">Recent Reports</h2>
+            <h2 class="card-title" data-i18n="dash.recentActivity">Recent Reports</h2>
           </div>
           <table class="table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Date</th>
+                <th data-i18n="report.field.title">Title</th>
+                <th data-i18n="report.status">Status</th>
+                <th data-i18n="report.filed">Date</th>
               </tr>
             </thead>
             <tbody id="guide-recent-reports"></tbody>
@@ -50,9 +67,15 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/dashboard.js"></script>
   <script>
   const role = requireRole("guide");

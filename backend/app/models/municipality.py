@@ -28,6 +28,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from .incident import Incident
     from .district import District
     from .report import Report
+    from .disaster_incident import DisasterIncident
 
 # Nepal's four constitutionally defined local-level unit types.
 MUNICIPALITY_TYPE_METROPOLITAN = "metropolitan"
@@ -63,6 +64,9 @@ class Municipality(BaseModel, ProvenanceMixin):
         back_populates="municipality", passive_deletes="all"
     )
     incidents: Mapped[list["Incident"]] = relationship(
+        back_populates="municipality", passive_deletes="all"
+    )
+    disaster_incidents: Mapped[list["DisasterIncident"]] = relationship(
         back_populates="municipality", passive_deletes="all"
     )
 

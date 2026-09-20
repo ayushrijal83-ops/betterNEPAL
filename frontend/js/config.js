@@ -1,50 +1,179 @@
 // js/config.js
 
-const API_URL = "http://localhost:8000/api";
+// ---------------------------------------------------------------------------
+// API location
+// ---------------------------------------------------------------------------
+// Same origin by default. When Flask serves these files itself - the supported
+// development mode, see app/__init__.py - the frontend and API share an origin,
+// so a relative path works and the browser makes no preflight request.
+//
+// The exceptions are the two cases where they genuinely differ:
+//   * a separate static dev server (live-server, http-server, vite), which
+//     runs on its own well-known port;
+//   * file:// , which has no origin to be relative to.
+//
+// An earlier version pinned this to port 5000, which broke the moment Flask
+// was run on any other port. Set window.BN_API_ORIGIN before this script to
+// override for a deployment where the API really does live elsewhere.
+const STATIC_DEV_SERVER_PORTS = ["3000", "4000", "5173", "5500", "8000", "8080", "8081"];
+
+const API_ORIGIN = (() => {
+  if (typeof window.BN_API_ORIGIN === "string") return window.BN_API_ORIGIN;
+  if (window.location.protocol === "file:") return "http://localhost:5000";
+  if (STATIC_DEV_SERVER_PORTS.includes(window.location.port)) return "http://localhost:5000";
+  return "";
+})();
+
+const API_BASE_URL = API_ORIGIN + "/api/v1";
+
+// Kept for backwards compatibility with any page still referencing it.
+const API_URL = API_BASE_URL;
+
+// ---------------------------------------------------------------------------
+// Role names
+// ---------------------------------------------------------------------------
+// The UI calls the trekking-guide role "guide"; the backend calls it
+// "trekking_guide". Every other role matches. Translating in one place keeps
+// the mismatch from leaking into page code, where it would silently produce
+// failed permission checks that look like login bugs.
+const ROLE_TO_API = {
+  citizen: "citizen",
+  guide: "trekking_guide",
+  authority: "authority",
+  contractor: "contractor",
+  admin: "admin",
+};
+
+const ROLE_FROM_API = Object.fromEntries(
+  Object.entries(ROLE_TO_API).map(([ui, api]) => [api, ui])
+);
+
+function toApiRole(uiRole) {
+  return ROLE_TO_API[uiRole] || uiRole;
+}
+
+function toUiRole(apiRole) {
+  return ROLE_FROM_API[apiRole] || apiRole;
+}
+
+// ---------------------------------------------------------------------------
+// Report categories
+// ---------------------------------------------------------------------------
+// These mirror the backend ReportCategory enum exactly, deliberately. The
+// prototype previously offered bridge / trail / sanitation / environment,
+// which have no backend equivalent - mapping them client-side would have meant
+// silently filing a damaged bridge as something else, so the stored category
+// would no longer mean what the citizen chose. Restoring them is a backend
+// change (add to ReportCategory + a migration), not a frontend one.
+const REPORT_CATEGORIES = [
+  { value: "road_damage", label: "Road damage" },
+  { value: "water_leak", label: "Water leak / supply" },
+  { value: "waste_management", label: "Waste management" },
+  { value: "electricity", label: "Electricity" },
+  { value: "public_property", label: "Public property" },
+  { value: "natural_disaster", label: "Landslide / natural hazard" },
+  { value: "other", label: "Other" },
+];
+
+// Backend status value -> CSS badge class used by components.css.
+const STATUS_BADGE = {
+  submitted: "badge-info",
+  under_review: "badge-warning",
+  verified_as_incident: "badge-critical",
+  rejected: "badge-neutral",
+  open: "badge-critical",
+  in_progress: "badge-warning",
+  resolved: "badge-success",
+  closed: "badge-neutral",
+  planned: "badge-info",
+  active: "badge-warning",
+  on_hold: "badge-neutral",
+  completed: "badge-success",
+  cancelled: "badge-neutral",
+};
+
+// Incident severity -> the marker-pin classes already defined in map.css.
+const SEVERITY_PIN = {
+  critical: "critical",
+  high: "warning",
+  medium: "info",
+  low: "success",
+};
+
+// Disaster severity -> same pin classes
+const DISASTER_SEVERITY_PIN = {
+  critical: "critical",
+  high: "warning",
+  moderate: "info",
+  low: "success",
+};
+
+// Disaster types for map layer filtering
+const DISASTER_TYPES = [
+  { value: "earthquake", label: "Earthquake" },
+  { value: "flood", label: "Flood" },
+  { value: "flash_flood", label: "Flash Flood" },
+  { value: "landslide", label: "Landslide" },
+  { value: "forest_fire", label: "Forest Fire" },
+  { value: "storm", label: "Storm" },
+  { value: "lightning", label: "Lightning" },
+  { value: "avalanche", label: "Avalanche" },
+  { value: "wildfire", label: "Wildfire" },
+  { value: "other", label: "Other" },
+];
+
+function humanise(value) {
+  if (!value) return "";
+  return String(value)
+    .replace(/_/g, " ")
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
 
 const NAV_ITEMS = {
   citizen: [
-    { label: "Dashboard", href: "dashboard.html", icon: "home" },
-    { label: "Map", href: "map.html", icon: "map" },
-    { label: "Report Issue", href: "report.html", icon: "alert" },
-    { label: "My Reports", href: "my-reports.html", icon: "list" },
-    { label: "Alerts", href: "alerts.html", icon: "bell" },
-    { label: "Profile", href: "profile.html", icon: "user" },
+    { label: "Dashboard", i18n: "nav.dashboard", href: "dashboard.html", icon: "home" },
+    { label: "Feed", i18n: "nav.feed", href: "../feed.html", icon: "list" },
+    { label: "Travel Planner", i18n: "nav.travel", href: "travel.html", icon: "trail" },
+    { label: "Map", i18n: "nav.map", href: "map.html", icon: "map" },
+    { label: "Report Issue", i18n: "nav.report", href: "report.html", icon: "alert" },
+    { label: "My Reports", i18n: "nav.myReports", href: "my-reports.html", icon: "list" },
+    { label: "Alerts", i18n: "nav.alerts", href: "alerts.html", icon: "bell" },
+    { label: "Profile", i18n: "nav.profile", href: "profile.html", icon: "user" },
   ],
   guide: [
-    { label: "Dashboard", href: "dashboard.html", icon: "home" },
-    { label: "Report Issue", href: "report.html", icon: "alert" },
-    { label: "My Reports", href: "my-reports.html", icon: "list" },
-    { label: "Trekking Routes", href: "routes.html", icon: "trail" },
-    { label: "Map", href: "map.html", icon: "map" },
-    { label: "Alerts", href: "alerts.html", icon: "bell" },
-    { label: "Profile", href: "profile.html", icon: "user" },
+    { label: "Dashboard", i18n: "nav.dashboard", href: "dashboard.html", icon: "home" },
+    { label: "Report Issue", i18n: "nav.report", href: "report.html", icon: "alert" },
+    { label: "My Reports", i18n: "nav.myReports", href: "my-reports.html", icon: "list" },
+    { label: "Trekking Routes", i18n: "nav.routes", href: "routes.html", icon: "trail" },
+    { label: "Map", i18n: "nav.map", href: "map.html", icon: "map" },
+    { label: "Alerts", i18n: "nav.alerts", href: "alerts.html", icon: "bell" },
+    { label: "Profile", i18n: "nav.profile", href: "profile.html", icon: "user" },
   ],
   authority: [
-    { label: "Dashboard", href: "dashboard.html", icon: "home" },
-    { label: "Incidents", href: "incidents.html", icon: "alert" },
-    { label: "Reports", href: "reports.html", icon: "list" },
-    { label: "Projects", href: "projects.html", icon: "folder" },
-    { label: "Map", href: "map.html", icon: "map" },
-    { label: "Alerts", href: "alerts.html", icon: "bell" },
-    { label: "Profile", href: "profile.html", icon: "user" },
+    { label: "Dashboard", i18n: "nav.dashboard", href: "dashboard.html", icon: "home" },
+    { label: "Incidents", i18n: "nav.incidents", href: "incidents.html", icon: "alert" },
+    { label: "Reports", i18n: "nav.reports", href: "reports.html", icon: "list" },
+    { label: "Projects", i18n: "nav.projects", href: "projects.html", icon: "folder" },
+    { label: "Map", i18n: "nav.map", href: "map.html", icon: "map" },
+    { label: "Alerts", i18n: "nav.alerts", href: "alerts.html", icon: "bell" },
+    { label: "Profile", i18n: "nav.profile", href: "profile.html", icon: "user" },
   ],
   contractor: [
-    { label: "Dashboard", href: "dashboard.html", icon: "home" },
-    { label: "Assigned Projects", href: "assigned-projects.html", icon: "folder" },
-    { label: "Progress Update", href: "progress-update.html", icon: "upload" },
-    { label: "Profile", href: "profile.html", icon: "user" },
+    { label: "Dashboard", i18n: "nav.dashboard", href: "dashboard.html", icon: "home" },
+    { label: "Assigned Projects", i18n: "nav.projects", href: "assigned-projects.html", icon: "folder" },
+    { label: "Progress Update", i18n: "nav.report", href: "progress-update.html", icon: "upload" },
+    { label: "Profile", i18n: "nav.profile", href: "profile.html", icon: "user" },
   ],
   admin: [
-    { label: "Dashboard", href: "dashboard.html", icon: "home" },
-    { label: "Users", href: "users.html", icon: "user" },
-    { label: "Authorities", href: "authorities.html", icon: "shield" },
-    { label: "Departments", href: "departments.html", icon: "folder" },
-    { label: "Reports", href: "reports.html", icon: "list" },
-    { label: "Incidents", href: "incidents.html", icon: "alert" },
-    { label: "Projects", href: "projects.html", icon: "folder" },
-    { label: "Map", href: "map.html", icon: "map" },
-    { label: "System", href: "system.html", icon: "settings" },
+    { label: "Dashboard", i18n: "nav.dashboard", href: "dashboard.html", icon: "home" },
+    { label: "Users", i18n: "nav.users", href: "users.html", icon: "user" },
+    { label: "Authorities", i18n: "nav.authorities", href: "authorities.html", icon: "shield" },
+    { label: "Departments", i18n: "nav.departments", href: "departments.html", icon: "folder" },
+    { label: "Reports", i18n: "nav.reports", href: "reports.html", icon: "list" },
+    { label: "Incidents", i18n: "nav.incidents", href: "incidents.html", icon: "alert" },
+    { label: "Projects", i18n: "nav.projects", href: "projects.html", icon: "folder" },
+    { label: "Map", i18n: "nav.map", href: "map.html", icon: "map" },
+    { label: "System", i18n: "nav.system", href: "system.html", icon: "settings" },
   ],
 };
 

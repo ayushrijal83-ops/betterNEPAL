@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alerts — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <div class="app-layout">
+    <aside id="app-sidebar" class="sidebar"></aside>
+
+    <div class="app-main">
+      <header id="app-navbar" class="navbar"></header>
+
+      <main class="app-content" id="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-i18n="nav.alerts">Alerts</h1>
+            <p class="page-subtitle" data-i18n="alerts.subtitle.authority">Advisories published for the districts you cover</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary btn-sm" href="incidents.html">
+              <span data-i18n="nav.incidents">Incidents</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="nav.alerts">Alerts</h2>
+          </div>
+          <div id="alerts-list"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/dashboard.js"></script>
+  <script>
+    const role = requireRole("authority");
+    mountShell(role);
+
+    // Published advisories, newest first. The endpoint is public, but this
+    // page is behind requireRole because an authority reads it to see what
+    // their own office has put out.
+    (async () => {
+      renderLoading("alerts-list");
+      try {
+        const data = await apiGet("/announcements?per_page=50", { auth: false });
+        const items = data.announcements || [];
+
+        if (!items.length) {
+          renderEmpty("alerts-list", t("state.empty.title"), t("state.empty.alerts"));
+          return;
+        }
+
+        document.getElementById("alerts-list").innerHTML = items
+          .map(
+            (a) => `
+            <article class="alert-card mb-md">
+              <span class="np-marker np-marker--crimson" aria-hidden="true">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v4M12 17h.01"/>
+                </svg>
+              </span>
+              <div>
+                <div class="alert-title">${escapeHtml(a.title)}</div>
+                <p class="mt-sm text-sm text-muted whitespace-pre-line">${escapeHtml(a.body || "")}</p>
+                <div class="alert-meta">
+                  ${escapeHtml(a.district || t("home.geo.nationwide"))} ·
+                  ${escapeHtml(formatDate(a.created_at))}
+                </div>
+              </div>
+            </article>`
+          )
+          .join("");
+      } catch (error) {
+        renderError("alerts-list", reportApiError(error, t("state.error.generic")));
+      }
+    })();
+  </script>
+</body>
+</html>

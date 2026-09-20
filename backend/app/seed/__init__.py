@@ -12,8 +12,10 @@ from .districts import (
     import_municipality_reference,
 )
 from .roles import seed_roles
+from .dev_test_accounts import make_dev_accounts_command, seed_dev_test_accounts
 
 __all__ = [
+    "seed_dev_test_accounts",
     "import_district_boundaries",
     "import_district_reference",
     "import_municipality_boundaries",
@@ -53,6 +55,11 @@ def register_seed_commands(app: Flask) -> None:
             f"Roles: {summary['created']} created, "
             f"{summary['existing']} already present, {summary['total']} total."
         )
+
+    # LOCAL DEVELOPMENT ONLY. Refuses to run unless app.config["DEBUG"] is
+    # True (BaseConfig defaults DEBUG to False; only DevelopmentConfig sets
+    # it True), so this cannot create known-password accounts in production.
+    seed_group.add_command(make_dev_accounts_command(app))
 
     @app.cli.group("gis")
     def gis_group() -> None:

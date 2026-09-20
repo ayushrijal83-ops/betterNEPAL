@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assigned Projects — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -36,7 +38,7 @@
                 <th>Name</th>
                 <th>Budget</th>
                 <th>Progress</th>
-                <th>Status</th>
+                <th data-i18n="report.status">Status</th>
                 <th class="actions"></th>
               </tr>
             </thead>
@@ -47,7 +49,13 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/reports.js"></script>
@@ -55,8 +63,7 @@
   <script>
     const role = requireRole("contractor");
     mountShell(role);
-    renderProjectGrid("project-grid", getProjects());
-    renderProjectsTable("projects-body", getProjects());
+    bootstrapMyProjects("project-grid", "projects-body", "project-details.html");
   </script>
 </body>
 </html>

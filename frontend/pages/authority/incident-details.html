@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Incident Details — Better Nepal</title>
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -33,17 +35,13 @@
           <div>
             <div class="card">
               <div class="card-header">
-                <h2 class="card-title">Media</h2>
+                <h2 class="card-title">Overview</h2>
                 <span id="inc-status"></span>
-              </div>
-
-              <div class="report-media">
-                <img id="inc-image" alt="Incident media" />
               </div>
 
               <div class="meta-row">
                 <div class="meta-item">
-                  <span class="meta-label">Type</span>
+                  <span class="meta-label">Category</span>
                   <span class="meta-value" id="inc-type">—</span>
                 </div>
                 <div class="meta-item">
@@ -51,16 +49,16 @@
                   <span class="meta-value" id="inc-sev">—</span>
                 </div>
                 <div class="meta-item">
-                  <span class="meta-label">Priority</span>
-                  <span class="meta-value" id="inc-pri">—</span>
+                  <span class="meta-label">Location</span>
+                  <span class="meta-value" id="inc-location">—</span>
                 </div>
                 <div class="meta-item">
-                  <span class="meta-label">Assigned To</span>
-                  <span class="meta-value" id="inc-assigned">—</span>
+                  <span class="meta-label">Reports linked</span>
+                  <span class="meta-value" id="inc-count">—</span>
                 </div>
               </div>
 
-              <p class="text-muted" id="inc-desc"></p>
+              <p class="text-muted mt-md" id="inc-desc"></p>
             </div>
 
             <div class="card mt-lg">
@@ -72,45 +70,19 @@
           </div>
 
           <aside>
-            <div class="ai-panel">
-              <div class="ai-panel-header">
-                <span class="ai-badge">AI</span>
-                AI-Assisted Analysis
-              </div>
-              <div class="confidence-circle"><span id="inc-conf">—</span></div>
-              <p class="text-center text-sm" style="color:#3730a3;font-weight:600;">
-                Classification accuracy
-              </p>
-              <div class="ai-result-row mt-md">
-                <span class="ai-result-label">Classification</span>
-                <span class="ai-result-value" id="inc-ai-class">—</span>
-              </div>
-              <p class="text-sm text-muted mt-sm">
-                AI-assisted assessment — human verification required.
-              </p>
-            </div>
-
-            <div class="card mt-lg">
+            <div class="card">
               <div class="card-header">
-                <h2 class="card-title">Field Team</h2>
+                <h2 class="card-title">Assignment</h2>
               </div>
-              <p class="text-sm"><strong id="team-name">—</strong></p>
-              <p class="text-sm text-muted">
-                Status: <span class="badge badge-warning" id="team-status">—</span>
-              </p>
-              <p class="text-sm text-muted mt-sm">ETA: <span id="team-eta">—</span></p>
-              <ul class="text-sm mt-sm" style="padding-left:18px;color:var(--bn-text-light)" id="team-members"></ul>
+              <p class="text-sm"><strong id="inc-authority">Unassigned</strong></p>
+              <p class="text-sm text-muted mt-sm" id="inc-authority-meta"></p>
             </div>
 
-            <div class="card mt-lg">
+            <div class="card mt-lg" id="inc-actions-card">
               <div class="card-header">
                 <h2 class="card-title">Actions</h2>
               </div>
-              <div class="flex flex-col gap-sm">
-                <button class="btn btn-primary" id="btn-verify">Verify Incident</button>
-                <button class="btn btn-outline" id="btn-assign">Assign to Department</button>
-                <button class="btn btn-outline" id="btn-project">Create Project</button>
-              </div>
+              <div class="flex flex-col gap-sm" id="inc-actions"></div>
             </div>
           </aside>
         </div>
@@ -118,42 +90,117 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/api.js"></script>
   <script src="../../js/reports.js"></script>
+  <script src="../../js/authorities.js"></script>
   <script src="../../js/incidents.js"></script>
   <script>
-  document.getElementById("btn-verify").addEventListener("click", () => {
-    openModal({
-      title: "Verify this incident?",
-      bodyHtml: `<p class="text-muted">Marking the incident as verified will notify the assigned department and start the resolution workflow.</p>`,
-      confirmText: "Verify",
-      onConfirm: () => showToast("Incident verified.", "success"),
-    });
-  });
+    const role = requireRole("authority");
+    mountShell(role);
 
-  document.getElementById("btn-assign").addEventListener("click", () => {
-    openModal({
-      title: "Assign to department",
-      bodyHtml: `
-        <div class="form-group">
-          <label class="form-label">Department</label>
-          <select class="form-select">
-            <option>Department of Roads — Chitwan</option>
-            <option>NEA Lalitpur Division</option>
-            <option>DDMC — Manang</option>
-          </select>
-        </div>`,
-      confirmText: "Assign",
-      onConfirm: () => showToast("Incident assigned.", "success"),
-    });
-  });
+    const incidentId = new URLSearchParams(window.location.search).get("id");
 
-  document.getElementById("btn-project").addEventListener("click", () => {
-    window.location.href = "projects.html";
-  });
-</script>
+    // Every next-status button offered is only a suggestion - the backend is
+    // still the one that accepts or rejects the transition (409 if not, shown
+    // via reportApiError), so this never needs its own copy of the state
+    // machine.
+    const NEXT_STATUS = {
+      open: [["in_progress", "Mark In Progress"]],
+      in_progress: [["resolved", "Mark Resolved"]],
+      resolved: [["closed", "Close Incident"]],
+      closed: [],
+    };
+
+    function renderActions(incident) {
+      const actions = [];
+      const next = NEXT_STATUS[incident.status] || [];
+      for (const [status, label] of next) {
+        actions.push(`<button class="btn btn-primary" data-status="${status}">${label}</button>`);
+      }
+      if (incident.status !== "closed") {
+        actions.push(
+          `<button class="btn btn-outline" data-assign="${incident.id}" data-district="${incident.district_id || ""}">${
+            incident.authority_id ? "Reassign" : "Assign to Department"
+          }</button>`
+        );
+      }
+      document.getElementById("inc-actions").innerHTML =
+        actions.join("") || '<p class="text-sm text-muted">No further action available.</p>';
+
+      document.querySelectorAll("[data-status]").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          try {
+            await updateIncident(incident.id, { status: btn.dataset.status });
+            showToast("Incident updated.", "success");
+            load();
+          } catch (error) {
+            reportApiError(error, "Could not update this incident.");
+            btn.disabled = false;
+          }
+        })
+      );
+
+      bindAssignButtons("inc-actions", load);
+    }
+
+    function renderIncidentTimeline(incident) {
+      const steps = [
+        { label: "Reported", time: incident.created_at, done: true },
+        { label: "Assigned", time: incident.assigned_at, done: Boolean(incident.authority) },
+        { label: "Resolved", time: incident.resolved_at, done: Boolean(incident.resolved_at) },
+      ];
+      document.getElementById("inc-timeline").innerHTML = `<ul class="timeline">${steps
+        .map(
+          (s) => `
+        <li class="timeline-item ${s.done ? "done" : ""}">
+          <span class="timeline-dot"></span>
+          <div class="timeline-title">${escapeHtml(s.label)}</div>
+          <div class="timeline-meta">${s.time ? escapeHtml(formatDate(s.time)) : "Pending"}</div>
+        </li>`
+        )
+        .join("")}</ul>`;
+    }
+
+    async function load() {
+      if (!incidentId) {
+        showToast("No incident selected.", "error");
+        return;
+      }
+      try {
+        const incident = await fetchIncident(incidentId);
+
+        document.getElementById("inc-title").textContent = incident.title;
+        document.getElementById("inc-meta").textContent = `#${String(incident.id).slice(0, 8)} · ${humanise(incident.category)}`;
+        document.getElementById("inc-status").innerHTML = statusBadge(incident.status);
+        document.getElementById("inc-type").textContent = humanise(incident.category);
+        document.getElementById("inc-sev").innerHTML = severityBadge(incident.severity);
+        document.getElementById("inc-location").textContent =
+          [incident.municipality, incident.district].filter(Boolean).join(", ") || "Location pending";
+        document.getElementById("inc-count").textContent = incident.report_count ?? "—";
+        document.getElementById("inc-desc").textContent = incident.description || "";
+
+        document.getElementById("inc-authority").textContent = incident.authority ? incident.authority.name : "Unassigned";
+        document.getElementById("inc-authority-meta").textContent = incident.authority
+          ? (incident.assigned_at ? `Assigned ${formatDate(incident.assigned_at)}` : "Assigned")
+          : "No department has been assigned yet.";
+
+        renderIncidentTimeline(incident);
+        renderActions(incident);
+      } catch (error) {
+        reportApiError(error, "Could not load this incident.");
+      }
+    }
+
+    load();
+  </script>
 </body>
 </html>

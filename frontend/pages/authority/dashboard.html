@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Authority Dashboard — Better Nepal</title>
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -23,20 +25,35 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Authority Dashboard</h1>
+            <h1 class="page-title" data-i18n="nav.dashboard">Authority Dashboard</h1>
             <p class="page-subtitle">Incoming reports, active incidents, and monitored projects</p>
           </div>
-          <a href="incidents.html" class="btn btn-danger">View All Incidents</a>
+          <a href="incidents.html" class="btn btn-primary">View All Incidents</a>
         </div>
 
-        <div class="grid grid-4 gap-md" id="auth-stats"></div>
+        <div class="photo-banner">
+          <picture>
+            <source type="image/webp" srcset="../../assets/photography/infrastructure/kathmandu-rooftops-700.webp 700w, ../../assets/photography/infrastructure/kathmandu-rooftops-1400.webp 1400w" sizes="(max-width: 1024px) 100vw, 1200px">
+            <img src="../../assets/photography/infrastructure/kathmandu-rooftops-1400.jpg" srcset="../../assets/photography/infrastructure/kathmandu-rooftops-700.jpg 700w, ../../assets/photography/infrastructure/kathmandu-rooftops-1400.jpg 1400w" sizes="(max-width: 1024px) 100vw, 1200px"
+                 width="1400" height="1400"
+                 alt="Dense city rooftops in the foreground with the snow-covered Himalayan range on the horizon behind." data-i18n-alt="photo.kathmandu-rooftops"
+                 class="" style="--photo-focus:center 45%" loading="eager" fetchpriority="high">
+          </picture>
+          <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/XAHCmk14JfU" target="_blank" rel="noopener noreferrer">Sanjay Hona</a> / Unsplash</span>
+          <div>
+            <div class="photo-banner-title" data-i18n="nav.dashboard">Dashboard</div>
+            <p class="photo-banner-sub" data-i18n="dash.pendingVerification"></p>
+          </div>
+        </div>
 
-        <div class="auth-layout mt-lg">
+        <div class="stat-strip" id="auth-stats"></div>
+
+        <div class="details-layout mt-lg">
           <div>
             <div class="card">
               <div class="card-header">
                 <h2 class="card-title">Active Incidents</h2>
-                <a href="incidents.html" class="text-sm">View all →</a>
+                <a href="incidents.html" class="text-sm" data-i18n="common.viewAll">View all →</a>
               </div>
               <div class="incident-list" id="active-incidents"></div>
             </div>
@@ -44,7 +61,7 @@
             <div class="card mt-lg">
               <div class="card-header">
                 <h2 class="card-title">Tracked Projects</h2>
-                <a href="projects.html" class="text-sm">View all →</a>
+                <a href="projects.html" class="text-sm" data-i18n="common.viewAll">View all →</a>
               </div>
               <div class="project-grid" id="tracked-projects"></div>
             </div>
@@ -75,7 +92,13 @@
     </div>
   </div>
 
+  <script src="../../js/dashboard.js"></script>
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/api.js"></script>
@@ -86,17 +109,21 @@
   <script>
     const role = requireRole("authority");
     mountShell(role);
-
-    renderStats("auth-stats", [
-      { value: "326",  label: "Active Reports" },
-      { value: "23",   label: "Critical Incidents" },
-      { value: "61",   label: "Active Projects" },
-      { value: "84",   label: "Damaged Roads" },
-    ]);
-
-    renderIncidentList("active-incidents", getIncidents().slice(0, 3));
-    renderProjectGrid("tracked-projects", getProjects().slice(0, 2));
-    renderAlertList("alert-list", getAlerts());
+    (async () => {
+      await bootstrapOverviewStats("auth-stats");
+      try {
+        renderIncidentList("active-incidents", await fetchIncidents({ per_page: 5 }), "incident-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load incidents.");
+      }
+      try {
+        renderProjectGrid("tracked-projects", await fetchProjects({ per_page: 4 }), "project-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load projects.");
+      }
+      // The alert center was never wired - nothing ever populated it.
+      renderAlertList("alert-list", { limit: 5 });
+    })();
   </script>
 </body>
 </html>

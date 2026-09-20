@@ -8,7 +8,7 @@ from werkzeug.exceptions import HTTPException
 
 from .config import BaseConfig, get_config
 from .config.settings import BACKEND_DIR
-from .extensions import cors, db, migrate
+from .extensions import cors, db, limiter, migrate, socketio
 from .routes import api_v1
 from .utils.helpers import ApiError, error_response, success_response
 
@@ -29,6 +29,7 @@ def create_app(config_name: str | None = None) -> Flask:
     _register_extensions(app)
     _register_database(app)
     _register_blueprints(app)
+    _register_frontend(app)
     _register_error_handlers(app)
     _register_cli(app)
     _configure_logging(app)
@@ -36,11 +37,61 @@ def create_app(config_name: str | None = None) -> Flask:
     return app
 
 
+def _register_frontend(app: Flask) -> None:
+    """Serve ../frontend in development only.
+
+    Convenience, not deployment. Flask's development server is single-threaded
+    and does no caching or compression, so in production a real web server
+    sits in front of these files - which is why this is gated on DEBUG rather
+    than simply always on.
+
+    The benefit of having it is that the frontend and API then share an origin,
+    so the browser makes no preflight request and CORS stops being something
+    that has to be right before anything works at all.
+    """
+    if not app.config.get("DEBUG"):
+        return
+
+    frontend_dir = BACKEND_DIR.parent / "frontend"
+    if not frontend_dir.is_dir():
+        return
+
+    from flask import send_from_directory
+
+    @app.get("/")
+    def _frontend_index():
+        return send_from_directory(frontend_dir, "index.html")
+
+    @app.get("/<path:filename>")
+    def _frontend_file(filename: str):
+        """Serve a frontend file.
+
+        ``send_from_directory`` rejects any path that escapes the directory, so
+        a request for ``../backend/.env`` is refused rather than served.
+        """
+        target = frontend_dir / filename
+        if target.is_dir():
+            filename = f"{filename.rstrip('/')}/index.html"
+        return send_from_directory(frontend_dir, filename)
+
+
 def _register_extensions(app: Flask) -> None:
+    # Reads RATELIMIT_ENABLED and RATELIMIT_STORAGE_URI from config. Disabled
+    # under TESTING, where the suite signs in hundreds of times and a 10/minute
+    # cap would surface as 429s that look like auth bugs.
+    limiter.init_app(app)
+
     cors.init_app(
         app,
         resources={f"{app.config['API_PREFIX']}/*": {"origins": app.config["CORS_ORIGINS"]}},
         supports_credentials=True,
+    )
+
+    # Initialize SocketIO for real-time disaster alerts
+    socketio.init_app(
+        app,
+        cors_allowed_origins=app.config["CORS_ORIGINS"] or "*",
+        async_mode="threading",
     )
 
 
@@ -66,6 +117,9 @@ def _register_cli(app: Flask) -> None:
 def _register_blueprints(app: Flask) -> None:
     app.register_blueprint(api_v1, url_prefix=app.config["API_PREFIX"])
 
+    # Register WebSocket handlers
+    from . import websocket  # noqa: F401
+
     # Development-only smoke endpoint kept from the original scaffold.
     @app.get("/api/hello")
     def hello():
@@ -78,6 +132,20 @@ def _register_error_handlers(app: Flask) -> None:
     @app.errorhandler(ApiError)
     def handle_api_error(exc: ApiError):
         return error_response(exc.message, exc.status, exc.code, exc.details)
+
+    @app.errorhandler(429)
+    def handle_rate_limited(exc):
+        """Rate limits answer in the same envelope as everything else.
+
+        Flask-Limiter's own response is plain text, which would be the one
+        endpoint failure a client could not parse.
+        """
+        return error_response(
+            "Too many requests. Slow down and try again shortly.",
+            429,
+            code="rate_limit_exceeded",
+            details={"limit": str(getattr(exc, "description", "")) or None},
+        )
 
     @app.errorhandler(HTTPException)
     def handle_http_exception(exc: HTTPException):

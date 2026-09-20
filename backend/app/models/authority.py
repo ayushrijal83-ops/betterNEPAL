@@ -39,6 +39,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from .district import District
     from .project import Project
     from .incident import Incident
+    from .disaster_incident import DisasterIncident
 
 NAME_MAX_LENGTH = 150
 
@@ -75,6 +76,9 @@ class Authority(BaseModel):
     district: Mapped["District | None"] = relationship(back_populates="authorities")
     incidents: Mapped[list["Incident"]] = relationship(back_populates="authority")
     projects: Mapped[list["Project"]] = relationship(
+        back_populates="authority", passive_deletes="all"
+    )
+    disaster_incidents: Mapped[list["DisasterIncident"]] = relationship(
         back_populates="authority", passive_deletes="all"
     )
 

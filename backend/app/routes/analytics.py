@@ -19,12 +19,18 @@ from __future__ import annotations
 
 from flask import Blueprint, request
 
+from ..extensions import limiter
 from ..models.role import ROLE_ADMIN, ROLE_AUTHORITY
 from ..services import analytics_service
 from ..utils.decorators import require_roles
 from ..utils.helpers import success_response
 
 analytics_bp = Blueprint("analytics", __name__, url_prefix="/analytics")
+
+# Generous: these are public, unauthenticated, and a live map legitimately
+# polls. The cap is here to stop scraping from crowding out real readers, not
+# to ration normal use.
+MAP_LIMIT = "60 per minute"
 
 TRUTHY = {"1", "true", "yes", "on"}
 
@@ -45,6 +51,7 @@ def _map_filters() -> dict:
 
 
 @analytics_bp.get("/map/points")
+@limiter.limit(MAP_LIMIT)
 def map_points():
     """Lightweight points for map rendering. Public.
 
@@ -66,6 +73,7 @@ def map_points():
 
 
 @analytics_bp.get("/map/districts")
+@limiter.limit(MAP_LIMIT)
 def map_districts():
     """Per-district report and incident density, with resolution rates. Public."""
     return success_response(analytics_service.get_district_summary())

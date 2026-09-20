@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Submit Progress Update — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -34,38 +36,45 @@
 
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label">Project</label>
-                  <select class="form-select">
-                    <option>Bridge Repair — Trail #104</option>
-                    <option>Trail Clearance — Manang Landslide</option>
+                  <label class="form-label" for="project-select">Project</label>
+                  <select class="form-select" id="project-select" required>
+                    <option value="">Loading your projects&hellip;</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Current phase</label>
-                  <input class="form-input" type="text" value="Structural Framework" />
+                  <label class="form-label" for="status-select">Change status</label>
+                  <select class="form-select" id="status-select">
+                    <option value="">Leave unchanged</option>
+                    <option value="active">Active &mdash; work under way</option>
+                    <option value="on_hold">On hold</option>
+                    <option value="completed">Completed</option>
+                  </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Overall progress</label>
-                <div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div>
+                <label class="form-label">Current status</label>
+                <div class="progress-bar"><div class="progress-fill" id="stage-bar" style="width:0%"></div></div>
                 <div class="flex justify-between mt-sm text-sm text-muted">
-                  <span>Low</span><span><strong>64%</strong></span><span>High</span>
+                  <span id="stage-label">&mdash;</span>
+                  <span id="stage-updates">&mdash;</span>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Work completed since last update</label>
-                <textarea class="form-textarea">Completed casting of ground floor columns. Laid reinforcement for first floor slab (Zone B). Installation of electrical conduits in progress.</textarea>
+                <label class="form-label" for="notes">Work completed since last update</label>
+                <textarea class="form-textarea" id="notes" required
+                          placeholder="What was done on site since the last update?"></textarea>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Materials used</label>
-                <textarea class="form-textarea">8 tons TMT Steel (Fe 500D), 110 cubic meters Concrete (M25), 45 bags Cement, Electrical conduits.</textarea>
+                <label class="form-label" for="materials">Materials used <span class="text-muted">(optional)</span></label>
+                <textarea class="form-textarea" id="materials"
+                          placeholder="Appended to the update note."></textarea>
               </div>
 
               <div class="form-actions">
-                <a href="dashboard.html" class="btn btn-outline">Cancel</a>
+                <a href="dashboard.html" class="btn btn-outline" data-i18n="common.cancel">Cancel</a>
                 <button type="submit" class="btn btn-primary btn-lg">Submit Update</button>
               </div>
             </div>
@@ -96,17 +105,104 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/projects.js"></script>
+  <script src="../../js/reports.js"></script>
+  <script src="../../js/api.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script>
     const role = requireRole("contractor");
     mountShell(role);
 
-    document.getElementById("progress-form").addEventListener("submit", (e) => {
+    const projectSelect = document.getElementById("project-select");
+    const statusSelect = document.getElementById("status-select");
+    const form = document.getElementById("progress-form");
+    const submitBtn = form.querySelector("button[type=submit]");
+
+    let projects = [];
+
+    function showStage() {
+      const project = projects.find((p) => p.id === projectSelect.value);
+      const bar = document.getElementById("stage-bar");
+      const label = document.getElementById("stage-label");
+      const updates = document.getElementById("stage-updates");
+      if (!project) return;
+
+      const stage = projectStage(project.status);
+      bar.style.width = stage.percent + "%";
+      label.textContent = stage.label;
+      updates.textContent =
+        project.update_count + (project.update_count === 1 ? " update" : " updates");
+    }
+
+    projectSelect.addEventListener("change", showStage);
+
+    (async () => {
+      try {
+        projects = await fetchMyProjects();
+
+        // Finished work takes no further updates, so it is not offered.
+        const open = projects.filter(
+          (p) => p.status !== "completed" && p.status !== "cancelled"
+        );
+
+        if (!open.length) {
+          projectSelect.innerHTML = '<option value="">No open projects assigned to you</option>';
+          submitBtn.disabled = true;
+          return;
+        }
+
+        projectSelect.innerHTML = open
+          .map((p) => `<option value="${p.id}">${escapeHtml(p.title)}</option>`)
+          .join("");
+
+        // Preselect when arrived from a project page.
+        const requested = new URLSearchParams(window.location.search).get("project");
+        if (requested && open.some((p) => p.id === requested)) projectSelect.value = requested;
+
+        showStage();
+      } catch (error) {
+        reportApiError(error, "Could not load your projects.");
+        projectSelect.innerHTML = '<option value="">Could not load projects</option>';
+        submitBtn.disabled = true;
+      }
+    })();
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      alert("Progress update submitted. (wire to API later)");
-      window.location.href = "dashboard.html";
+
+      const projectId = projectSelect.value;
+      if (!projectId) {
+        showToast("Choose a project first.", "error");
+        return;
+      }
+
+      // The ledger stores one note, so the materials field is folded into it
+      // rather than silently discarded.
+      const materials = document.getElementById("materials").value.trim();
+      const notes =
+        document.getElementById("notes").value.trim() +
+        (materials ? "\n\nMaterials used: " + materials : "");
+
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting\u2026";
+
+      try {
+        await postProgressUpdate(projectId, notes, statusSelect.value || undefined);
+        sessionStorage.setItem("bn_flash", "Progress update submitted");
+        window.location.href = "project-details.html?id=" + encodeURIComponent(projectId);
+      } catch (error) {
+        reportApiError(error, "Could not submit the update.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
     });
   </script>
 </body>

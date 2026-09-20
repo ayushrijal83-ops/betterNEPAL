@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trekking Routes — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -22,6 +24,21 @@
           <div>
             <h1 class="page-title">Trekking Routes</h1>
             <p class="page-subtitle">Reported condition of trails and infrastructure</p>
+          </div>
+        </div>
+
+        <div class="photo-banner">
+          <picture>
+            <source type="image/webp" srcset="../../assets/photography/trekking/flags-over-range-700.webp 700w, ../../assets/photography/trekking/flags-over-range-1400.webp 1400w" sizes="(max-width: 1024px) 100vw, 1200px">
+            <img src="../../assets/photography/trekking/flags-over-range-1400.jpg" srcset="../../assets/photography/trekking/flags-over-range-700.jpg 700w, ../../assets/photography/trekking/flags-over-range-1400.jpg 1400w" sizes="(max-width: 1024px) 100vw, 1200px"
+                 width="1400" height="933"
+                 alt="Prayer flags strung above a trail on a high ridge, overlooking a snow-covered mountain range." data-i18n-alt="photo.flags-over-range"
+                 class="" style="--photo-focus:center 45%" loading="eager" fetchpriority="high">
+          </picture>
+          <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/OKgA8QUMLnA" target="_blank" rel="noopener noreferrer">Kabi Acharya</a> / Unsplash</span>
+          <div>
+            <div class="photo-banner-title" data-i18n="nav.routes">Dashboard</div>
+            <p class="photo-banner-sub" data-i18n="dash.trailConditions"></p>
           </div>
         </div>
 
@@ -47,11 +64,11 @@
               </tr>
               <tr>
                 <td>Everest Base Camp</td><td>Koshi</td><td>2</td><td>20 Oct 2026</td>
-                <td><span class="badge badge-success">Open</span></td>
+                <td><span class="badge badge-success" data-i18n="status.open">Open</span></td>
               </tr>
               <tr>
                 <td>Langtang Valley</td><td>Bagmati</td><td>0</td><td>15 Oct 2026</td>
-                <td><span class="badge badge-success">Open</span></td>
+                <td><span class="badge badge-success" data-i18n="status.open">Open</span></td>
               </tr>
               <tr>
                 <td>Upper Mustang</td><td>Gandaki</td><td>1</td><td>12 Oct 2026</td>
@@ -64,9 +81,15 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
+  <script src="../../js/api.js"></script>
   <script>
     const role = requireRole("guide");
     mountShell(role);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Details — Better Nepal</title>
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -33,7 +35,7 @@
           <div>
             <div class="card">
               <div class="card-header">
-                <h2 class="card-title">Overview</h2>
+                <h2 class="card-title" data-i18n="dash.overview">Overview</h2>
                 <span id="prj-status"></span>
               </div>
 
@@ -45,7 +47,7 @@
                   <span class="meta-value" id="prj-contractor">—</span>
                 </div>
                 <div class="meta-item">
-                  <span class="meta-label">Location</span>
+                  <span class="meta-label" data-i18n="report.field.location">Location</span>
                   <span class="meta-value" id="prj-location">—</span>
                 </div>
                 <div class="meta-item">
@@ -117,7 +119,12 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/api.js"></script>
@@ -127,42 +134,43 @@
     const role = requireRole("authority");
     mountShell(role);
 
-    const params = new URLSearchParams(window.location.search);
-    const p = getProjectById(params.get("id") || "");
+    const projectId = new URLSearchParams(window.location.search).get("id");
 
-    document.getElementById("prj-name").textContent = p.name;
-    document.getElementById("prj-meta").textContent = `#${p.id} • ${p.location}`;
-    document.getElementById("prj-status").innerHTML = statusBadge(p.status);
-    document.getElementById("prj-desc").textContent = p.description;
-    document.getElementById("prj-contractor").textContent = p.contractor;
-    document.getElementById("prj-location").textContent = p.location;
-    document.getElementById("prj-start").textContent = formatDate(p.startDate);
-    document.getElementById("prj-end").textContent = formatDate(p.expectedCompletion);
+    (async () => {
+      if (!projectId) {
+        showToast("No project selected.", "error");
+        return;
+      }
+      try {
+        const project = await fetchProject(projectId);
+        const root = document.querySelector(".page-content") || document.body;
 
-    document.getElementById("prj-progress").style.width = p.progress + "%";
-    document.getElementById("prj-progress-label").textContent = p.progress + "%";
+        const fields = {
+          title: project.title,
+          description: project.description,
+          authority: project.authority || "—",
+          contractor: project.contractor ? project.contractor.full_name : "Unassigned",
+          start: project.start_date || "Not started",
+          due: project.estimated_end_date || "—",
+        };
+        Object.entries(fields).forEach(([key, value]) => {
+          root.querySelectorAll(`[data-field="${key}"]`).forEach((el) => {
+            el.textContent = value;
+          });
+        });
+        root.querySelectorAll("[data-field=status]").forEach((el) => {
+          el.innerHTML = statusBadge(project.status);
+        });
 
-    document.getElementById("prj-evidence").innerHTML = p.evidence
-      .map(
-        (e) => `
-      <div class="evidence-item">
-        <img src="${e.url}" alt="${e.label}" />
-        <div class="evidence-label">${e.label}</div>
-      </div>`
-      )
-      .join("");
-
-    document.getElementById("prj-timeline").innerHTML = renderTimeline(p.milestones);
-
-    document.getElementById("budget-allocated").textContent = formatNPR(p.budget);
-    document.getElementById("budget-spent").textContent = formatNPR(p.spent);
-    document.getElementById("budget-remaining").textContent = formatNPR(p.budget - p.spent);
-    document.getElementById("budget-util").textContent =
-      Math.round((p.spent / p.budget) * 100) + "%";
-
-    document.getElementById("prj-incident").textContent = p.incidentId
-      ? `#${p.incidentId}`
-      : "Not linked to an incident";
+        const ledgerEl = document.getElementById("project-timeline") ||
+          document.getElementById("project-ledger");
+        if (ledgerEl) {
+          renderProgressLedger(ledgerEl.id, await fetchProgressUpdates(project.id));
+        }
+      } catch (error) {
+        reportApiError(error, "Could not load this project.");
+      }
+    })();
   </script>
 </body>
 </html>

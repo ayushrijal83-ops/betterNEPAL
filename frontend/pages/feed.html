@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feed — Better Nepal</title>
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/nepal.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/app.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+
+</head>
+<body >
+
+  <header class="feed-header feed-header--photo photo photo-overlay-bottom">
+    <picture>
+      <source type="image/webp" srcset="../assets/photography/civic/bhaktapur-square-700.webp 700w, ../assets/photography/civic/bhaktapur-square-1400.webp 1148w" sizes="100vw">
+      <img src="../assets/photography/civic/bhaktapur-square-1400.jpg" srcset="../assets/photography/civic/bhaktapur-square-700.jpg 700w, ../assets/photography/civic/bhaktapur-square-1400.jpg 1148w" sizes="100vw"
+           width="1148" height="861"
+           alt="People walking across the brick-paved public square of a historic durbar, surrounded by pagoda temples." data-i18n-alt="photo.bhaktapur-square"
+           class="" style="--photo-focus:center 60%" loading="eager" fetchpriority="high">
+    </picture>
+    <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/JUvPVTuZONY" target="_blank" rel="noopener noreferrer">Aaditya Shah</a> / Unsplash</span>
+    <div class="feed-header-inner">
+      <div class="flex items-center justify-between mb-md">
+        <div class="flex items-center gap-sm">
+          <div class="feed-mark"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 23 Q 10 16 16 20 T 29 17" stroke-opacity=".55"/><path d="M8 13 L16 4 L24 13 L16 17 Z" stroke-linejoin="round"/><circle cx="16" cy="11" r="1.6" fill="currentColor" stroke="none"/></svg></div>
+          <div>
+            <h1 class="feed-title" data-i18n="feed.title">Community Feed</h1>
+            <p class="feed-subtitle">Notices and verified incidents</p>
+          </div>
+        </div>
+        <div class="page-lang-slot"><div id="page-lang"></div><a href="citizen/dashboard.html" class="feed-back">&larr; Dashboard</a></div>
+      </div>
+
+      <!-- Global / Local -->
+      <div class="feed-scope">
+        <button data-scope="global"
+          class="scope-btn" data-i18n="feed.global">
+          Nationwide
+        </button>
+        <button data-scope="local"
+          class="scope-btn">
+          My area
+        </button>
+      </div>
+
+      <!-- District pills, shown only in local view -->
+      <div id="district-pills" class="district-pills hidden"></div>
+    </div>
+  </header>
+
+  <main class="feed-main">
+    <div id="feed" class="feed-list"></div>
+    <div id="feed-end" class="feed-end hidden"></div>
+  </main>
+
+  <script src="../i18n/en.js"></script>
+  <script src="../i18n/ne.js"></script>
+  <script src="../i18n/mai.js"></script>
+  <script src="../i18n/index.js"></script>
+  <script src="../js/config.js"></script>
+<script src="../js/theme.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/districts.js"></script>
+  <script src="../js/chatbot.js"></script>
+  <script>
+    const STATUS_PILL = {
+      open: "bg-rose-100 text-rose-800",
+      in_progress: "bg-amber-100 text-amber-800",
+      resolved: "bg-emerald-100 text-emerald-800",
+      closed: "bg-slate-100 text-slate-600",
+    };
+    const SEVERITY_PILL = {
+      critical: "bg-rose-100 text-rose-800",
+      high: "bg-orange-100 text-orange-800",
+      medium: "bg-amber-100 text-amber-800",
+      low: "bg-slate-100 text-slate-700",
+    };
+
+    let scope = "global";
+    let activeDistrict = null;   // { id, name, source }
+    let user = null;
+
+    // ---- district pills ----
+
+    function renderPills() {
+      const pills = document.getElementById("district-pills");
+      pills.classList.toggle("hidden", scope !== "local");
+      if (scope !== "local") return;
+
+      const options = [];
+      if (user?.permanent_district_id) {
+        options.push({
+          id: user.permanent_district_id,
+          name: user.permanent_district || "Home district",
+          label: "Home",
+        });
+      }
+      if (
+        user?.temporary_district_id &&
+        user.temporary_district_id !== user.permanent_district_id
+      ) {
+        options.push({
+          id: user.temporary_district_id,
+          name: user.temporary_district || "Current district",
+          label: "Current",
+        });
+      }
+
+      pills.innerHTML =
+        options
+          .map(
+            (o) => `
+        <button data-district="${o.id}"
+          class="pill text-xs font-medium border ${activeDistrict?.id === o.id ?"bg-emerald-500 border-emerald-400 text-white"
+                   : "bg-white/10 border-white/20 text-white/80 hover:bg-white/20"}">
+          ${escapeHtml(o.label)} · ${escapeHtml(o.name)}
+        </button>`
+          )
+          .join("") +
+        `<button id="gps-pill"
+          class="text-xs font-medium border ${activeDistrict?.source ==="gps"
+                   ? "bg-emerald-500 border-emerald-400 text-white"
+                   : "bg-white/10 border-white/20 text-white/80 hover:bg-white/20"}">
+          Use my location
+        </button>`;
+
+      pills.querySelectorAll("[data-district]").forEach((b) =>
+        b.addEventListener("click", () => {
+          const option = options.find((o) => o.id === b.dataset.district);
+          activeDistrict = { ...option, source: "profile" };
+          document.body.dataset.districtId = option.id;
+          renderPills();
+          loadFeed();
+        })
+      );
+
+      document.getElementById("gps-pill").addEventListener("click", detectDistrict);
+    }
+
+    // Resolve GPS to a district through the backend, which is the only thing
+    // that can do it: reverse geocoding needs the boundary polygons. Without
+    // PostGIS data loaded it answers "unresolved", and that is reported rather
+    // than guessed at.
+    async function detectDistrict() {
+      const pill = document.getElementById("gps-pill");
+      pill.textContent = "Locating…";
+
+      const position = await getCurrentPositionSafe();
+      if (!position) {
+        pill.textContent = "Use my location";
+        showToast("Location unavailable. Allow access, or pick a district.", "info", 5000);
+        return;
+      }
+
+      try {
+        const data = await apiGet(
+          `/map/reverse-geocode${queryString({ lat: position.lat, lng: position.lng })}`,
+          { auth: false }
+        );
+        if (!data.resolved || !data.district) {
+          showToast(
+            "Your location could not be matched to a district on this server.",
+            "info",
+            6000
+          );
+          pill.textContent = "Use my location";
+          return;
+        }
+        activeDistrict = { id: data.district.id, name: data.district.name, source: "gps" };
+        document.body.dataset.districtId = activeDistrict.id;
+        renderPills();
+        loadFeed();
+      } catch (error) {
+        reportApiError(error, "Could not resolve your location.");
+        pill.textContent = "Use my location";
+      }
+    }
+
+    function getCurrentPositionSafe() {
+      return new Promise((resolve) => {
+        if (!navigator.geolocation) return resolve(null);
+        navigator.geolocation.getCurrentPosition(
+          (p) => resolve({ lat: p.coords.latitude, lng: p.coords.longitude }),
+          () => resolve(null),
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
+      });
+    }
+
+    // ---- cards ----
+
+    function announcementCard(a) {
+      return `
+        <article class="card feed-card">
+          <div class="feed-notice-band">
+            <span class="feed-notice-label" data-i18n="feed.officialNotice">Official notice</span>
+            <span class="feed-notice-meta">
+              ${a.scope === "national"
+                ? `<span data-i18n="home.geo.nationwide">${escapeHtml(t("home.geo.nationwide"))}</span>`
+                : escapeHtml(a.district || t("map.districts"))}
+            </span>
+          </div>
+          <div class="feed-card-inner">
+            <h2 class="feed-card-title">${escapeHtml(a.title)}</h2>
+            <p class="feed-card-body whitespace-pre-line">${escapeHtml(a.body)}</p>
+            <p class="feed-card-meta">
+              ${escapeHtml(a.author?.full_name || "Authority")} ·
+              ${escapeHtml(formatDate(a.created_at))}
+            </p>
+          </div>
+        </article>`;
+    }
+
+    function incidentCard(i) {
+      // "I face this too" is a real number here, not a like button: it is how
+      // many separate citizens reported the same problem, which the backend
+      // already tracks by clustering reports onto one incident. Acting on it
+      // means filing your own report, which is the thing that actually moves
+      // the count - so the button goes to the report form rather than
+      // incrementing a counter nothing would persist.
+      const count = i.report_count || 0;
+      return `
+        <article class="card feed-card">
+          <div class="feed-card-inner">
+            <div class="flex items-start justify-between gap-sm">
+              <h2 class="feed-card-title">${escapeHtml(i.title)}</h2>
+              <span class="shrink-0 text-xs font-semibold ${SEVERITY_PILL[i.severity] ||"bg-slate-100 text-slate-700"}">
+                ${escapeHtml(i.severity)}
+              </span>
+            </div>
+
+            <p class="feed-card-body line-clamp-3">${escapeHtml(i.description)}</p>
+
+            <div class="feed-card-meta actions">
+              <span class="${STATUS_PILL[i.status] ||"bg-slate-100 text-slate-700"}">
+                ${escapeHtml(humanise(i.status))}
+              </span>
+              <span >
+                ${escapeHtml(humanise(i.category))}
+              </span>
+              <span class="text-dim">${escapeHtml(i.district || "Location pending")}</span>
+            </div>
+
+            ${
+              i.authority
+                ? `<div class="mt-sm border">
+                     <p class="text-xs font-semibold" data-i18n="status.assigned">Assigned</p>
+                     <p class="text-xs">${escapeHtml(i.authority.name)}</p>
+                   </div>`
+                : `<div class="mt-sm border">
+                     <p class="text-xs text-muted">Not yet assigned to an authority.</p>
+                   </div>`
+            }
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-sm text-sm">
+                <span class="font-semibold">${count}</span>
+                <span class="text-muted">
+                  ${count === 1 ? "person has" : "people have"} reported this
+                </span>
+              </div>
+              <a href="citizen/report.html"
+                 class="text-xs font-semibold">
+                I face this too
+              </a>
+            </div>
+
+            <p class="feed-card-meta">${escapeHtml(formatDate(i.created_at))}</p>
+          </div>
+        </article>`;
+    }
+
+    // ---- loading ----
+
+    async function loadFeed() {
+      const feed = document.getElementById("feed");
+      feed.innerHTML = `<div class="glass text-center text-sm text-muted">Loading…</div>`;
+
+      const districtId = scope === "local" ? activeDistrict?.id : null;
+      if (scope === "local" && !districtId) {
+        feed.innerHTML = `
+          <div class="glass text-center text-sm text-muted">
+            Choose a district above, or allow location access, to see local updates.
+          </div>`;
+        return;
+      }
+
+      try {
+        // Announcements and incidents in parallel, then merged by recency so
+        // the feed reads as one timeline rather than two stacked lists.
+        const [announcements, incidents] = await Promise.all([
+          apiGet(
+            `/announcements${queryString(
+              districtId ? { district_id: districtId, per_page: 20 } : { scope: "national", per_page: 20 }
+            )}`,
+            { auth: false }
+          ),
+          apiGet(
+            `/incidents${queryString(districtId ? { district_id: districtId, per_page: 20 } : { per_page: 20 })}`,
+            { auth: false }
+          ),
+        ]);
+
+        const items = [
+          ...(announcements.announcements || []).map((a) => ({
+            kind: "announcement", at: a.created_at, html: announcementCard(a),
+          })),
+          ...(incidents.incidents || []).map((i) => ({
+            kind: "incident", at: i.created_at, html: incidentCard(i),
+          })),
+        ].sort((a, b) => String(b.at).localeCompare(String(a.at)));
+
+        if (!items.length) {
+          feed.innerHTML = `
+            <div class="glass text-center">
+              <p class="font-medium" data-i18n="state.empty.title">Nothing here yet</p>
+              <p class="text-sm text-muted">
+                ${scope === "local"
+                  ? "No notices or verified incidents in this district."
+                  : "No nationwide notices or verified incidents."}
+              </p>
+            </div>`;
+          return;
+        }
+
+        feed.innerHTML = items.map((i) => i.html).join("");
+        const end = document.getElementById("feed-end");
+        end.textContent = `${items.length} update${items.length === 1 ? "" : "s"}`;
+        end.classList.remove("hidden");
+      } catch (error) {
+        feed.innerHTML = `<div class="glass text-sm">${escapeHtml(
+          reportApiError(error, "Could not load the feed.")
+        )}</div>`;
+      }
+    }
+
+    function setScope(next) {
+      scope = next;
+      document.querySelectorAll(".scope-btn").forEach((b) => {
+        const active = b.dataset.scope === scope;
+        b.className =
+          "scope-btn flex-1 sm:flex-none px-5 py-2 rounded-lg text-sm font-medium transition " +
+          (active ? "bg-white text-slate-900 shadow" : "text-white/70 hover:text-white");
+      });
+      renderPills();
+      loadFeed();
+    }
+
+    // ---- boot ----
+    (async () => {
+      requireRole("citizen");
+
+      user = TokenStore.getUser();
+      // Refresh from the server so a district changed elsewhere is reflected.
+      const fresh = await verifySession("citizen");
+      if (fresh) user = fresh;
+
+      // Default the local view to where the person currently is.
+      if (user?.temporary_district_id) {
+        activeDistrict = {
+          id: user.temporary_district_id,
+          name: user.temporary_district || "Current district",
+          source: "profile",
+        };
+      } else if (user?.permanent_district_id) {
+        activeDistrict = {
+          id: user.permanent_district_id,
+          name: user.permanent_district || "Home district",
+          source: "profile",
+        };
+      }
+      if (activeDistrict) document.body.dataset.districtId = activeDistrict.id;
+
+      document.querySelectorAll(".scope-btn").forEach((b) =>
+        b.addEventListener("click", () => setScope(b.dataset.scope))
+      );
+      setScope("global");
+    })();
+  </script>
+  <script>
+    // These two pages carry their own header instead of the shared
+    // navbar, so the switcher is mounted here rather than by mountShell.
+    document.getElementById("page-lang").innerHTML =
+      BN_I18N.switcherMarkup().replace("lang-switch", "lang-switch lang-switch--dark");
+  </script>
+</body>
+</html>

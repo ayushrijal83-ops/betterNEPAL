@@ -1,8 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create your account — Better Nepal</title>
+
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
+  <link rel="stylesheet" href="../../css/navbar.css" />
+  <link rel="stylesheet" href="../../css/forms.css" />
+  <link rel="stylesheet" href="../../css/responsive.css" />
+</head>
+<body data-no-chatbot>
+
+<div class="auth-layout">
+
+  <aside class="auth-visual auth-visual--photo">
+    <picture>
+      <source type="image/webp" srcset="../../assets/photography/auth/durbar-square-crowd-800.webp 656w, ../../assets/photography/auth/durbar-square-crowd-1200.webp 983w" sizes="(max-width: 900px) 100vw, 52vw">
+      <img src="../../assets/photography/auth/durbar-square-crowd-1200.jpg" srcset="../../assets/photography/auth/durbar-square-crowd-800.jpg 656w, ../../assets/photography/auth/durbar-square-crowd-1200.jpg 983w" sizes="(max-width: 900px) 100vw, 52vw"
+           width="983" height="1311"
+           alt="A multi-tiered Newari temple in a durbar square, with a crowd gathered in the plaza below." data-i18n-alt="photo.durbar-square-crowd"
+           class="auth-photo" loading="eager" fetchpriority="high">
+    </picture>
+    <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/_Rdqpya1Fgc" target="_blank" rel="noopener noreferrer">Binaya Photography</a> / Unsplash</span>
+
+    <span class="auth-ridge" aria-hidden="true">
+      <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMax slice">
+        <path fill="#1d4634" fill-opacity=".5"  d="M0 176 L44 148 L78 160 L126 96 L160 132 L200 118 L242 142 L286 78 L316 116 L346 104 L392 138 L426 122 L466 148 L512 100 L544 130 L578 116 L600 138 L600 300 L0 300 Z"/>
+        <path fill="#17382a" fill-opacity=".78" d="M0 206 L56 178 L92 190 L148 132 L182 170 L224 156 L278 186 L322 140 L356 174 L396 160 L448 192 L492 152 L526 182 L570 168 L600 190 L600 300 L0 300 Z"/>
+        <path fill="#0c2419"                    d="M0 238 L66 212 L110 226 L172 186 L216 218 L266 204 L326 232 L376 196 L414 224 L466 212 L520 238 L562 218 L600 232 L600 300 L0 300 Z"/>
+        <g fill="none" stroke="#7bb79b" stroke-opacity=".22" stroke-width="1">
+          <path d="M-20 262 Q 100 244 220 258 T 460 248 T 620 260"/>
+          <path d="M-20 276 Q 100 258 220 272 T 460 262 T 620 274"/>
+        </g>
+      </svg>
+    </span>
+
+    <a class="auth-visual-brand" href="../../index.html">
+      <span class="auth-visual-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 23 Q 10 16 16 20 T 29 17" stroke-opacity=".55"/>
+          <path d="M3 27 Q 10 20 16 24 T 29 21" stroke-opacity=".35"/>
+          <path d="M8 13 L16 4 L24 13 L16 17 Z" stroke-linejoin="round"/>
+          <circle cx="16" cy="11" r="1.6" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <span class="auth-visual-name" data-i18n="brand.name">Better Nepal</span>
+    </a>
+
+    <div class="auth-visual-copy">
+      <h2 class="auth-visual-title" data-i18n="home.hero.title1">See the problem.</h2>
+      <p class="auth-visual-text" data-i18n="home.roles.citizenBody">
+        Report what you see. Follow it until it is fixed.
+      </p>
+    </div>
+
+    <div class="auth-visual-foot">
+      <span data-i18n="brand.tagline">Civic infrastructure, in the open</span>
+    </div>
+  </aside>
+
+  <main class="auth-panel">
+    <div class="auth-card">
+
+      <h1 class="auth-title" data-i18n="auth.register.title">Create your account</h1>
+      <p class="auth-sub" data-i18n="auth.register.subtitle">
+        Report issues and follow them to completion.
+      </p>
+
+      <div class="auth-notice auth-notice--contractor">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+        </svg>
+        <div>
+          <div class="auth-notice-body" data-i18n="auth.citizenOnly">
+            Registration creates a citizen account. An administrator promotes it to a guide
+            account afterwards.
+          </div>
+        </div>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="full-name">
+            <span data-i18n="auth.fullName">Full name</span> <span class="req">*</span>
+          </label>
+          <input class="form-input" type="text" id="full-name" autocomplete="name" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">
+            <span data-i18n="auth.email">Email</span> <span class="req">*</span>
+          </label>
+          <input class="form-input" type="email" id="email" autocomplete="username" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="phone">
+              <span data-i18n="auth.phone">Phone</span>
+              <span class="text-dim" data-i18n="common.optional">optional</span>
+            </label>
+            <input class="form-input" type="tel" id="phone" autocomplete="tel"
+                   placeholder="+977 98XXXXXXXX" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">
+              <span data-i18n="auth.password">Password</span> <span class="req">*</span>
+            </label>
+            <input class="form-input" type="password" id="password"
+                   autocomplete="new-password" minlength="8" required />
+            <p class="form-hint" data-i18n="auth.passwordHint">At least 8 characters.</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="eyebrow mb-md" data-i18n="auth.districts">Your districts</p>
+        <div id="district-fields"></div>
+
+        <div id="form-error" class="alert alert-danger hidden" role="alert"></div>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-lg btn-block mt-md"
+                data-i18n="common.register">Create account</button>
+      </form>
+
+      <p class="auth-footer">
+        <span data-i18n="auth.hasAccount">Already have an account?</span>
+        <a href="login.html" data-i18n="common.signIn">Sign in</a>
+      </p>
+
+      <div class="auth-lang" id="auth-lang"></div>
+
+      <p class="text-center">
+        <a class="auth-back" href="../../index.html" data-i18n="common.backHome">Back to home</a>
+      </p>
+    </div>
+  </main>
+</div>
+
+<script src="../../i18n/en.js"></script>
+<script src="../../i18n/ne.js"></script>
+<script src="../../i18n/mai.js"></script>
+<script src="../../i18n/index.js"></script>
+<script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
+<script src="../../js/utils.js"></script>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/districts.js"></script>
 <script>
-  document.getElementById("register-form").addEventListener("submit", (e) => {
+  document.getElementById("auth-lang").innerHTML = BN_I18N.switcherMarkup();
+
+  // The picker labels come from the dictionary, so they are built after i18n
+  // has settled rather than hardcoded into the markup.
+  document.getElementById("district-fields").innerHTML =
+    districtPickerMarkup("permanent-district", {
+      label: t("auth.permanentDistrict"),
+      hint: t("auth.permanentHint"),
+      required: true,
+    }) +
+    districtPickerMarkup("temporary-district", {
+      label: t("auth.currentDistrict"),
+      hint: t("auth.currentHint"),
+    });
+
+  let permanentPicker = null;
+  let temporaryPicker = null;
+
+  (async () => {
+    permanentPicker = await mountDistrictPicker("permanent-district");
+    temporaryPicker = await mountDistrictPicker("temporary-district");
+  })();
+
+  const form = document.getElementById("register-form");
+  const submitBtn = document.getElementById("submit-btn");
+  const errorBox = document.getElementById("form-error");
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.classList.remove("hidden");
+  }
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    setRole("guide");
-    sessionStorage.setItem("bn_flash", "Guide account created");
-    window.location.href = "../../pages/guide/dashboard.html";
+    errorBox.classList.add("hidden");
+
+    const permanent = permanentPicker && permanentPicker.value();
+    if (!permanent) {
+      // Checked here as well as server-side: it is the likeliest mistake on
+      // this form, and catching it without a round trip is kinder.
+      showError(t("auth.chooseDistrict"));
+      document.getElementById("permanent-district-search").focus();
+      return;
+    }
+
+    const original = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = t("auth.creating");
+
+    try {
+      await register({
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value,
+        fullName: document.getElementById("full-name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        permanentDistrictId: permanent,
+        // Omitted is fine: the backend fills it with the permanent district,
+        // so "where are you now" always has an answer.
+        temporaryDistrictId: (temporaryPicker && temporaryPicker.value()) || undefined,
+      });
+
+      sessionStorage.setItem("bn_flash", t("auth.accountCreated"));
+      // Public registration always creates a CITIZEN account; the backend
+      // fixes the role and ignores anything sent in the body.
+      window.location.href = "../../pages/citizen/dashboard.html";
+    } catch (error) {
+      showError(reportApiError(error, t("auth.registerFailed")));
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = original;
+    }
   });
 </script>
+</body>
+</html>

@@ -38,6 +38,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from .incident import Incident
     from .municipality import Municipality
     from .user import User
+    from .disaster_incident import DisasterIncident
 
 TITLE_MAX_LENGTH = 100
 
@@ -122,6 +123,9 @@ class Report(BaseModel):
     district: Mapped["District | None"] = relationship(back_populates="reports")
     municipality: Mapped["Municipality | None"] = relationship(back_populates="reports")
     incident: Mapped["Incident | None"] = relationship(back_populates="reports")
+    disaster_incidents: Mapped[list["DisasterIncident"]] = relationship(
+        back_populates="source_report", passive_deletes="all"
+    )
 
     __table_args__ = (
         # Defence in depth: the API validates coordinates, and so does the

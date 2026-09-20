@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <title>sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+[SQL: INSERT INTO disaster_dispatches (disaster_incident_id, authority_user_id, status, channel, notified_at, acknowledged_at, delivered_at, failed_at, failure_reason, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (&#39;3e3fb5cd067044f1ba1666414cdc4f70&#39;, &#39;1ec075d08abd4d9389d7579be4c071b8&#39;, &#39;pending&#39;, &#39;websocket&#39;, None, None, None, None, None, &#39;55a1970662d84e74b994e439e1a271e6&#39;, &#39;2026-09-19 21:00:39.702987&#39;, &#39;2026-09-19 21:00:39.702987&#39;)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+ // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css">
+    <link rel="shortcut icon"
+        href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script>
+      var CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "9u030gHA96Eoz883G9W5";
+    </script>
+  </head>
+  <body style="background-color: #fff">
+    <div class="debugger">
+<h1>IntegrityError</h1>
+<div class="detail">
+  <p class="errormsg">sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+[SQL: INSERT INTO disaster_dispatches (disaster_incident_id, authority_user_id, status, channel, notified_at, acknowledged_at, delivered_at, failed_at, failure_reason, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (&#39;3e3fb5cd067044f1ba1666414cdc4f70&#39;, &#39;1ec075d08abd4d9389d7579be4c071b8&#39;, &#39;pending&#39;, &#39;websocket&#39;, None, None, None, None, None, &#39;55a1970662d84e74b994e439e1a271e6&#39;, &#39;2026-09-19 21:00:39.702987&#39;, &#39;2026-09-19 21:00:39.702987&#39;)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+</p>
+</div>
+<h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+  <h3></h3>
+  <ul><li><div class="frame" id="frame-2038852896912">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1969</em>,
+      in <code class="function">_exec_single_context</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                            </span>context,</pre>
+<pre class="line before"><span class="ws">                        </span>):</pre>
+<pre class="line before"><span class="ws">                            </span>evt_handled = True</pre>
+<pre class="line before"><span class="ws">                            </span>break</pre>
+<pre class="line before"><span class="ws">                </span>if not evt_handled:</pre>
+<pre class="line current"><span class="ws">                    </span>self.dialect.do_execute(</pre>
+<pre class="line after"><span class="ws">                        </span>cursor, str_statement, effective_parameters, context</pre>
+<pre class="line after"><span class="ws">                    </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if self._has_events or self.engine._has_events:</pre>
+<pre class="line after"><span class="ws">                </span>self.dispatch.after_cursor_execute(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852897024">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py"</cite>,
+      line <em class="line">952</em>,
+      in <code class="function">do_execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def do_executemany(self, cursor, statement, parameters, context=None):</pre>
+<pre class="line before"><span class="ws">        </span>cursor.executemany(statement, parameters)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def do_execute(self, cursor, statement, parameters, context=None):</pre>
+<pre class="line current"><span class="ws">        </span>cursor.execute(statement, parameters)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def do_execute_no_params(self, cursor, statement, context=None):</pre>
+<pre class="line after"><span class="ws">        </span>cursor.execute(statement)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def is_disconnect(</pre></div>
+</div>
+
+<li><div class="exc-divider">The above exception was the direct cause of the following exception:</div>
+<li><div class="frame" id="frame-2038852734304">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1536</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>) -&gt; cabc.Iterable[bytes]:</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;The WSGI server calls the Flask application object as the</pre>
+<pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app`, which can be</pre>
+<pre class="line before"><span class="ws">        </span>wrapped to apply middleware.</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;</pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852734192">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask_socketio\__init__.py"</cite>,
+      line <em class="line">42</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                         </span>socketio_path=socketio_path)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def __call__(self, environ, start_response):</pre>
+<pre class="line before"><span class="ws">        </span>environ = environ.copy()</pre>
+<pre class="line before"><span class="ws">        </span>environ[&#39;flask.app&#39;] = self.flask_app</pre>
+<pre class="line current"><span class="ws">        </span>return super().__call__(environ, start_response)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span>class _ManagedSession(dict, SessionMixin):</pre>
+<pre class="line after"><span class="ws">    </span>&#34;&#34;&#34;This class is used for user sessions that are managed by</pre>
+<pre class="line after"><span class="ws">    </span>Flask-SocketIO. It is simple dict, expanded with the Flask session</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852821376">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\engineio\middleware.py"</cite>,
+      line <em class="line">74</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                    </span>&#39;200 OK&#39;,</pre>
+<pre class="line before"><span class="ws">                    </span>[(&#39;Content-Type&#39;, static_file[&#39;content_type&#39;])])</pre>
+<pre class="line before"><span class="ws">                </span>with open(static_file[&#39;filename&#39;], &#39;rb&#39;) as f:</pre>
+<pre class="line before"><span class="ws">                    </span>return [f.read()]</pre>
+<pre class="line before"><span class="ws">            </span>elif self.wsgi_app is not None:</pre>
+<pre class="line current"><span class="ws">                </span>return self.wsgi_app(environ, start_response)</pre>
+<pre class="line after"><span class="ws">        </span>return self.not_found(start_response)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def not_found(self, start_response):</pre>
+<pre class="line after"><span class="ws">        </span>start_response(&#34;404 Not Found&#34;, [(&#39;Content-Type&#39;, &#39;text/plain&#39;)])</pre>
+<pre class="line after"><span class="ws">        </span>return [b&#39;Not Found&#39;]</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852823168">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1514</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+<pre class="line before"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line before"><span class="ws">                </span>error = e</pre>
+<pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+<pre class="line after"><span class="ws">            </span>except:</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre>
+<pre class="line after"><span class="ws">                </span>raise</pre>
+<pre class="line after"><span class="ws">            </span>return response(environ, start_response)</pre>
+<pre class="line after"><span class="ws">        </span>finally:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852823280">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py"</cite>,
+      line <em class="line">206</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>if options.intercept_exceptions and hasattr(app, &#34;handle_exception&#34;):</pre>
+<pre class="line before"><span class="ws">            </span>app_any: Any = app</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f: Callable[..., Any]) -&gt; Callable[..., Response]:</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args: Any, **kwargs: Any) -&gt; Response:</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app_any.make_response(f(*args, **kwargs)))</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>app_any.handle_exception = _after_request_decorator(app_any.handle_exception)</pre>
+<pre class="line after"><span class="ws">            </span>app_any.handle_user_exception = _after_request_decorator(app_any.handle_user_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852825632">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1511</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)</pre>
+<pre class="line before"><span class="ws">        </span>error: BaseException | None = None</pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">                </span>error = e</pre>
+<pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+<pre class="line after"><span class="ws">            </span>except:</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852825744">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">919</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line before"><span class="ws">                </span>rv = self.dispatch_request()</pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre>
+<pre class="line after"><span class="ws">        </span>rv: ft.ResponseReturnValue | HTTPException,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852825856">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py"</cite>,
+      line <em class="line">206</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>if options.intercept_exceptions and hasattr(app, &#34;handle_exception&#34;):</pre>
+<pre class="line before"><span class="ws">            </span>app_any: Any = app</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f: Callable[..., Any]) -&gt; Callable[..., Response]:</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args: Any, **kwargs: Any) -&gt; Response:</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app_any.make_response(f(*args, **kwargs)))</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>app_any.handle_exception = _after_request_decorator(app_any.handle_exception)</pre>
+<pre class="line after"><span class="ws">            </span>app_any.handle_user_exception = _after_request_decorator(app_any.handle_user_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852825968">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">809</em>,
+      in <code class="function">handle_user_exception</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>handler = self._find_error_handler(e, request.blueprints)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>if handler is None:</pre>
+<pre class="line before"><span class="ws">            </span>raise</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def handle_exception(self, e: Exception) -&gt; Response:</pre>
+<pre class="line after"><span class="ws">        </span>&#34;&#34;&#34;Handle an exception that did not have an error handler</pre>
+<pre class="line after"><span class="ws">        </span>associated with it, or that was raised from an error handler.</pre>
+<pre class="line after"><span class="ws">        </span>This always causes a 500 ``InternalServerError``.</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852826080">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\__init__.py"</cite>,
+      line <em class="line">162</em>,
+      in <code class="function">handle_unexpected</code></h4>
+  <div class="source "><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>@app.errorhandler(Exception)</pre>
+<pre class="line before"><span class="ws">    </span>def handle_unexpected(exc: Exception):</pre>
+<pre class="line before"><span class="ws">        </span>app.logger.exception(&#34;Unhandled exception: %s&#34;, exc)</pre>
+<pre class="line before"><span class="ws">        </span>if app.config[&#34;DEBUG&#34;]:</pre>
+<pre class="line current"><span class="ws">            </span>raise exc</pre>
+<pre class="line after"><span class="ws">        </span>return error_response(&#34;An internal error occurred.&#34;, 500, code=&#34;internal_error&#34;)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span>def _configure_logging(app: Flask) -&gt; None:</pre>
+<pre class="line after"><span class="ws">    </span>if not app.config[&#34;TESTING&#34;]:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828320">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">917</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line current"><span class="ws">                </span>rv = self.dispatch_request()</pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828432">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">902</em>,
+      in <code class="function">dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>and req.method == &#34;OPTIONS&#34;</pre>
+<pre class="line before"><span class="ws">        </span>):</pre>
+<pre class="line before"><span class="ws">            </span>return self.make_default_options_response()</pre>
+<pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint</pre>
+<pre class="line before"><span class="ws">        </span>view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]</pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def full_dispatch_request(self) -&gt; Response:</pre>
+<pre class="line after"><span class="ws">        </span>&#34;&#34;&#34;Dispatches the request and on top of that performs request</pre>
+<pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and</pre>
+<pre class="line after"><span class="ws">        </span>error handling.</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828544">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\utils\decorators.py"</cite>,
+      line <em class="line">43</em>,
+      in <code class="function">wrapper</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">        </span># Imported here to avoid a circular import: the service imports models,</pre>
+<pre class="line before"><span class="ws">        </span># which is fine, but the service also imports this module&#39;s siblings.</pre>
+<pre class="line before"><span class="ws">        </span>from ..services.auth_service import resolve_access_token</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>g.current_user = resolve_access_token(_bearer_token())</pre>
+<pre class="line current"><span class="ws">        </span>return view(*args, **kwargs)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>return wrapper</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span>def require_roles(*role_names: str) -&gt; Callable:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828656">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\utils\decorators.py"</cite>,
+      line <em class="line">71</em>,
+      in <code class="function">wrapper</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">                </span>raise ApiError(</pre>
+<pre class="line before"><span class="ws">                    </span>&#34;You do not have permission to perform this action.&#34;,</pre>
+<pre class="line before"><span class="ws">                    </span>status=403,</pre>
+<pre class="line before"><span class="ws">                    </span>code=&#34;permission_denied&#34;,</pre>
+<pre class="line before"><span class="ws">                </span>)</pre>
+<pre class="line current"><span class="ws">            </span>return view(*args, **kwargs)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">        </span>return wrapper</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>return decorator</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828768">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\routes\disaster.py"</cite>,
+      line <em class="line">28</em>,
+      in <code class="function">evaluate_report</code></h4>
+  <div class="source "><pre class="line before"><span class="ws"></span>def evaluate_report(report_id: str):</pre>
+<pre class="line before"><span class="ws">    </span>&#34;&#34;&#34;Trigger AI disaster evaluation for a report.</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>Authority/admin only - AI analysis costs resources.</pre>
+<pre class="line before"><span class="ws">    </span>&#34;&#34;&#34;</pre>
+<pre class="line current"><span class="ws">    </span>result = disaster_incident_service.process_report_for_disaster(</pre>
+<pre class="line after"><span class="ws">        </span>report_id, user_id=current_user().id</pre>
+<pre class="line after"><span class="ws">    </span>)</pre>
+<pre class="line after"><span class="ws">    </span>return success_response(result)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828880">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\services\disaster_incident_service.py"</cite>,
+      line <em class="line">351</em>,
+      in <code class="function">process_report_for_disaster</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">            </span>db.session.commit()</pre>
+<pre class="line before"><span class="ws">        </span>incident = correlated</pre>
+<pre class="line before"><span class="ws">        </span>action = &#34;correlated&#34;</pre>
+<pre class="line before"><span class="ws">    </span>elif dispatch_decision.should_dispatch or analysis.is_disaster:</pre>
+<pre class="line before"><span class="ws">        </span># Create new incident (even if not dispatching, track for review)</pre>
+<pre class="line current"><span class="ws">        </span>incident = create_disaster_incident_from_report(</pre>
+<pre class="line after"><span class="ws">            </span>report_id=report.id,</pre>
+<pre class="line after"><span class="ws">            </span>analysis=analysis,</pre>
+<pre class="line after"><span class="ws">            </span>jurisdiction=jurisdiction,</pre>
+<pre class="line after"><span class="ws">            </span>dispatch_decision=dispatch_decision,</pre>
+<pre class="line after"><span class="ws">            </span>triggered_by_user_id=user_id,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852828992">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\services\disaster_incident_service.py"</cite>,
+      line <em class="line">197</em>,
+      in <code class="function">create_disaster_incident_from_report</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">        </span># Find authorities for this jurisdiction</pre>
+<pre class="line before"><span class="ws">        </span>district_id = jurisdiction.get(&#34;district_id&#34;)</pre>
+<pre class="line before"><span class="ws">        </span>authority_users = find_authority_users_for_jurisdiction(district_id)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span># Notify authorities</pre>
+<pre class="line current"><span class="ws">        </span>notification_result = notify_authorities_for_incident(incident, authority_users)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">        </span># Log dispatch decision</pre>
+<pre class="line after"><span class="ws">        </span>current_app.logger.info(</pre>
+<pre class="line after"><span class="ws">            </span>&#34;Disaster dispatch: incident=%s district=%s authorities_notified=%s failed=%s&#34;,</pre>
+<pre class="line after"><span class="ws">            </span>incident.id,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852894784">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\services\notification_service.py"</cite>,
+      line <em class="line">257</em>,
+      in <code class="function">notify_authorities_for_incident</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">    </span>failed = 0</pre>
+<pre class="line before"><span class="ws">    </span>details = []</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>for authority, users in authority_users:</pre>
+<pre class="line before"><span class="ws">        </span>for user in users:</pre>
+<pre class="line current"><span class="ws">            </span>results = notify_authority(incident, user, authority, channels)</pre>
+<pre class="line after"><span class="ws">            </span>for r in results:</pre>
+<pre class="line after"><span class="ws">                </span>if r.success:</pre>
+<pre class="line after"><span class="ws">                    </span>notified += 1</pre>
+<pre class="line after"><span class="ws">                </span>else:</pre>
+<pre class="line after"><span class="ws">                    </span>failed += 1</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852894896">
+  <h4>File <cite class="filename">"D:\betterNEPAL\backend\app\services\notification_service.py"</cite>,
+      line <em class="line">206</em>,
+      in <code class="function">notify_authority</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">            </span>authority_user_id=recipient.id,</pre>
+<pre class="line before"><span class="ws">            </span>status=&#34;pending&#34;,</pre>
+<pre class="line before"><span class="ws">            </span>channel=channel_name,</pre>
+<pre class="line before"><span class="ws">        </span>)</pre>
+<pre class="line before"><span class="ws">        </span>db.session.add(dispatch)</pre>
+<pre class="line current"><span class="ws">        </span>db.session.flush()</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">        </span># Attempt delivery</pre>
+<pre class="line after"><span class="ws">        </span>result, ws_events = channel.send(incident, recipient, dispatch)</pre>
+<pre class="line after"><span class="ws">        </span>websocket_events.extend(ws_events)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895008">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\scoping.py"</cite>,
+      line <em class="line">925</em>,
+      in <code class="function">flush</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">          </span>full flush() occurs.  It is not intended for general use.</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;  # noqa: E501</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line current"><span class="ws">        </span>return self._proxied.flush(objects=objects)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def get(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre>
+<pre class="line after"><span class="ws">        </span>entity: _EntityBindKey[_O],</pre>
+<pre class="line after"><span class="ws">        </span>ident: _PKIdentityArgument,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895120">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">4353</em>,
+      in <code class="function">flush</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>if self._is_clean():</pre>
+<pre class="line before"><span class="ws">            </span>return</pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>self._flushing = True</pre>
+<pre class="line current"><span class="ws">            </span>self._flush(objects)</pre>
+<pre class="line after"><span class="ws">        </span>finally:</pre>
+<pre class="line after"><span class="ws">            </span>self._flushing = False</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def _flush_warning(self, method: Any) -&gt; None:</pre>
+<pre class="line after"><span class="ws">        </span>util.warn(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895232">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">4488</em>,
+      in <code class="function">_flush</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>self.dispatch.after_flush_postexec(self, flush_context)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">            </span>transaction.commit()</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>except:</pre>
+<pre class="line current"><span class="ws">            </span>with util.safe_reraise():</pre>
+<pre class="line after"><span class="ws">                </span>transaction.rollback(_capture_exception=True)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def bulk_save_objects(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre>
+<pre class="line after"><span class="ws">        </span>objects: Iterable[object],</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895344">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\util\langhelpers.py"</cite>,
+      line <em class="line">122</em>,
+      in <code class="function">__exit__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># see #2703 for notes</pre>
+<pre class="line before"><span class="ws">        </span>if type_ is None:</pre>
+<pre class="line before"><span class="ws">            </span>exc_type, exc_value, exc_tb = self._exc_info</pre>
+<pre class="line before"><span class="ws">            </span>assert exc_value is not None</pre>
+<pre class="line before"><span class="ws">            </span>self._exc_info = None  # remove potential circular references</pre>
+<pre class="line current"><span class="ws">            </span>raise exc_value.with_traceback(exc_tb)</pre>
+<pre class="line after"><span class="ws">        </span>else:</pre>
+<pre class="line after"><span class="ws">            </span>self._exc_info = None  # remove potential circular references</pre>
+<pre class="line after"><span class="ws">            </span>assert value is not None</pre>
+<pre class="line after"><span class="ws">            </span>raise value.with_traceback(traceback)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895456">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">4449</em>,
+      in <code class="function">_flush</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>flush_context.transaction = transaction = self._autobegin_t()._begin()</pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>self._warn_on_events = True</pre>
+<pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line current"><span class="ws">                </span>flush_context.execute()</pre>
+<pre class="line after"><span class="ws">            </span>finally:</pre>
+<pre class="line after"><span class="ws">                </span>self._warn_on_events = False</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>self.dispatch.after_flush(self, flush_context)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895568">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py"</cite>,
+      line <em class="line">465</em>,
+      in <code class="function">execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                </span>while set_:</pre>
+<pre class="line before"><span class="ws">                    </span>n = set_.pop()</pre>
+<pre class="line before"><span class="ws">                    </span>n.execute_aggregate(self, set_)</pre>
+<pre class="line before"><span class="ws">        </span>else:</pre>
+<pre class="line before"><span class="ws">            </span>for rec in topological.sort(self.dependencies, postsort_actions):</pre>
+<pre class="line current"><span class="ws">                </span>rec.execute(self)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_flush_changes(self) -&gt; None:</pre>
+<pre class="line after"><span class="ws">        </span>&#34;&#34;&#34;Mark processed objects as clean / deleted after a successful</pre>
+<pre class="line after"><span class="ws">        </span>flush().</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895680">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py"</cite>,
+      line <em class="line">641</em>,
+      in <code class="function">execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>self.sort_key = (&#34;SaveUpdateAll&#34;, mapper._sort_key)</pre>
+<pre class="line before"><span class="ws">        </span>assert mapper is mapper.base_mapper</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>@util.preload_module(&#34;sqlalchemy.orm.persistence&#34;)</pre>
+<pre class="line before"><span class="ws">    </span>def execute(self, uow):</pre>
+<pre class="line current"><span class="ws">        </span>util.preloaded.orm_persistence.save_obj(</pre>
+<pre class="line after"><span class="ws">            </span>self.mapper,</pre>
+<pre class="line after"><span class="ws">            </span>uow.states_for_mapper_hierarchy(self.mapper, False, False),</pre>
+<pre class="line after"><span class="ws">            </span>uow,</pre>
+<pre class="line after"><span class="ws">        </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895792">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py"</cite>,
+      line <em class="line">94</em>,
+      in <code class="function">save_obj</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>mapper,</pre>
+<pre class="line before"><span class="ws">            </span>table,</pre>
+<pre class="line before"><span class="ws">            </span>update,</pre>
+<pre class="line before"><span class="ws">        </span>)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line current"><span class="ws">        </span>_emit_insert_statements(</pre>
+<pre class="line after"><span class="ws">            </span>base_mapper,</pre>
+<pre class="line after"><span class="ws">            </span>uowtransaction,</pre>
+<pre class="line after"><span class="ws">            </span>mapper,</pre>
+<pre class="line after"><span class="ws">            </span>table,</pre>
+<pre class="line after"><span class="ws">            </span>insert,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852895904">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py"</cite>,
+      line <em class="line">1234</em>,
+      in <code class="function">_emit_insert_statements</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                            </span>statement.values(value_params),</pre>
+<pre class="line before"><span class="ws">                            </span>params,</pre>
+<pre class="line before"><span class="ws">                            </span>execution_options=execution_options,</pre>
+<pre class="line before"><span class="ws">                        </span>)</pre>
+<pre class="line before"><span class="ws">                    </span>else:</pre>
+<pre class="line current"><span class="ws">                        </span>result = connection.execute(</pre>
+<pre class="line after"><span class="ws">                            </span>statement,</pre>
+<pre class="line after"><span class="ws">                            </span>params,</pre>
+<pre class="line after"><span class="ws">                            </span>execution_options=execution_options,</pre>
+<pre class="line after"><span class="ws">                        </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896016">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1421</em>,
+      in <code class="function">execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>meth = statement._execute_on_connection</pre>
+<pre class="line before"><span class="ws">        </span>except AttributeError as err:</pre>
+<pre class="line before"><span class="ws">            </span>raise exc.ObjectNotExecutableError(statement) from err</pre>
+<pre class="line before"><span class="ws">        </span>else:</pre>
+<pre class="line current"><span class="ws">            </span>return meth(</pre>
+<pre class="line after"><span class="ws">                </span>self,</pre>
+<pre class="line after"><span class="ws">                </span>distilled_parameters,</pre>
+<pre class="line after"><span class="ws">                </span>execution_options or NO_OPTIONS,</pre>
+<pre class="line after"><span class="ws">            </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896128">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\sql\elements.py"</cite>,
+      line <em class="line">526</em>,
+      in <code class="function">_execute_on_connection</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>execution_options: CoreExecuteOptionsParameter,</pre>
+<pre class="line before"><span class="ws">    </span>) -&gt; Result[Any]:</pre>
+<pre class="line before"><span class="ws">        </span>if self.supports_execution:</pre>
+<pre class="line before"><span class="ws">            </span>if TYPE_CHECKING:</pre>
+<pre class="line before"><span class="ws">                </span>assert isinstance(self, Executable)</pre>
+<pre class="line current"><span class="ws">            </span>return connection._execute_clauseelement(</pre>
+<pre class="line after"><span class="ws">                </span>self, distilled_params, execution_options</pre>
+<pre class="line after"><span class="ws">            </span>)</pre>
+<pre class="line after"><span class="ws">        </span>else:</pre>
+<pre class="line after"><span class="ws">            </span>raise exc.ObjectNotExecutableError(self)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896240">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1643</em>,
+      in <code class="function">_execute_clauseelement</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>column_keys=keys,</pre>
+<pre class="line before"><span class="ws">            </span>for_executemany=for_executemany,</pre>
+<pre class="line before"><span class="ws">            </span>schema_translate_map=schema_translate_map,</pre>
+<pre class="line before"><span class="ws">            </span>linting=self.dialect.compiler_linting | compiler.WARN_LINTING,</pre>
+<pre class="line before"><span class="ws">        </span>)</pre>
+<pre class="line current"><span class="ws">        </span>ret = self._execute_context(</pre>
+<pre class="line after"><span class="ws">            </span>dialect,</pre>
+<pre class="line after"><span class="ws">            </span>dialect.execution_ctx_cls._init_compiled,</pre>
+<pre class="line after"><span class="ws">            </span>compiled_sql,</pre>
+<pre class="line after"><span class="ws">            </span>distilled_parameters,</pre>
+<pre class="line after"><span class="ws">            </span>execution_options,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896352">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1848</em>,
+      in <code class="function">_execute_context</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>context.pre_exec()</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>if context.execute_style is ExecuteStyle.INSERTMANYVALUES:</pre>
+<pre class="line before"><span class="ws">            </span>return self._exec_insertmany_context(dialect, context)</pre>
+<pre class="line before"><span class="ws">        </span>else:</pre>
+<pre class="line current"><span class="ws">            </span>return self._exec_single_context(</pre>
+<pre class="line after"><span class="ws">                </span>dialect, context, statement, parameters</pre>
+<pre class="line after"><span class="ws">            </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def _exec_single_context(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896464">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1988</em>,
+      in <code class="function">_exec_single_context</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>context.post_exec()</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">            </span>result = context._setup_result_proxy()</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>except BaseException as e:</pre>
+<pre class="line current"><span class="ws">            </span>self._handle_dbapi_exception(</pre>
+<pre class="line after"><span class="ws">                </span>e, str_statement, effective_parameters, cursor, context</pre>
+<pre class="line after"><span class="ws">            </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">        </span>return result</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896576">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">2365</em>,
+      in <code class="function">_handle_dbapi_exception</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">            </span>if newraise:</pre>
+<pre class="line before"><span class="ws">                </span>raise newraise.with_traceback(exc_info[2]) from e</pre>
+<pre class="line before"><span class="ws">            </span>elif should_wrap:</pre>
+<pre class="line before"><span class="ws">                </span>assert sqlalchemy_exception is not None</pre>
+<pre class="line current"><span class="ws">                </span>raise sqlalchemy_exception.with_traceback(exc_info[2]) from e</pre>
+<pre class="line after"><span class="ws">            </span>else:</pre>
+<pre class="line after"><span class="ws">                </span>assert exc_info[1] is not None</pre>
+<pre class="line after"><span class="ws">                </span>raise exc_info[1].with_traceback(exc_info[2])</pre>
+<pre class="line after"><span class="ws">        </span>finally:</pre>
+<pre class="line after"><span class="ws">            </span>del self._reentrant_error</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896688">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">1969</em>,
+      in <code class="function">_exec_single_context</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                            </span>context,</pre>
+<pre class="line before"><span class="ws">                        </span>):</pre>
+<pre class="line before"><span class="ws">                            </span>evt_handled = True</pre>
+<pre class="line before"><span class="ws">                            </span>break</pre>
+<pre class="line before"><span class="ws">                </span>if not evt_handled:</pre>
+<pre class="line current"><span class="ws">                    </span>self.dialect.do_execute(</pre>
+<pre class="line after"><span class="ws">                        </span>cursor, str_statement, effective_parameters, context</pre>
+<pre class="line after"><span class="ws">                    </span>)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if self._has_events or self.engine._has_events:</pre>
+<pre class="line after"><span class="ws">                </span>self.dispatch.after_cursor_execute(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-2038852896800">
+  <h4>File <cite class="filename">"D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py"</cite>,
+      line <em class="line">952</em>,
+      in <code class="function">do_execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def do_executemany(self, cursor, statement, parameters, context=None):</pre>
+<pre class="line before"><span class="ws">        </span>cursor.executemany(statement, parameters)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def do_execute(self, cursor, statement, parameters, context=None):</pre>
+<pre class="line current"><span class="ws">        </span>cursor.execute(statement, parameters)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def do_execute_no_params(self, cursor, statement, context=None):</pre>
+<pre class="line after"><span class="ws">        </span>cursor.execute(statement)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def is_disconnect(</pre></div>
+</div>
+</ul>
+  <blockquote>sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+[SQL: INSERT INTO disaster_dispatches (disaster_incident_id, authority_user_id, status, channel, notified_at, acknowledged_at, delivered_at, failed_at, failure_reason, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (&#39;3e3fb5cd067044f1ba1666414cdc4f70&#39;, &#39;1ec075d08abd4d9389d7579be4c071b8&#39;, &#39;pending&#39;, &#39;websocket&#39;, None, None, None, None, None, &#39;55a1970662d84e74b994e439e1a271e6&#39;, &#39;2026-09-19 21:00:39.702987&#39;, &#39;2026-09-19 21:00:39.702987&#39;)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+</blockquote>
+</div>
+
+<div class="plain">
+    <p>
+      This is the Copy/Paste friendly version of the traceback.
+    </p>
+    <textarea cols="50" rows="10" name="code" readonly>Traceback (most recent call last):
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py&#34;, line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.IntegrityError: UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask_socketio\__init__.py&#34;, line 42, in __call__
+    return super().__call__(environ, start_response)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\engineio\middleware.py&#34;, line 74, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py&#34;, line 206, in wrapped_function
+    return cors_after_request(app_any.make_response(f(*args, **kwargs)))
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py&#34;, line 206, in wrapped_function
+    return cors_after_request(app_any.make_response(f(*args, **kwargs)))
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 809, in handle_user_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File &#34;D:\betterNEPAL\backend\app\__init__.py&#34;, line 162, in handle_unexpected
+    raise exc
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\flask\app.py&#34;, line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &#34;D:\betterNEPAL\backend\app\utils\decorators.py&#34;, line 43, in wrapper
+    return view(*args, **kwargs)
+  File &#34;D:\betterNEPAL\backend\app\utils\decorators.py&#34;, line 71, in wrapper
+    return view(*args, **kwargs)
+  File &#34;D:\betterNEPAL\backend\app\routes\disaster.py&#34;, line 28, in evaluate_report
+    result = disaster_incident_service.process_report_for_disaster(
+  File &#34;D:\betterNEPAL\backend\app\services\disaster_incident_service.py&#34;, line 351, in process_report_for_disaster
+    incident = create_disaster_incident_from_report(
+  File &#34;D:\betterNEPAL\backend\app\services\disaster_incident_service.py&#34;, line 197, in create_disaster_incident_from_report
+    notification_result = notify_authorities_for_incident(incident, authority_users)
+  File &#34;D:\betterNEPAL\backend\app\services\notification_service.py&#34;, line 257, in notify_authorities_for_incident
+    results = notify_authority(incident, user, authority, channels)
+  File &#34;D:\betterNEPAL\backend\app\services\notification_service.py&#34;, line 206, in notify_authority
+    db.session.flush()
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\scoping.py&#34;, line 925, in flush
+    return self._proxied.flush(objects=objects)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py&#34;, line 4353, in flush
+    self._flush(objects)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py&#34;, line 4488, in _flush
+    with util.safe_reraise():
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\util\langhelpers.py&#34;, line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py&#34;, line 4449, in _flush
+    flush_context.execute()
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py&#34;, line 465, in execute
+    rec.execute(self)
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py&#34;, line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py&#34;, line 94, in save_obj
+    _emit_insert_statements(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py&#34;, line 1234, in _emit_insert_statements
+    result = connection.execute(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1421, in execute
+    return meth(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\sql\elements.py&#34;, line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1848, in _execute_context
+    return self._exec_single_context(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py&#34;, line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File &#34;D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py&#34;, line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+[SQL: INSERT INTO disaster_dispatches (disaster_incident_id, authority_user_id, status, channel, notified_at, acknowledged_at, delivered_at, failed_at, failure_reason, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (&#39;3e3fb5cd067044f1ba1666414cdc4f70&#39;, &#39;1ec075d08abd4d9389d7579be4c071b8&#39;, &#39;pending&#39;, &#39;websocket&#39;, None, None, None, None, None, &#39;55a1970662d84e74b994e439e1a271e6&#39;, &#39;2026-09-19 21:00:39.702987&#39;, &#39;2026-09-19 21:00:39.702987&#39;)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+</textarea>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class="nojavascript">
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.</span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        <form>
+          <p>PIN:
+            <input type=text name=pin size=14>
+            <input type=submit name=btn value="Confirm Pin">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!--
+
+Traceback (most recent call last):
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.IntegrityError: UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask_socketio\__init__.py", line 42, in __call__
+    return super().__call__(environ, start_response)
+  File "D:\betterNEPAL\.venv\lib\site-packages\engineio\middleware.py", line 74, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py", line 206, in wrapped_function
+    return cors_after_request(app_any.make_response(f(*args, **kwargs)))
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask_cors\extension.py", line 206, in wrapped_function
+    return cors_after_request(app_any.make_response(f(*args, **kwargs)))
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 809, in handle_user_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "D:\betterNEPAL\backend\app\__init__.py", line 162, in handle_unexpected
+    raise exc
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\betterNEPAL\.venv\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\betterNEPAL\backend\app\utils\decorators.py", line 43, in wrapper
+    return view(*args, **kwargs)
+  File "D:\betterNEPAL\backend\app\utils\decorators.py", line 71, in wrapper
+    return view(*args, **kwargs)
+  File "D:\betterNEPAL\backend\app\routes\disaster.py", line 28, in evaluate_report
+    result = disaster_incident_service.process_report_for_disaster(
+  File "D:\betterNEPAL\backend\app\services\disaster_incident_service.py", line 351, in process_report_for_disaster
+    incident = create_disaster_incident_from_report(
+  File "D:\betterNEPAL\backend\app\services\disaster_incident_service.py", line 197, in create_disaster_incident_from_report
+    notification_result = notify_authorities_for_incident(incident, authority_users)
+  File "D:\betterNEPAL\backend\app\services\notification_service.py", line 257, in notify_authorities_for_incident
+    results = notify_authority(incident, user, authority, channels)
+  File "D:\betterNEPAL\backend\app\services\notification_service.py", line 206, in notify_authority
+    db.session.flush()
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\scoping.py", line 925, in flush
+    return self._proxied.flush(objects=objects)
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 465, in execute
+    rec.execute(self)
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\orm\persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "D:\betterNEPAL\.venv\lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: disaster_dispatches.disaster_incident_id, disaster_dispatches.authority_user_id, disaster_dispatches.channel
+[SQL: INSERT INTO disaster_dispatches (disaster_incident_id, authority_user_id, status, channel, notified_at, acknowledged_at, delivered_at, failed_at, failure_reason, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('3e3fb5cd067044f1ba1666414cdc4f70', '1ec075d08abd4d9389d7579be4c071b8', 'pending', 'websocket', None, None, None, None, None, '55a1970662d84e74b994e439e1a271e6', '2026-09-19 21:00:39.702987', '2026-09-19 21:00:39.702987')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+
+-->

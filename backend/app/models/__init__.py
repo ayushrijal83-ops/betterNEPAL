@@ -3,11 +3,15 @@
 Every model module must be imported here so that ``Base.metadata`` is fully
 populated before Alembic autogenerates a migration.
 """
+from .announcement import Announcement
 from .authority import Authority
 from .base import Base, BaseModel, UtcDateTime, utcnow
 from .district import District
 from .enums import (
     AuthorityType,
+    DisasterIncidentStatus,
+    DisasterSeverity,
+    DisasterType,
     GovernmentLevel,
     IncidentSeverity,
     IncidentStatus,
@@ -19,6 +23,7 @@ from .enums import (
 )
 from .media_attachment import MediaAttachment
 from .incident import Incident
+from .disaster_incident import DisasterIncident, DisasterDispatch
 from .municipality import MUNICIPALITY_TYPES, Municipality
 from .progress_update import ProgressUpdate
 from .project import Project
@@ -39,11 +44,17 @@ from .role import (
 from .user import User
 
 __all__ = [
+    "Announcement",
     "Authority",
     "AuthorityType",
     "Base",
     "BaseModel",
     "DEFAULT_ROLE",
+    "DisasterIncident",
+    "DisasterDispatch",
+    "DisasterIncidentStatus",
+    "DisasterSeverity",
+    "DisasterType",
     "District",
     "EntityType",
     "MediaAttachment",

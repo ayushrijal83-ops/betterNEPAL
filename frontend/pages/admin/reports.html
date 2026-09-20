@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All Reports — Admin — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -29,28 +31,23 @@
           <div class="filter-bar">
             <select id="filter-status">
               <option value="">All Statuses</option>
-              <option value="Reported">Reported</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
+              <option value="submitted">Submitted</option>
+              <option value="under_review">Under Review</option>
+              <option value="verified_as_incident" data-i18n="status.resolved">Verified</option>
+              <option value="rejected">Rejected</option>
             </select>
-            <select id="filter-severity">
-              <option value="">All Severities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-            <input type="text" placeholder="Search title, reporter..." />
+            <input type="text" id="filter-search" placeholder="Search title..." />
           </div>
 
           <table class="table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Date</th>
+                <th data-i18n="report.field.title">Title</th>
+                <th data-i18n="report.field.category">Category</th>
+                <th data-i18n="report.field.location">Location</th>
+                <th data-i18n="report.status">Status</th>
+                <th data-i18n="report.filed">Date</th>
                 <th class="actions"></th>
               </tr>
             </thead>
@@ -61,28 +58,48 @@
     </div>
   </div>
 
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/api.js"></script>
   <script src="../../js/reports.js"></script>
+  <script src="../../js/dashboard.js"></script>
   <script>
     const role = requireRole("admin");
     mountShell(role);
 
+    let allReports = [];
+
     function applyFilters() {
       const status = document.getElementById("filter-status").value;
-      const severity = document.getElementById("filter-severity").value;
-      let list = Object.values(MOCK_REPORTS);
-      if (status) list = list.filter((r) => r.status === status);
-      if (severity) list = list.filter((r) => r.severity === severity);
-      renderReportsTable("reports-body", list);
+      const query = document.getElementById("filter-search").value.trim().toLowerCase();
+      const filtered = allReports.filter((r) => {
+        if (status && r.status !== status) return false;
+        if (query && !r.title.toLowerCase().includes(query)) return false;
+        return true;
+      });
+      renderReportsTable("reports-body", filtered, "../citizen/report-details.html");
     }
 
     document.getElementById("filter-status").addEventListener("change", applyFilters);
-    document.getElementById("filter-severity").addEventListener("change", applyFilters);
+    document.getElementById("filter-search").addEventListener("input", applyFilters);
 
-    applyFilters();
+    (async () => {
+      try {
+        // Status filtering happens client-side against this page's own list -
+        // there is no per-status count elsewhere on the page that would drift
+        // out of sync with it, unlike the incidents page's server-side filter.
+        allReports = await fetchReports({ per_page: 100 });
+        renderReportsTable("reports-body", allReports, "../citizen/report-details.html");
+      } catch (error) {
+        reportApiError(error, "Could not load reports.");
+      }
+    })();
   </script>
 </body>
 </html>

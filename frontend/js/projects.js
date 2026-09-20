@@ -1,140 +1,206 @@
 // js/projects.js
+//
+// Projects and the progress ledger.
+//
+// Two fields the prototype showed have no backend counterpart, and are not
+// faked here:
+//
+//   budget   - Phase 8 deliberately has no budget column. The brief requires
+//              financial figures to come from authoritative records, so a
+//              number typed beside progress notes is exactly what it forbids.
+//   progress - there is no percentage column either. A project has a status
+//              and an append-only ledger; a "62%" with nothing behind it is a
+//              number somebody will end up reporting upward as fact.
+//
+// The card below therefore shows status and ledger activity, which are real.
 
-const MOCK_PROJECTS = [
-  {
-    id: "PRJ-2026-104",
-    name: "Bridge Repair — Trail #104",
-    location: "Annapurna Region, Gandaki Province",
-    contractor: "Himalayan Infra Pvt. Ltd.",
-    status: "In Progress",
-    budget: 5000000,
-    spent: 3100000,
-    progress: 62,
-    startDate: "2026-09-20",
-    expectedCompletion: "2026-11-15",
-    incidentId: "BNP1098",
-    description:
-      "Structural repair of trekking bridge damaged by rainfall. Includes railing replacement and foundation reinforcement.",
-    evidence: [
-      { url: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600", label: "Site clearing (Jan 10)" },
-      { url: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600", label: "Foundation (Feb 5)" },
-      { url: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600", label: "Rebar (Mar 12)" },
-    ],
-    milestones: [
-      { label: "Project approved", time: "20 Sept 2026", state: "done" },
-      { label: "Contractor assigned", time: "22 Sept 2026", state: "done" },
-      { label: "Site cleared", time: "01 Oct 2026", state: "done" },
-      { label: "Foundation repair", time: "Ongoing", state: "active" },
-      { label: "Railing replacement", time: "—", state: "" },
-      { label: "Inspection & handover", time: "—", state: "" },
-    ],
-  },
-  {
-    id: "PRJ-2026-118",
-    name: "Trail Clearance — Manang Landslide",
-    location: "Manang District, Gandaki Province",
-    contractor: "Everest Roadworks Ltd.",
-    status: "In Progress",
-    budget: 2500000,
-    spent: 900000,
-    progress: 35,
-    startDate: "2026-09-19",
-    expectedCompletion: "2026-10-30",
-    incidentId: "BNP1097",
-    description:
-      "Clearing landslide debris from trekking route and installing safety barriers.",
-    evidence: [
-      { url: "https://images.unsplash.com/photo-1580659929733-1c2ef6b8b3f0?w=600", label: "Initial landslide" },
-      { url: "https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=600", label: "Clearing in progress" },
-    ],
-    milestones: [
-      { label: "Project approved", time: "19 Sept 2026", state: "done" },
-      { label: "Contractor assigned", time: "19 Sept 2026", state: "done" },
-      { label: "Debris clearing", time: "Ongoing", state: "active" },
-      { label: "Safety barriers", time: "—", state: "" },
-      { label: "Final inspection", time: "—", state: "" },
-    ],
-  },
-  {
-    id: "PRJ-2026-090",
-    name: "Rest Point Reconstruction — ABC Trail",
-    location: "Kaski District, Gandaki Province",
-    contractor: "Annapurna Builders",
-    status: "Completed",
-    budget: 1800000,
-    spent: 1740000,
-    progress: 100,
-    startDate: "2026-07-01",
-    expectedCompletion: "2026-09-10",
-    incidentId: null,
-    description: "Reconstruction of damaged rest shelter along Annapurna Base Camp trail.",
-    evidence: [
-      { url: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=600", label: "Before" },
-      { url: "https://images.unsplash.com/photo-1522199755839-a2bacb67c546?w=600", label: "After" },
-    ],
-    milestones: [
-      { label: "Project approved", time: "01 Jul 2026", state: "done" },
-      { label: "Contractor assigned", time: "03 Jul 2026", state: "done" },
-      { label: "Construction", time: "Completed 05 Sept 2026", state: "done" },
-      { label: "Inspection", time: "10 Sept 2026", state: "done" },
-      { label: "Handover", time: "10 Sept 2026", state: "done" },
-    ],
-  },
-];
+// ---------- reads ----------
 
-function getProjects() {
-  return MOCK_PROJECTS;
+// `filters`: status, authority_id, contractor_id, incident_id, unassigned.
+async function fetchProjects(filters = {}) {
+  const data = await apiGet(`/projects${queryString(filters)}`);
+  return data.projects || [];
 }
 
-function getProjectById(id) {
-  return MOCK_PROJECTS.find((p) => p.id === id) || MOCK_PROJECTS[0];
+async function fetchProject(projectId) {
+  const data = await apiGet(`/projects/${projectId}`);
+  return data.project;
 }
 
-function renderProjectCard(p) {
+// Projects awarded to the signed-in contractor. Filtered server-side by id, so
+// one contractor never receives another's workload.
+async function fetchMyProjects(filters = {}) {
+  const user = TokenStore.getUser() || (await apiGet("/auth/me")).user;
+  return fetchProjects({ ...filters, contractor_id: user.id, per_page: 100 });
+}
+
+async function fetchProgressUpdates(projectId) {
+  const data = await apiGet(`/projects/${projectId}/updates`);
+  return data.updates || [];
+}
+
+// ---------- writes ----------
+
+// Append to the ledger. Passing `newStatus` makes it a status change, recorded
+// with both the old and new value in the same transaction.
+async function postProgressUpdate(projectId, notes, newStatus) {
+  const data = await apiPost(`/projects/${projectId}/updates`, {
+    notes,
+    new_status: newStatus || undefined,
+  });
+  // A status change returns the project; a routine note returns the entry.
+  return data.project || data.update;
+}
+
+async function assignProjectContractor(projectId, contractorId) {
+  const data = await apiPatch(`/projects/${projectId}/contractor`, {
+    contractor_id: contractorId,
+  });
+  return data.project;
+}
+
+// ---------- rendering ----------
+
+// Status is the honest signal of how far along a project is, since there is no
+// stored percentage. The bar reflects lifecycle position, and is labelled as
+// such rather than as a completion figure.
+const PROJECT_STAGE = {
+  planned: { percent: 10, label: "Planned" },
+  active: { percent: 50, label: "In progress" },
+  on_hold: { percent: 50, label: "On hold" },
+  completed: { percent: 100, label: "Completed" },
+  cancelled: { percent: 0, label: "Cancelled" },
+};
+
+function projectStage(status) {
+  return PROJECT_STAGE[status] || { percent: 0, label: humanise(status) };
+}
+
+function renderProjectCard(p, detailHref = "project-details.html") {
+  const stage = projectStage(p.status);
+  const contractor = p.contractor ? p.contractor.full_name : tr("project.noContractor", "No contractor assigned");
+  const overdue = p.is_overdue
+    ? `<span class="badge badge-critical">${tr("status.overdue","Overdue")}</span>`
+    : "";
+
   return `
-    <a href="project-details.html?id=${p.id}" class="project-card">
-      <div class="project-name">${p.name}</div>
-      <div class="project-meta">${p.contractor} • ${p.location}</div>
+    <a href="${detailHref}?id=${encodeURIComponent(p.id)}" class="project-card">
+      <div class="project-name">${escapeHtml(p.title)}</div>
+      <div class="project-meta">${escapeHtml(contractor)} • ${escapeHtml(
+        p.authority || "—"
+      )}</div>
 
       <div class="project-progress">
-        <span>Progress</span>
-        <span>${p.progress}%</span>
+        <span>Stage</span>
+        <span>${escapeHtml(stage.label)}</span>
       </div>
       <div class="progress-bar">
-        <div class="progress-fill" style="width: ${p.progress}%"></div>
+        <div class="progress-fill" style="width: ${stage.percent}%"></div>
       </div>
 
       <div class="flex justify-between mt-md">
-        <span class="text-sm text-muted">${statusBadge(p.status)}</span>
-        <span class="text-sm"><strong>${formatNPR(p.budget)}</strong></span>
+        <span class="text-sm text-muted">${statusBadge(p.status)} ${overdue}</span>
+        <span class="text-sm text-muted">${p.update_count} update${
+          p.update_count === 1 ? "" : "s"
+        }</span>
       </div>
     </a>
   `;
 }
 
-function renderProjectGrid(containerId, projects) {
+function renderProjectGrid(containerId, projects, detailHref = "project-details.html") {
   const el = document.getElementById(containerId);
   if (!el) return;
-  el.innerHTML = projects.map(renderProjectCard).join("");
+
+  if (!projects || projects.length === 0) {
+    renderEmpty(containerId, "No projects", "Work assigned to you will appear here.");
+    return;
+  }
+  el.innerHTML = projects.map((p) => renderProjectCard(p, detailHref)).join("");
 }
 
-function renderProjectsTable(tbodyId, projects) {
+function renderProjectsTable(tbodyId, projects, detailHref = "project-details.html") {
   const el = document.getElementById(tbodyId);
   if (!el) return;
+
+  if (!projects || projects.length === 0) {
+    el.innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">
+        <div class="empty-title">${tr("state.empty.title","Nothing here yet")}</div>
+        <div class="empty-text">${tr("state.empty.projectsHint","Work assigned to you will appear here.")}</div>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
   el.innerHTML = projects
     .map(
       (p) => `
     <tr>
-      <td>#${p.id}</td>
-      <td>${p.name}</td>
-      <td>${p.contractor}</td>
-      <td>${formatNPR(p.budget)}</td>
-      <td>${p.progress}%</td>
+      <td>#${escapeHtml(String(p.id).slice(0, 8))}</td>
+      <td>${escapeHtml(p.title)}</td>
+      <td>${escapeHtml(p.authority || "—")}</td>
+      <td>${escapeHtml(p.contractor ? p.contractor.full_name : "Unassigned")}</td>
+      <td>${escapeHtml(p.estimated_end_date || "—")}</td>
       <td>${statusBadge(p.status)}</td>
       <td class="actions">
-        <a href="project-details.html?id=${p.id}" class="btn btn-sm btn-outline">View</a>
+        <a href="${detailHref}?id=${encodeURIComponent(
+          p.id
+        )}" class="btn btn-sm btn-outline">View</a>
       </td>
     </tr>`
     )
     .join("");
+}
+
+// The ledger, newest first, exactly as the backend returns it.
+function renderProgressLedger(containerId, updates) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+  if (!updates || updates.length === 0) {
+    renderEmpty(containerId, "No updates yet", "Progress notes will appear here.");
+    return;
+  }
+
+  el.innerHTML = `
+    <ul class="timeline">
+      ${updates
+        .map((u) => {
+          const transition = u.is_status_change
+            ? ` <span class="badge badge-info">${escapeHtml(
+                humanise(u.previous_status)
+              )} → ${escapeHtml(humanise(u.new_status))}</span>`
+            : "";
+          return `
+        <li class="timeline-item done">
+          <span class="timeline-dot"></span>
+          <div class="timeline-title">${escapeHtml(u.notes)}${transition}</div>
+          <div class="timeline-meta">${escapeHtml(
+            u.author.full_name || "Unknown"
+          )} · ${escapeHtml(formatDate(u.created_at))} ${escapeHtml(
+            formatTime(u.created_at)
+          )}</div>
+        </li>`;
+        })
+        .join("")}
+    </ul>
+  `;
+}
+
+// ---------- page bootstrap ----------
+
+async function bootstrapMyProjects(gridId, tbodyId, detailHref = "project-details.html") {
+  if (gridId) renderLoading(gridId, "Loading your projects…");
+
+  try {
+    const projects = await fetchMyProjects();
+    if (gridId) renderProjectGrid(gridId, projects, detailHref);
+    if (tbodyId) renderProjectsTable(tbodyId, projects, detailHref);
+    return projects;
+  } catch (error) {
+    const message = reportApiError(error, "Could not load your projects.");
+    if (gridId) renderError(gridId, message);
+    return [];
+  }
 }

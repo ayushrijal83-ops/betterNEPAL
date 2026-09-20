@@ -270,16 +270,40 @@ def test_null_service_refuses_rather_than_fabricating():
         service.compare_reports(None, None)
 
 
-def test_an_app_without_a_key_gets_the_null_service(app):
+def test_an_app_without_ollama_gets_null_service(app, monkeypatch):
+    """When no Ollama nodes are configured, NullAIService is used."""
     with app.app_context():
+        app.config["OLLAMA_TEXT_NODE"] = ""
+        app.config["OLLAMA_VISION_NODE"] = ""
+        app.config["OLLAMA_EMBED_NODE"] = ""
+        monkeypatch.delenv("OLLAMA_TEXT_NODE", raising=False)
+        monkeypatch.delenv("OLLAMA_VISION_NODE", raising=False)
+        monkeypatch.delenv("OLLAMA_EMBED_NODE", raising=False)
         assert isinstance(get_ai_service(), NullAIService)
 
 
-def test_an_app_with_a_key_gets_gemini(app):
-    app.config["GEMINI_API_KEY"] = "not-a-real-key"
+def test_an_app_with_ollama_gets_ollama_service(app):
+    """When Ollama is configured, OllamaService is used (priority over Gemini)."""
     with app.app_context():
+        # Set explicitly rather than relying on the real environment (which
+        # TestingConfig otherwise blanks, precisely so a developer's own
+        # OLLAMA_TEXT_NODE cannot make this test's outcome depend on what
+        # happens to be configured on their machine).
+        app.config["OLLAMA_TEXT_NODE"] = "http://ollama-test-node.invalid:11434"
         service = get_ai_service()
-        assert isinstance(service, GeminiService)
+        assert service.name == "ollama"
+        assert service.available is True
+
+
+def test_gemini_used_when_ollama_not_configured(app, monkeypatch):
+    """Gemini is used as fallback when Ollama is not configured but GEMINI_API_KEY is set."""
+    with app.app_context():
+        app.config["OLLAMA_TEXT_NODE"] = ""
+        app.config["OLLAMA_VISION_NODE"] = ""
+        app.config["OLLAMA_EMBED_NODE"] = ""
+        app.config["GEMINI_API_KEY"] = "test-key"
+        service = get_ai_service()
+        assert service.name == "gemini"
         assert service.available is True
 
 
@@ -413,13 +437,15 @@ def test_gemini_without_a_key_is_unavailable(app):
             service.analyze_report_text("t", "d")
 
 
-def test_no_network_call_happens_without_a_key(app):
-    """Belt and braces: the null path must not touch the SDK at all."""
-    with patch("google.generativeai.configure") as configure:
-        with app.app_context():
-            with pytest.raises(AIUnavailable):
-                get_ai_service().analyze_report_text("t", "d")
-    configure.assert_not_called()
+def test_no_network_call_happens_when_ollama_unavailable(app, monkeypatch):
+    """When Ollama is configured but unavailable, it should raise AIUnavailable."""
+    with app.app_context():
+        app.config["OLLAMA_TEXT_NODE"] = "http://unreachable:11434"
+        app.config["OLLAMA_VISION_NODE"] = ""
+        app.config["OLLAMA_EMBED_NODE"] = ""
+        app.config["GEMINI_API_KEY"] = ""
+        with pytest.raises(AIUnavailable):
+            get_ai_service().analyze_report_text("t", "d")
 
 
 # --- dataclass serialisation -----------------------------------------------

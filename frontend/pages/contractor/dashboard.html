@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contractor Dashboard — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
+  <link rel="stylesheet" href="../../css/nepal.css" />
   <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dashboard.css" />
@@ -20,10 +22,25 @@
       <main class="app-content">
         <div class="page-header">
           <div>
-            <h1 class="page-title">Contractor Dashboard</h1>
+            <h1 class="page-title" data-i18n="nav.dashboard">Contractor Dashboard</h1>
             <p class="page-subtitle">Himalayan Infra Pvt. Ltd.</p>
           </div>
           <a href="progress-update.html" class="btn btn-primary">+ Submit Progress</a>
+        </div>
+
+        <div class="photo-banner">
+          <picture>
+            <source type="image/webp" srcset="../../assets/photography/community/terrace-farmers-700.webp 700w, ../../assets/photography/community/terrace-farmers-1400.webp 1400w" sizes="(max-width: 1024px) 100vw, 1200px">
+            <img src="../../assets/photography/community/terrace-farmers-1400.jpg" srcset="../../assets/photography/community/terrace-farmers-700.jpg 700w, ../../assets/photography/community/terrace-farmers-1400.jpg 1400w" sizes="(max-width: 1024px) 100vw, 1200px"
+                 width="1400" height="1050"
+                 alt="People working together across a terraced hillside field, with a snow peak rising beyond the valley." data-i18n-alt="photo.terrace-farmers"
+                 class="" style="--photo-focus:center 45%" loading="eager" fetchpriority="high">
+          </picture>
+          <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/SyDy54CSHBg" target="_blank" rel="noopener noreferrer">Giacomo Berardi</a> / Unsplash</span>
+          <div>
+            <div class="photo-banner-title" data-i18n="nav.dashboard">Dashboard</div>
+            <p class="photo-banner-sub" data-i18n="dash.assignedToMe"></p>
+          </div>
         </div>
 
         <div class="grid grid-4 gap-md" id="ctr-stats"></div>
@@ -31,7 +48,7 @@
         <div class="card mt-lg">
           <div class="card-header">
             <h2 class="card-title">Assigned Projects</h2>
-            <a href="assigned-projects.html" class="text-sm">View all →</a>
+            <a href="assigned-projects.html" class="text-sm" data-i18n="common.viewAll">View all →</a>
           </div>
           <div class="project-grid" id="ctr-projects"></div>
         </div>
@@ -39,7 +56,13 @@
     </div>
   </div>
 
+  <script src="../../js/api.js"></script>
+  <script src="../../i18n/en.js"></script>
+  <script src="../../i18n/ne.js"></script>
+  <script src="../../i18n/mai.js"></script>
+  <script src="../../i18n/index.js"></script>
   <script src="../../js/config.js"></script>
+  <script src="../../js/theme.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/auth.js"></script>
   <script src="../../js/reports.js"></script>
@@ -47,15 +70,7 @@
   <script>
     const role = requireRole("contractor");
     mountShell(role);
-
-    renderStats("ctr-stats", [
-      { value: "3", label: "Assigned Projects" },
-      { value: "1", label: "In Progress" },
-      { value: "1", label: "Completed" },
-      { value: "88%", label: "Avg. Progress" },
-    ]);
-
-    renderProjectGrid("ctr-projects", getProjects());
+    bootstrapMyProjects("project-grid", "projects-body", "project-details.html");
   </script>
 </body>
 </html>
