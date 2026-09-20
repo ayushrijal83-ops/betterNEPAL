@@ -7,6 +7,7 @@ from flask import Flask
 from ..gis.datasets import DatasetError
 from .districts import (
     import_district_boundaries,
+    import_district_enrichment,
     import_district_reference,
     import_municipality_boundaries,
     import_municipality_reference,
@@ -17,6 +18,7 @@ from .dev_test_accounts import make_dev_accounts_command, seed_dev_test_accounts
 __all__ = [
     "seed_dev_test_accounts",
     "import_district_boundaries",
+    "import_district_enrichment",
     "import_district_reference",
     "import_municipality_boundaries",
     "import_municipality_reference",
@@ -77,6 +79,19 @@ def register_seed_commands(app: Flask) -> None:
         """Import district names and provinces (no geometry, no codes)."""
         click.echo("Importing district reference data...")
         _run(import_district_reference, path)
+
+    @gis_group.command("import-district-enrichment")
+    @click.option(
+        "--file",
+        "path",
+        type=click.Path(exists=True, dir_okay=False),
+        default=None,
+        help="Enrichment JSON file. Defaults to the bundled dataset.",
+    )
+    def import_district_enrichment_command(path: str | None) -> None:
+        """Import district highways, emergency contacts, and corridors."""
+        click.echo("Importing district enrichment data...")
+        _run(import_district_enrichment, path)
 
     @gis_group.command("import-municipalities")
     @click.argument("path", type=click.Path(exists=True, dir_okay=False))

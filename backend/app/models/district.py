@@ -44,6 +44,12 @@ if TYPE_CHECKING:  # pragma: no cover
     from .municipality import Municipality
     from .report import Report
     from .disaster_incident import DisasterIncident
+    from .district_extras import (
+        DistrictCorridor,
+        DistrictEmergencyContact,
+        DistrictHighway,
+        DistrictRiskProfile,
+    )
 
 
 class District(BaseModel, ProvenanceMixin):
@@ -52,10 +58,19 @@ class District(BaseModel, ProvenanceMixin):
     name: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
     # Nepali-script name, when the source dataset provides one.
     name_ne: Mapped[str | None] = mapped_column(String(120))
+    # Maithili-script name, when available; falls back to Nepali form.
+    name_mai: Mapped[str | None] = mapped_column(String(120))
     province: Mapped[str | None] = mapped_column(String(64), index=True)
 
     # Official administrative code. See module docstring on nullability.
     code: Mapped[str | None] = mapped_column(String(16), unique=True, index=True)
+
+    # District headquarters (administrative centre).
+    headquarters: Mapped[str | None] = mapped_column(String(120))
+    # Approximate headquarters coordinates (latitude, longitude).
+    # Not a surveyed centroid; for reference/display only.
+    latitude: Mapped[float | None] = mapped_column(nullable=True)
+    longitude: Mapped[float | None] = mapped_column(nullable=True)
 
     boundary = mapped_column(GeometryColumn("MULTIPOLYGON", DEFAULT_SRID), nullable=True)
 
@@ -78,6 +93,18 @@ class District(BaseModel, ProvenanceMixin):
         back_populates="district", passive_deletes="all"
     )
     disaster_incidents: Mapped[list["DisasterIncident"]] = relationship(
+        back_populates="district", passive_deletes="all"
+    )
+    highways: Mapped[list["DistrictHighway"]] = relationship(
+        back_populates="district", passive_deletes="all", order_by="DistrictHighway.code"
+    )
+    emergency_contacts: Mapped[list["DistrictEmergencyContact"]] = relationship(
+        back_populates="district", passive_deletes="all"
+    )
+    corridors: Mapped[list["DistrictCorridor"]] = relationship(
+        back_populates="district", passive_deletes="all", order_by="DistrictCorridor.name"
+    )
+    risk_profiles: Mapped[list["DistrictRiskProfile"]] = relationship(
         back_populates="district", passive_deletes="all"
     )
 
@@ -104,11 +131,57 @@ class District(BaseModel, ProvenanceMixin):
             "id": str(self.id),
             "name": self.name,
             "name_ne": self.name_ne,
+            "name_mai": self.name_mai,
             "province": self.province,
             "code": self.code,
+            "headquarters": self.headquarters,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
             "geometry": geometry,
             "provenance": self.provenance_dict(),
         }
+
+    def to_full_dict(self, geometry: dict | None = None) -> dict:
+        """``to_dict()`` plus highways, corridors, risk profile and emergency
+        contacts. Callers must eager-load those relationships first
+        (``selectinload``) - this does not query.
+
+        Every emergency-contact kind always appears, even when unverified: a
+        district nobody has looked at yet says ``"unknown"`` /
+        ``phone: None`` here, never a silently missing key a client could
+        mistake for "no contact info exists for this feature".
+        """
+        from .district_extras import EMERGENCY_CONTACT_KINDS
+
+        base = self.to_dict(geometry=geometry)
+
+        by_kind = {contact.kind: contact for contact in self.emergency_contacts}
+        emergency = {}
+        for kind in EMERGENCY_CONTACT_KINDS:
+            contact = by_kind.get(kind)
+            if contact is None:
+                emergency[kind] = {
+                    "name": None,
+                    "phone": None,
+                    "provenance": {
+                        "source": None,
+                        "source_url": None,
+                        "source_type": None,
+                        "verification_status": "unverified",
+                        "last_verified_at": None,
+                    },
+                }
+            else:
+                emergency[kind] = {"name": contact.name, "phone": contact.phone,
+                                    "provenance": contact.provenance_dict()}
+
+        base.update({
+            "highways": [h.to_dict() for h in self.highways],
+            "corridors": [c.to_dict() for c in self.corridors],
+            "risk_profile": [r.hazard_type for r in self.risk_profiles],
+            "emergency": emergency,
+        })
+        return base
 
     def __repr__(self) -> str:
         return f"<District {self.name} ({self.province})>"

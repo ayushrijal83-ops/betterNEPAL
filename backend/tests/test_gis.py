@@ -221,9 +221,14 @@ def test_district_to_dict_shape(db):
 
     payload = district.to_dict()
     assert set(payload) == {
-        "id", "name", "name_ne", "province", "code", "geometry", "provenance",
+        "id", "name", "name_ne", "name_mai", "province", "code", "headquarters",
+        "latitude", "longitude", "geometry", "provenance",
     }
     assert payload["geometry"] is None
+    assert payload["name_mai"] is None
+    assert payload["headquarters"] is None
+    assert payload["latitude"] is None
+    assert payload["longitude"] is None
     assert set(payload["provenance"]) == {
         "source", "source_url", "source_type", "verification_status", "last_verified_at",
     }
@@ -376,7 +381,7 @@ def test_imported_districts_are_marked_reference_only(db):
     district = db.session.scalar(sa.select(District).where(District.name == "Kathmandu"))
     assert district.province == "Bagmati"
     assert district.verification_status == VERIFICATION_REFERENCE_ONLY
-    assert district.code is None
+    assert district.code == "D-KTM"
     assert district.boundary is None
     assert district.last_verified_at is None
 

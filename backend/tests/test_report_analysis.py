@@ -159,6 +159,47 @@ def test_analysis_stores_the_suggestion(client, citizen_headers, authority_heade
     assert stored["analysis"]["suggested_category"] == "road_damage"
 
 
+def test_analyzed_report_exposes_ai_fields_through_the_public_fetch(
+    client, citizen_headers, authority_headers, located, ai
+):
+    """Regression test for the citizen Report Details page.
+
+    The page reads its data from GET /reports/<id> (the same public,
+    unauthenticated endpoint every report read goes through) and expects
+    ai_metadata.analysis.{suggested_category,confidence,severity} once an
+    authority has analyzed the report - not a second, purpose-built
+    endpoint. This confirms that contract end to end: create, analyze,
+    then re-fetch through the exact call the details page makes.
+    """
+    report_id = _make_report(client, citizen_headers)
+    client.post(f"/api/v1/reports/{report_id}/analyze", headers=authority_headers)
+
+    response = client.get(f"/api/v1/reports/{report_id}")
+    assert response.status_code == 200
+
+    report = response.get_json()["data"]["report"]
+    assert report["coordinates"] == {"latitude": 0.5, "longitude": 0.5}
+    assert report["category"] == "road_damage"
+
+    analysis = report["ai_metadata"]["analysis"]
+    assert analysis["suggested_category"] == "road_damage"
+    assert analysis["confidence"] == 0.92
+    assert analysis["severity"] == "high"
+
+
+def test_unanalyzed_report_has_no_ai_metadata_through_the_public_fetch(
+    client, citizen_headers, located
+):
+    """The common case: most reports are never analyzed. The details page
+    must render a real, honest "pending" state for this - not stay stuck -
+    so the fetch contract must say plainly that there is nothing yet."""
+    report_id = _make_report(client, citizen_headers)
+
+    response = client.get(f"/api/v1/reports/{report_id}")
+    assert response.status_code == 200
+    assert response.get_json()["data"]["report"]["ai_metadata"] is None
+
+
 def test_analysis_uses_the_locked_success_envelope(client, citizen_headers, authority_headers, located, ai):
     report_id = _make_report(client, citizen_headers)
     body = client.post(

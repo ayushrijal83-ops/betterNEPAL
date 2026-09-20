@@ -7,8 +7,16 @@ from .announcement import Announcement
 from .authority import Authority
 from .base import Base, BaseModel, UtcDateTime, utcnow
 from .district import District
+from .district_extras import (
+    DistrictCorridor,
+    DistrictEmergencyContact,
+    DistrictHighway,
+    DistrictRiskProfile,
+)
 from .enums import (
     AuthorityType,
+    BroadcastAuthorizationState,
+    BroadcastDeliveryStatus,
     DisasterIncidentStatus,
     DisasterSeverity,
     DisasterType,
@@ -20,6 +28,9 @@ from .enums import (
     ProjectStatus,
     ReportCategory,
     ReportStatus,
+    SignalReliability,
+    SignalSourceType,
+    ThreatStatus,
 )
 from .media_attachment import MediaAttachment
 from .incident import Incident
@@ -41,6 +52,7 @@ from .role import (
     Role,
     user_roles,
 )
+from .threat import BroadcastDelivery, SocialBroadcast, ThreatAssessment, ThreatSignal
 from .user import User
 
 __all__ = [
@@ -49,6 +61,9 @@ __all__ = [
     "AuthorityType",
     "Base",
     "BaseModel",
+    "BroadcastAuthorizationState",
+    "BroadcastDelivery",
+    "BroadcastDeliveryStatus",
     "DEFAULT_ROLE",
     "DisasterIncident",
     "DisasterDispatch",
@@ -56,6 +71,10 @@ __all__ = [
     "DisasterSeverity",
     "DisasterType",
     "District",
+    "DistrictCorridor",
+    "DistrictEmergencyContact",
+    "DistrictHighway",
+    "DistrictRiskProfile",
     "EntityType",
     "MediaAttachment",
     "MediaType",
@@ -65,6 +84,12 @@ __all__ = [
     "IncidentStatus",
     "MUNICIPALITY_TYPES",
     "Municipality",
+    "Project",
+    "ProjectStatus",
+    "RefreshToken",
+    "Report",
+    "ReportCategory",
+    "ReportStatus",
     "ROLE_ADMIN",
     "ROLE_AUTHORITY",
     "ROLE_CITIZEN",
@@ -72,14 +97,13 @@ __all__ = [
     "ROLE_DESCRIPTIONS",
     "ROLE_NAMES",
     "ROLE_TREKKING_GUIDE",
-    "ProgressUpdate",
-    "Project",
-    "ProjectStatus",
-    "RefreshToken",
-    "Report",
-    "ReportCategory",
-    "ReportStatus",
     "Role",
+    "SignalReliability",
+    "SignalSourceType",
+    "SocialBroadcast",
+    "ThreatAssessment",
+    "ThreatSignal",
+    "ThreatStatus",
     "User",
     "UtcDateTime",
     "user_roles",

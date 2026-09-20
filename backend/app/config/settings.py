@@ -86,6 +86,15 @@ class BaseConfig:
     # Metres to search when looking for duplicate reports.
     AI_DUPLICATE_RADIUS_METRES = int(os.environ.get("AI_DUPLICATE_RADIUS_METRES", "100"))
 
+    # --- Routing (OSRM) ------------------------------------------------------
+    # The public demo server: free, but shared, rate-limited, and offers no
+    # uptime guarantee - never a paid API, and the travel corridor feature
+    # must keep working (via the straight-line fallback) when it is slow or
+    # down. Self-hosting is a real upgrade path later; this stays swappable
+    # via OSRM_BASE_URL alone.
+    OSRM_BASE_URL = os.environ.get("OSRM_BASE_URL", "https://router.project-osrm.org").rstrip("/")
+    OSRM_TIMEOUT_SECONDS = int(os.environ.get("OSRM_TIMEOUT_SECONDS", "8"))
+
     # --- Ollama (self-hosted, preferred over Gemini when configured) -------
     # Three roles, so work lands on hardware suited to it: vision and long-form
     # reasoning on the GPU box, cheap classification and embeddings on the CPU
@@ -214,6 +223,12 @@ class TestingConfig(BaseConfig):
     OLLAMA_EMBED_NODE = ""
     GEMINI_API_KEY = ""
     REFRESH_COOKIE_SECURE = False
+
+    # Same rule for routing: tests exercise OSRMRouteProvider against a mocked
+    # HTTP call, never the real demo server. Blank here means
+    # corridor_analysis() falls back to the straight-line method by default,
+    # same as when OSRM is genuinely unreachable.
+    OSRM_BASE_URL = ""
 
 
 class ProductionConfig(BaseConfig):

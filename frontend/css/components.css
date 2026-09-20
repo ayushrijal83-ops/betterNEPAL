@@ -114,6 +114,65 @@
 }
 
 /* --------------------------------------------------------------------------
+   Travel Search Grid
+   -------------------------------------------------------------------------- */
+
+.travel-search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  align-items: end;
+}
+
+.travel-search-grid .form-group { margin-bottom: 0; }
+.travel-search-grid .form-group:last-child { width: 100%; }
+
+/* --------------------------------------------------------------------------
+   Travel Layout
+   -------------------------------------------------------------------------- */
+
+.travel-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.travel-intelligence-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: sticky;
+  top: var(--space-xl);
+  max-height: calc(100vh - var(--space-xl) * 2);
+  overflow-y: auto;
+}
+
+.status-banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--bn-sand);
+  border: 1px solid var(--bn-border);
+}
+
+.status-main { display: flex; flex-direction: column; gap: var(--space-xs); }
+.status-row { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.summary-item { text-align: center; padding: var(--space-sm); background: var(--bn-sand); border-radius: var(--radius-md); }
+
+.district-chip { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--bn-surface); border: 1px solid var(--bn-border); border-radius: var(--radius-full); font-size: var(--font-size-sm); }
+.district-chip .arrow { color: var(--bn-text-muted); font-size: var(--font-size-xs); }
+
+/* --------------------------------------------------------------------------
    Cards
    -------------------------------------------------------------------------- */
 

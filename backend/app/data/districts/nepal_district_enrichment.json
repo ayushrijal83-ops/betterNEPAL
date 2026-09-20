@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "dataset": "nepal_district_enrichment",
+    "description": "Highways, emergency contacts, and travel corridors for a small subset of districts, seeded only where a specific fact was explicitly verifiable - not a complete or invented dataset for all 77 districts.",
+    "source": "Department of Roads national highway references (route descriptions only, no live dataset URL held by this project); MoHA/District Administration Office publications where cited per-entry; Better Nepal Phase 19 specification (explicit facts supplied in-spec).",
+    "source_type": "research_reference",
+    "verification_status": "reference_only",
+    "notes": "highways: only H02 (Tribhuvan), H04 (Prithvi) and H13 (Karnali) are seeded, and only for districts a highway's own route description names or unambiguously terminates at - not a claim of full highway coverage. emergency_contacts: exactly one verified entry (Rasuwa DEOC), the one figure this project holds a citable source for; every other district is intentionally left with no row, which the API renders as 'unknown'/unavailable rather than a placeholder number. corridors: reuses the project's existing rivers/roads reference corridor names verbatim, associated to the districts each corridor's own description names."
+  },
+  "highways": [
+    { "district": "Kathmandu", "code": "H04", "name": "Prithvi Highway" },
+    { "district": "Dhading", "code": "H04", "name": "Prithvi Highway" },
+    { "district": "Tanahun", "code": "H04", "name": "Prithvi Highway" },
+    { "district": "Kaski", "code": "H04", "name": "Prithvi Highway" },
+    { "district": "Kathmandu", "code": "H02", "name": "Tribhuvan Highway" },
+    { "district": "Makwanpur", "code": "H02", "name": "Tribhuvan Highway" },
+    { "district": "Surkhet", "code": "H13", "name": "Karnali Highway" },
+    { "district": "Jumla", "code": "H13", "name": "Karnali Highway" }
+  ],
+  "emergency_contacts": [
+    {
+      "district": "Rasuwa",
+      "kind": "deoc",
+      "name": "District Emergency Operation Center, Rasuwa",
+      "phone": "010-540019",
+      "verification_status": "official_source",
+      "source": "District Administration Office, Rasuwa",
+      "source_url": null
+    }
+  ],
+  "corridors": [
+    { "district": "Kathmandu", "name": "Prithvi Highway", "description": "Kathmandu-Mugling-Pokhara corridor." },
+    { "district": "Dhading", "name": "Prithvi Highway", "description": "Kathmandu-Mugling-Pokhara corridor." },
+    { "district": "Tanahun", "name": "Prithvi Highway", "description": "Kathmandu-Mugling-Pokhara corridor." },
+    { "district": "Kaski", "name": "Prithvi Highway", "description": "Kathmandu-Mugling-Pokhara corridor." },
+    { "district": "Kathmandu", "name": "Tribhuvan Highway", "description": "Kathmandu-Naubise-Hetauda route." },
+    { "district": "Makwanpur", "name": "Tribhuvan Highway", "description": "Kathmandu-Naubise-Hetauda route." },
+    { "district": "Surkhet", "name": "Karnali Corridor", "description": "Karnali-region north-south corridor." },
+    { "district": "Jumla", "name": "Karnali Corridor", "description": "Karnali-region north-south corridor." }
+  ]
+}

@@ -23,7 +23,7 @@
         <div class="page-header">
           <div>
             <h1 class="page-title" id="report-title">Report Details</h1>
-            <p class="page-subtitle" id="report-id-line">Loading…</p>
+            <p class="page-subtitle" id="report-id-line">Loading report details…</p>
           </div>
           <a href="my-reports.html" class="btn btn-outline">← My Reports</a>
         </div>
@@ -94,37 +94,69 @@
     mountShell(role);
 
     const reportId = new URLSearchParams(window.location.search).get("id");
-    const root = document.querySelector(".page-content") || document.body;
+    const subtitleEl = document.getElementById("report-id-line");
+
+    // Small helper: set text on an id if that element actually exists on
+    // this page, instead of assuming a data-field convention this page
+    // never used.
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
 
     (async () => {
       if (!reportId) {
+        if (subtitleEl) subtitleEl.textContent = "No report selected.";
         showToast("No report selected.", "error");
         return;
       }
+
       try {
         const report = await fetchReport(reportId);
 
-        // Fill any element the page marks with data-field.
-        const fields = {
-          title: report.title,
-          description: report.description,
-          category: humanise(report.category),
-          district: report.district || "Location pending",
-          created: formatDate(report.created_at),
-          id: String(report.id).slice(0, 8),
-        };
-        Object.entries(fields).forEach(([key, value]) => {
-          root.querySelectorAll(`[data-field="${key}"]`).forEach((el) => {
-            el.textContent = value;
-          });
-        });
+        document.title = `${report.title} — Report Details — Better Nepal`;
+        setText("report-title", report.title);
+        if (subtitleEl) {
+          subtitleEl.textContent =
+            `#${String(report.id).slice(0, 8)} · ${humanise(report.category)} · Filed ${formatDate(report.created_at)}`;
+        }
+        setText("report-description", report.description);
+        setText("meta-type", humanise(report.category));
 
-        root.querySelectorAll("[data-field=status]").forEach((el) => {
-          el.innerHTML = statusBadge(report.status);
-        });
+        const coords = report.coordinates;
+        setText(
+          "meta-coords",
+          coords ? `${coords.latitude.toFixed(4)}°, ${coords.longitude.toFixed(4)}°` : "—"
+        );
+        setText("meta-location", report.district || "Location pending");
 
-        const timelineEl = document.getElementById("report-timeline");
+        const statusEl = document.getElementById("status-badge");
+        if (statusEl) statusEl.innerHTML = statusBadge(report.status);
+
+        const timelineEl = document.getElementById("timeline-container");
         if (timelineEl) timelineEl.innerHTML = reportTimeline(report);
+
+        // AI analysis lives in ai_metadata.analysis, written only once
+        // someone has actually triggered analysis for this report (see
+        // report_analysis_service.analyze_report) - most reports have none
+        // yet, and that is a real, expected state, not a failure.
+        const analysis = report.ai_metadata && report.ai_metadata.analysis;
+        setText("meta-severity", analysis && analysis.severity ? humanise(analysis.severity) : "Not assessed");
+        setText(
+          "conf-value",
+          analysis && typeof analysis.confidence === "number"
+            ? `${Math.round(analysis.confidence * 100)}%`
+            : "—"
+        );
+        setText(
+          "ai-class",
+          analysis && analysis.suggested_category ? humanise(analysis.suggested_category) : "Not analyzed yet"
+        );
+        // Report has no department field, and AI analysis does not assign
+        // one - a report only gets a responsible department once it is
+        // verified into an incident and routed to an authority. Saying so
+        // plainly here beats inventing a value this record does not have.
+        setText("ai-dept", "Not assigned yet");
 
         const mediaEl = document.getElementById("report-media");
         if (mediaEl) {
@@ -146,7 +178,17 @@
             : `<div class="empty-text">${tr("state.empty.hint", "No evidence attached.")}</div>`;
         }
       } catch (error) {
-        reportApiError(error, "Could not load this report.");
+        // The subtitle is the one thing every visitor sees without scrolling,
+        // so it - not just a toast that fades - carries the final state:
+        // never left reading "Loading…" after a real failure.
+        const message =
+          error instanceof ApiError && error.status === 404
+            ? "Report not found."
+            : error instanceof ApiError && (error.status === 401 || error.status === 403)
+              ? "You are not authorized to view this report."
+              : "Unable to load report details. Please try again.";
+        if (subtitleEl) subtitleEl.textContent = message;
+        reportApiError(error, message);
       }
     })();
   </script>
