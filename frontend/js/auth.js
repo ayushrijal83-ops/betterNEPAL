@@ -213,6 +213,11 @@ async function mountShell(role) {
     navbarRoleBadge.textContent = role.charAt(0).toUpperCase() + role.slice(1);
   }
 
+  // The toggle button just arrived with the navbar markup above - wire it
+  // now that it actually exists in the DOM. theme.js's own DOMContentLoaded
+  // listener ran too early to find it.
+  if (typeof initThemeToggle === "function") initThemeToggle();
+
   // --- Sign out ---
   document
     .querySelectorAll("[data-logout], #logout-btn, #sidebar-logout")

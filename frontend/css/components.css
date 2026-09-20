@@ -208,6 +208,20 @@
   pointer-events: none;
 }
 
+/* The corner motif is an SVG data URI, baked-in colour, so it cannot answer
+   to a CSS variable - on a dark surface a dark-green line at 7% opacity is
+   simply invisible. Same contour, light stroke, same opacity. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .stat-card::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='110' viewBox='0 0 150 110' fill='none'%3E%3Cg stroke='%23b3d7c5' stroke-width='1.2' fill='none'%3E%3Cpath d='M-10 80 Q 30 52 70 74 T 160 62'/%3E%3Cpath d='M-10 96 Q 30 68 70 90 T 160 78'/%3E%3Cpath d='M-10 64 Q 34 34 74 58 T 160 46'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.1;
+  }
+}
+[data-theme="dark"] .stat-card::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='110' viewBox='0 0 150 110' fill='none'%3E%3Cg stroke='%23b3d7c5' stroke-width='1.2' fill='none'%3E%3Cpath d='M-10 80 Q 30 52 70 74 T 160 62'/%3E%3Cpath d='M-10 96 Q 30 68 70 90 T 160 78'/%3E%3Cpath d='M-10 64 Q 34 34 74 58 T 160 46'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.1;
+}
+
 .stat-label {
   font-size: var(--font-size-xs);
   font-weight: 600;
@@ -426,6 +440,17 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236a5f52' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 11px center;
+}
+
+/* Baked-in stroke colour again: a dark grey chevron is invisible on the dark
+   surface a <select> sits on in the dark theme. Same chevron, light stroke. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b0a692' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
+}
+[data-theme="dark"] .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b0a692' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
 .form-hint {

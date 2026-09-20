@@ -134,8 +134,8 @@ function mountChatbot() {
       .bn-chat-fab:hover { transform: scale(1.06); }
       .bn-chat-panel { position: fixed; right: 20px; bottom: 88px; width: min(400px, calc(100vw - 40px));
         height: min(560px, calc(100vh - 140px)); display: flex; flex-direction: column;
-        background: rgba(255,255,255,.82); backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.6);
+        background: var(--bn-surface); backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px); border: 1px solid var(--bn-border);
         border-radius: 18px; box-shadow: 0 25px 50px -12px rgba(0,0,0,.35);
         overflow: hidden; transform: translateY(12px); opacity: 0;
         pointer-events: none; transition: opacity .18s ease, transform .18s ease; }
@@ -163,11 +163,11 @@ function mountChatbot() {
         font-size:13px; line-height:1.5; }
       .bn-chat-msg p { margin:0 0 6px; } .bn-chat-msg p:last-child { margin-bottom:0; }
       .bn-chat-list { margin:4px 0 6px; padding-left:18px; }
-      .bn-chat-code { background:rgba(0,0,0,.07); padding:1px 4px; border-radius:4px; font-size:12px; }
+      .bn-chat-code { background:rgba(127,127,127,.18); padding:1px 4px; border-radius:4px; font-size:12px; }
       .bn-chat-user { background:var(--bn-forest-600); color:#fff; border-bottom-right-radius:4px; }
-      .bn-chat-bot { background:#fff; color:var(--bn-charcoal-900);
+      .bn-chat-bot { background:var(--bn-surface-2); color:var(--bn-text);
         border:1px solid var(--bn-border); border-bottom-left-radius:4px; }
-      .bn-chat-bot.bn-chat-error { border-color:#f2b8b5; background:#fdf2f2; }
+      .bn-chat-bot.bn-chat-error { border-color:var(--bn-crimson-500); background:var(--bn-danger-soft); }
       .bn-chat-note { align-self:flex-start; font-size:11px; color:var(--bn-text-light); padding:0 4px; }
       .bn-chat-typing { display:inline-flex; align-items:center; gap:4px; padding:2px 0; }
       .bn-chat-typing span { width:6px; height:6px; border-radius:50%; background:var(--bn-forest-400);
@@ -175,18 +175,18 @@ function mountChatbot() {
       .bn-chat-typing span:nth-child(2) { animation-delay:.15s; }
       .bn-chat-typing span:nth-child(3) { animation-delay:.3s; }
       @keyframes bn-chat-bounce { 0%, 60%, 100% { transform:translateY(0); opacity:.5; } 30% { transform:translateY(-4px); opacity:1; } }
-      .bn-chat-retry { margin-top:6px; border:1px solid var(--bn-border-strong); background:#fff;
+      .bn-chat-retry { margin-top:6px; border:1px solid var(--bn-border-strong); background:var(--bn-surface);
         color:var(--bn-forest-700); border-radius:8px; padding:4px 10px; font-size:11.5px; font-weight:600;
         cursor:pointer; }
       .bn-chat-retry:hover { border-color:var(--bn-forest-600); }
       .bn-chat-prompts { display:flex; flex-wrap:wrap; gap:6px; padding:0 14px 10px; }
       .bn-chat-chip { font-size:11px; padding:5px 10px; border-radius:9999px;
-        border:1px solid var(--bn-border-strong); background:#fff; color:var(--bn-charcoal-700); cursor:pointer; }
+        border:1px solid var(--bn-border-strong); background:var(--bn-surface); color:var(--bn-text-light); cursor:pointer; }
       .bn-chat-chip:hover { border-color:var(--bn-forest-600); color:var(--bn-forest-700); }
       .bn-chat-form { display:flex; gap:8px; padding:12px; border-top:1px solid var(--bn-border);
-        background:rgba(255,255,255,.9); }
+        background:var(--bn-surface); }
       .bn-chat-input { flex:1; border:1px solid var(--bn-border-strong); border-radius:10px; padding:9px 12px;
-        font-size:13px; outline:none; font-family:inherit; }
+        font-size:13px; outline:none; font-family:inherit; background:var(--bn-surface-2); color:var(--bn-text); }
       .bn-chat-input:focus { border-color:var(--bn-forest-600); box-shadow:0 0 0 3px rgba(34, 92, 65, .18); }
       .bn-chat-send { border:0; background:var(--bn-forest-600); color:#fff; border-radius:10px;
         padding:0 16px; font-size:13px; font-weight:600; cursor:pointer; }

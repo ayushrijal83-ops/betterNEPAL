@@ -24,6 +24,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap");
 
 :root {
+  /* Native form controls (checkboxes, date pickers, scrollbars) pick their
+     own light/dark rendering from this - without it they stay light-styled
+     even inside a dark page. */
+  color-scheme: light;
+
   /* --- Forest: the primary. Middle-hill pine and rhododendron canopy. --- */
   --bn-forest-900: #0c2419;
   --bn-forest-800: #123324;
@@ -242,6 +247,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --bn-forest-900: #0a1710;
     --bn-forest-800: #a8dbc0;
     --bn-forest-700: #8fcbaa;
@@ -313,7 +319,8 @@
 }
 
 :root[data-theme="dark"] {
-  --bn-forest-900: #0a1710;
+  color-scheme: dark;
+    --bn-forest-900: #0a1710;
   --bn-forest-800: #a8dbc0;
   --bn-forest-700: #8fcbaa;
   --bn-forest-600: #4f9973;

@@ -51,6 +51,7 @@ window.BN_I18N_DICT.ne = {
   "state.empty.incidents": "अहिले कुनै सक्रिय घटना छैन।",
   "state.empty.projects": "अहिलेसम्म कुनै आयोजना तोकिएको छैन।",
   "state.empty.alerts": "यस क्षेत्रका लागि कुनै सूचना जारी छैन।",
+  "alerts.subtitle.authority": "तपाईंले हेर्ने जिल्लाहरूका लागि प्रकाशित सूचनाहरू",
   "state.empty.hint": "कसैले उजुरी दर्ता गरेपछि यहाँ देखिनेछ।",
   "state.error.title": "केही गडबड भयो",
   "state.error.generic": "अहिले यो लोड गर्न सकिएन।",

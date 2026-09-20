@@ -55,6 +55,7 @@ window.BN_I18N_DICT.en = {
   "state.empty.incidents": "No active incidents right now.",
   "state.empty.projects": "No projects have been assigned yet.",
   "state.empty.alerts": "No advisories are active for this area.",
+  "alerts.subtitle.authority": "Advisories published for the districts you cover",
   "state.empty.hint": "When something is reported, it will appear here.",
   "state.error.title": "Something went wrong",
   "state.error.generic": "We could not load this right now.",

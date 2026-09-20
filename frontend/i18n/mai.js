@@ -59,6 +59,7 @@ window.BN_I18N_DICT.mai = {
   "state.empty.incidents": "एखन कोनो सक्रिय घटना नहि अछि।",
   "state.empty.projects": "एखन धरि कोनो परियोजना नहि देल गेल अछि।",
   "state.empty.alerts": "ई क्षेत्रक लेल कोनो सूचना जारी नहि अछि।",
+  "alerts.subtitle.authority": "अहाँक देखरेखक जिलाक लेल प्रकाशित सूचना",
   "state.empty.hint": "केओ उजुरी देलाक बाद इएह ठाम देखाएत।",
   "state.error.title": "किछु गड़बड़ भेल",
   "state.error.generic": "एखन ई लोड नहि भ' सकल।",
