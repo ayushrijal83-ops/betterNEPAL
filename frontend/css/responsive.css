@@ -24,6 +24,16 @@
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .details-layout { grid-template-columns: minmax(0, 1fr); }
   .form-layout { grid-template-columns: minmax(0, 1fr); }
+
+  .travel-layout {
+    grid-template-columns: 1fr;
+  }
+  .travel-intelligence-panel {
+    position: static;
+    max-height: none;
+    order: -1;
+  }
+  .mobile-map-wrapper { display: none !important; }
 }
 
 /* --- Tablet portrait ------------------------------------------------------ */
@@ -117,6 +127,16 @@
 
   .timeline { padding-left: var(--space-md); }
   .timeline-dot { left: calc(var(--space-md) * -1 + 1px); }
+
+  /* Travel page mobile */
+  .travel-hero { min-height: 260px; }
+  .travel-search-grid { grid-template-columns: 1fr; }
+  .travel-search-grid .form-group:last-child { width: 100%; }
+  #route-map { min-height: 360px; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .travel-intelligence-panel { gap: var(--space-sm); }
+  .status-banner { padding: var(--space-sm); }
+  .risk-badge { font-size: 10px; padding: 2px 8px; }
 }
 
 /* --- Small phone ---------------------------------------------------------- */

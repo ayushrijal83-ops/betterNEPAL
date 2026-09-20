@@ -4,7 +4,7 @@
   <script>(function(){try{var t=localStorage.getItem("bn_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel Planner — Better Nepal</title>
+  <title>Nepal Travel Safety & Corridor Intelligence — Better Nepal</title>
   <link rel="stylesheet" href="../../css/variables.css" />
   <link rel="stylesheet" href="../../css/main.css" />
   <link rel="stylesheet" href="../../css/components.css" />
@@ -13,16 +13,40 @@
   <link rel="stylesheet" href="../../css/map.css" />
   <link rel="stylesheet" href="../../css/app.css" />
   <link rel="stylesheet" href="../../css/responsive.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
-    #route-map { height: 460px; }
+    #route-map { height: 100%; min-height: 480px; }
     .hub-list { max-height: 15rem; }
+    .travel-hero { position: relative; min-height: 320px; }
+    .travel-hero img { height: 100%; object-fit: cover; }
+    .travel-hero .overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.55) 100%); }
+    .risk-badge { font-size: var(--font-size-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm); }
+    .risk-clear { background: var(--bn-emerald-100); color: var(--bn-emerald-800); border: 1px solid var(--bn-emerald-300); }
+    .risk-caution { background: var(--bn-amber-100); color: var(--bn-amber-800); border: 1px solid var(--bn-amber-300); }
+    .risk-high { background: var(--bn-orange-100); color: var(--bn-orange-800); border: 1px solid var(--bn-orange-300); }
+    .risk-critical { background: var(--bn-rose-100); color: var(--bn-rose-800); border: 1px solid var(--bn-rose-300); }
+    .district-chip { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--bn-surface); border: 1px solid var(--bn-border); border-radius: var(--radius-full); font-size: var(--font-size-sm); }
+    .district-chip .arrow { color: var(--bn-text-muted); font-size: var(--font-size-xs); }
+    .hazard-marker { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .route-line { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+    @media (max-width: 640px) {
+      .travel-hero { min-height: 260px; }
+      #route-map { min-height: 360px; }
+    }
+    .topographic-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='none' stroke='%23d4c9b0' stroke-width='0.5' opacity='0.4' d='M0 30 Q15 15 30 30 T60 30 M0 45 Q15 30 30 45 T60 45 M0 15 Q15 0 30 15 T60 15'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      opacity: 0.6;
+    }
+    .np-deep .topographic-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='none' stroke='%234a4432' stroke-width='0.5' opacity='0.3' d='M0 30 Q15 15 30 30 T60 30 M0 45 Q15 30 30 45 T60 45 M0 15 Q15 0 30 15 T60 15'/%3E%3C/svg%3E");
+    }
   </style>
 </head>
-<body >
+<body>
 
-  <header class="feed-header travel-header travel-header--photo photo photo-overlay-bottom">
+  <header class="travel-hero">
     <picture>
       <source type="image/webp" srcset="../../assets/photography/trekking/flags-over-range-700.webp 700w, ../../assets/photography/trekking/flags-over-range-1400.webp 1400w" sizes="100vw">
       <img src="../../assets/photography/trekking/flags-over-range-1400.jpg" srcset="../../assets/photography/trekking/flags-over-range-700.jpg 700w, ../../assets/photography/trekking/flags-over-range-1400.jpg 1400w" sizes="100vw"
@@ -30,62 +54,148 @@
            alt="Prayer flags strung above a trail on a high ridge, overlooking a snow-covered mountain range." data-i18n-alt="photo.flags-over-range"
            class="" style="--photo-focus:center 50%" loading="eager" fetchpriority="high">
     </picture>
-    <span class="photo-credit">Photo: <a href="https://unsplash.com/photos/OKgA8QUMLnA" target="_blank" rel="noopener noreferrer">Kabi Acharya</a> / Unsplash</span>
-    <div class="feed-header-inner travel-header-inner flex items-center justify-between">
-      <div class="flex items-center gap-sm">
-        <div class="feed-mark"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 23 Q 10 16 16 20 T 29 17" stroke-opacity=".55"/><path d="M8 13 L16 4 L24 13 L16 17 Z" stroke-linejoin="round"/><circle cx="16" cy="11" r="1.6" fill="currentColor" stroke="none"/></svg></div>
-        <div>
-          <h1 class="feed-title" data-i18n="nav.travel">Travel Planner</h1>
-          <p class="feed-subtitle" data-i18n="travel.subtitle">Hazards reported along your route</p>
-        </div>
+    <div class="overlay"></div>
+    <div class="travel-hero-inner flex flex-col items-start justify-end p-xl" style="position:absolute; inset:0; z-index:1;">
+      <div class="max-w-4xl w-full">
+        <span class="eyebrow text-white" style="opacity:0.9;" data-i18n="travel.subtitle">Plan the route. Understand the corridor. Travel with current intelligence.</span>
+        <h1 class="display text-white mt-sm" data-i18n="travel.title" style="text-wrap:balance;">NEPAL TRAVEL SAFETY & CORRIDOR INTELLIGENCE</h1>
       </div>
-      <div class="page-lang-slot"><div id="page-lang"></div><a href="dashboard.html" class="feed-back">&larr; Dashboard</a></div>
+      <div class="flex items-center gap-md mt-lg w-full max-w-4xl">
+        <div id="page-lang" class="flex-1"></div>
+        <a href="dashboard.html" class="feed-back text-white hover:text-brass-200" style="text-decoration:none;">&larr; <span data-i18n="nav.dashboard">Dashboard</span></a>
+      </div>
     </div>
+    <span class="photo-credit" style="position:absolute; bottom:var(--space-md); left:var(--space-xl); z-index:2; opacity:0.8;">Photo: <a href="https://unsplash.com/photos/OKgA8QUMLnA" target="_blank" rel="noopener noreferrer" style="color:inherit;">Kabi Acharya</a> / Unsplash</span>
   </header>
 
   <main class="travel-main">
-
-    <!-- Route inputs -->
-    <section class="card travel-form">
-      <div class="travel-fields">
+    <!-- Route Search -->
+    <section class="card travel-search-card" aria-labelledby="search-title">
+      <div class="travel-search-grid">
         <div class="form-group district-picker">
           <label for="origin" class="form-label" data-i18n="travel.from">From</label>
-          <input id="origin" type="text" autocomplete="off" placeholder="Kathmandu" class="form-input" />
-          <div id="origin-list" class="hub-list hidden"></div>
+          <input id="origin" type="text" autocomplete="off" placeholder="Kathmandu" class="form-input" aria-describedby="origin-desc" />
+          <div id="origin-list" class="hub-list hidden" role="listbox"></div>
+          <p id="origin-desc" class="sr-only" data-i18n="travel.selectOrigin">Select origin district</p>
         </div>
 
         <div class="form-group district-picker">
           <label for="destination" class="form-label" data-i18n="travel.to">To</label>
-          <input id="destination" type="text" autocomplete="off" placeholder="Pokhara" class="form-input" />
-          <div id="destination-list" class="hub-list hidden"></div>
+          <input id="destination" type="text" autocomplete="off" placeholder="Kaski / Pokhara" class="form-input" aria-describedby="dest-desc" />
+          <div id="destination-list" class="hub-list hidden" role="listbox"></div>
+          <p id="dest-desc" class="sr-only" data-i18n="travel.selectDestination">Select destination district</p>
         </div>
 
-        <button id="plan-btn" class="btn btn-primary btn-lg">
-          <span data-i18n="travel.plan">Check this route</span>
-        </button>
-      </div>
+        <div class="form-group">
+          <label for="transport" class="form-label" data-i18n="travel.transport">Transport</label>
+          <select id="transport" class="form-input">
+            <option value="driving" data-i18n="travel.transport.driving">Driving</option>
+            <option value="public_bus" data-i18n="travel.transport.public_bus">Public Bus</option>
+            <option value="trekking" data-i18n="travel.transport.trekking">Trekking</option>
+          </select>
+        </div>
 
-      <p class="mt-sm text-xs text-muted">
-        Tip: you can also click the map twice — first click sets the start, second the destination.
-      </p>
+        <div class="form-group">
+          <label for="buffer" class="form-label" data-i18n="travel.buffer">Buffer</label>
+          <select id="buffer" class="form-input">
+            <option value="5000">5 km</option>
+            <option value="10000">10 km</option>
+            <option value="20000" selected>20 km</option>
+            <option value="30000">30 km</option>
+            <option value="50000">50 km</option>
+          </select>
+        </div>
+
+        <div class="form-group self-end">
+          <button id="analyze-btn" class="btn btn-primary btn-lg w-full">
+            <span class="btn-text" data-i18n="travel.analyze">Analyze Corridor</span>
+            <span class="btn-loading hidden" data-i18n="travel.analyzing">Analyzing…</span>
+          </button>
+        </div>
+      </div>
+      <p class="mt-sm text-xs text-muted" data-i18n="travel.corridorNote">Uses real road routing when available; otherwise falls back to a straight-line corridor, and results say which one ran.</p>
     </section>
 
-    <div class="travel-layout">
+    <!-- Results & Map Layout -->
+    <div class="travel-layout" id="results-section" style="display:none;">
 
-      <!-- Map -->
-      <section class="card travel-map-card">
-        <div id="route-map" role="region" data-i18n-aria="map.title" aria-label="Map"></div>
+      <!-- Left: Map -->
+      <section class="card travel-map-card" aria-labelledby="map-title">
+        <div id="route-map" role="region" aria-label="Route map"></div>
         <p id="map-note" class="mt-sm text-xs text-muted"></p>
       </section>
 
-      <!-- Rating + hazards -->
-      <section class="feed-list">
-        <div id="rating-card" class="card">
-          <p class="text-sm text-muted">Plan a route to see its hazard rating.</p>
+      <!-- Right: Intelligence Panel -->
+      <section class="travel-intelligence-panel" aria-labelledby="intel-title">
+        <!-- Corridor Status Banner -->
+        <div id="status-banner" class="status-banner" style="display:none;">
+          <div class="status-main">
+            <span class="eyebrow" data-i18n="travel.corridorStatus">Corridor Status</span>
+            <div class="status-row">
+              <span id="risk-badge" class="risk-badge risk-clear" data-i18n="travel.clear">CLEAR</span>
+              <span id="route-summary" class="text-sm text-muted"></span>
+            </div>
+          </div>
+          <div id="updated-stamp" class="text-xs text-muted"></div>
         </div>
-        <div id="hazard-drawer" class="space-y-3"></div>
+
+        <!-- Route Summary -->
+        <div id="summary-card" class="card" style="display:none;">
+          <h3 class="eyebrow" data-i18n="travel.routeSummary">Route Summary</h3>
+          <div class="summary-grid mt-md">
+            <div class="summary-item">
+              <p class="text-xs text-muted uppercase tracking-wide" data-i18n="travel.distance">Distance</p>
+              <p id="summary-distance" class="text-xl font-bold tnum">—</p>
+            </div>
+            <div class="summary-item">
+              <p class="text-xs text-muted uppercase tracking-wide" data-i18n="travel.duration">Duration</p>
+              <p id="summary-duration" class="text-xl font-bold tnum">—</p>
+            </div>
+            <div class="summary-item">
+              <p class="text-xs text-muted uppercase tracking-wide" data-i18n="travel.districts">Districts</p>
+              <p id="summary-districts" class="text-xl font-bold tnum">—</p>
+            </div>
+            <div class="summary-item">
+              <p class="text-xs text-muted uppercase tracking-wide" data-i18n="travel.activeAlerts">Active Alerts</p>
+              <p id="summary-alerts" class="text-xl font-bold tnum">—</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- District Timeline -->
+        <div id="districts-card" class="card" style="display:none;">
+          <h3 class="eyebrow" data-i18n="travel.districtTimeline">District Timeline</h3>
+          <div id="district-timeline" class="mt-md space-y-2"></div>
+        </div>
+
+        <!-- Active Hazards -->
+        <div id="hazards-card" class="card" style="display:none;">
+          <h3 class="eyebrow" data-i18n="travel.activeHazards">Active Hazards</h3>
+          <div id="hazard-list" class="mt-md space-y-3"></div>
+        </div>
+
+        <!-- Emergency -->
+        <div id="emergency-card" class="card" style="display:none;">
+          <h3 class="eyebrow" data-i18n="travel.emergency">Emergency</h3>
+          <div id="emergency-content" class="mt-md text-sm text-muted"></div>
+        </div>
+
+        <!-- AI Advisory -->
+        <div id="advisory-card" class="card" style="display:none;">
+          <h3 class="eyebrow flex items-center gap-sm" data-i18n="travel.advisory">AI Advisory</h3>
+          <div id="advisory-content" class="mt-md prose whitespace-pre-line"></div>
+        </div>
       </section>
     </div>
+
+    <!-- Mobile: Stack map below summary -->
+    <div class="mobile-map-wrapper" id="mobile-map" style="display:none;">
+      <section class="card travel-map-card" aria-labelledby="map-title">
+        <div id="route-map-mobile" role="region" aria-label="Route map"></div>
+        <p id="map-note-mobile" class="mt-sm text-xs text-muted"></p>
+      </section>
+    </div>
+
   </main>
 
   <script src="../../i18n/en.js"></script>
@@ -97,265 +207,463 @@
   <script src="../../js/utils.js"></script>
   <script src="../../js/api.js"></script>
   <script src="../../js/auth.js"></script>
-  <script src="../../js/chatbot.js"></script>
   <script>
-    // Major hubs, for autocomplete. A local list rather than a geocoding API:
-    // no key, no third party, and it keeps working on a bad connection - which
-    // is exactly when someone checks whether a road is passable.
-    const HUBS = [
-      { name: "Kathmandu", lat: 27.7172, lng: 85.3240 },
-      { name: "Pokhara", lat: 28.2096, lng: 83.9856 },
-      { name: "Lalitpur", lat: 27.6588, lng: 85.3247 },
-      { name: "Bhaktapur", lat: 27.6710, lng: 85.4298 },
-      { name: "Biratnagar", lat: 26.4525, lng: 87.2718 },
-      { name: "Birgunj", lat: 27.0104, lng: 84.8821 },
-      { name: "Butwal", lat: 27.7006, lng: 83.4484 },
-      { name: "Bharatpur", lat: 27.6766, lng: 84.4333 },
-      { name: "Nepalgunj", lat: 28.0500, lng: 81.6167 },
-      { name: "Dhangadhi", lat: 28.6833, lng: 80.6000 },
-      { name: "Janakpur", lat: 26.7288, lng: 85.9266 },
-      { name: "Hetauda", lat: 27.4287, lng: 85.0326 },
-      { name: "Dharan", lat: 26.8065, lng: 87.2846 },
-      { name: "Mugling", lat: 27.8600, lng: 84.5500 },
-      { name: "Besisahar", lat: 28.2333, lng: 84.3833 },
-      { name: "Jomsom", lat: 28.7806, lng: 83.7228 },
-      { name: "Namche Bazaar", lat: 27.8069, lng: 86.7140 },
-      { name: "Ilam", lat: 26.9094, lng: 87.9285 },
-      { name: "Surkhet", lat: 28.6000, lng: 81.6167 },
-      { name: "Jumla", lat: 29.2747, lng: 82.1838 },
-    ];
+    // ========================================================================
+    // DISTRICT DATA (loaded from /api/v1/districts/all)
+    // ========================================================================
+    let DISTRICTS = [];
+    let DISTRICTS_BY_NAME = new Map();
+    let DISTRICTS_BY_NE = new Map();
+    let DISTRICTS_BY_MAI = new Map();
+    let DISTRICTS_BY_CODE = new Map();
 
-    const DANGER_STYLE = {
-      LOW: { chip: "bg-emerald-100 text-emerald-800 border-emerald-200", line: "#059669" },
-      MODERATE: { chip: "bg-amber-100 text-amber-800 border-amber-200", line: "#d97706" },
-      HIGH: { chip: "bg-rose-100 text-rose-800 border-rose-200", line: "#e11d48" },
-      CRITICAL: { chip: "bg-rose-200 text-rose-900 border-rose-300", line: "#9f1239" },
-    };
+    async function loadDistricts() {
+      try {
+        // apiGet already unwraps the {status, data} envelope (see js/api.js
+        // request()), so the response here IS {count, districts} directly -
+        // not nested one level deeper under a second .data.
+        const res = await apiGet('/districts/all', { auth: false });
+        if (res && res.districts) {
+          DISTRICTS = res.districts;
+          DISTRICTS.forEach(d => {
+            DISTRICTS_BY_NAME.set(d.name.toLowerCase(), d);
+            if (d.name_ne) DISTRICTS_BY_NE.set(d.name_ne.toLowerCase(), d);
+            if (d.name_mai) DISTRICTS_BY_MAI.set(d.name_mai.toLowerCase(), d);
+            if (d.code) DISTRICTS_BY_CODE.set(d.code.toLowerCase(), d);
+          });
+        }
+      } catch (e) {
+        console.warn('Could not load districts:', e);
+      }
+    }
 
-    const SEVERITY_CHIP = {
-      critical: "bg-rose-100 text-rose-800",
-      high: "bg-orange-100 text-orange-800",
-      medium: "bg-amber-100 text-amber-800",
-      low: "bg-slate-100 text-slate-700",
-    };
+    function findDistrict(query) {
+      if (!query) return null;
+      const q = query.trim().toLowerCase();
+      return DISTRICTS_BY_NAME.get(q) ||
+             DISTRICTS_BY_NE.get(q) ||
+             DISTRICTS_BY_MAI.get(q) ||
+             DISTRICTS_BY_CODE.get(q) ||
+             DISTRICTS.find(d =>
+               d.name.toLowerCase().includes(q) ||
+               (d.name_ne && d.name_ne.toLowerCase().includes(q)) ||
+               (d.name_mai && d.name_mai.toLowerCase().includes(q))
+             ) || null;
+    }
 
-    let map, routeLayer, pickState = 0;
-    let origin = null, destination = null;
+    function searchDistricts(query) {
+      if (!query) return DISTRICTS.slice(0, 20);
+      const q = query.trim().toLowerCase();
+      return DISTRICTS.filter(d =>
+        d.name.toLowerCase().includes(q) ||
+        (d.name_ne && d.name_ne.toLowerCase().includes(q)) ||
+        (d.name_mai && d.name_mai.toLowerCase().includes(q)) ||
+        (d.code && d.code.toLowerCase().includes(q))
+      ).slice(0, 15);
+    }
+
+    function districtLabel(d, lang) {
+      if (lang === 'ne' && d.name_ne) return d.name_ne;
+      if (lang === 'mai' && d.name_mai) return d.name_mai;
+      return d.name;
+    }
+
+    // ========================================================================
+    // MAP
+    // ========================================================================
+    let map, mapMobile, routeLayer, hazardLayer, districtLayer;
 
     function initMap() {
-      map = L.map("route-map", { center: [28.3949, 84.124], zoom: 7 });
+      map = L.map("route-map", { center: [28.3949, 84.124], zoom: 7, scrollWheelZoom: true });
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap contributors", maxZoom: 18,
       }).addTo(map);
       routeLayer = L.layerGroup().addTo(map);
+      hazardLayer = L.layerGroup().addTo(map);
+      districtLayer = L.layerGroup().addTo(map);
+    }
 
-      map.on("click", (e) => {
-        const point = { name: `${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`,
-                        lat: e.latlng.lat, lng: e.latlng.lng };
-        if (pickState === 0) {
-          origin = point;
-          document.getElementById("origin").value = point.name;
-          pickState = 1;
-        } else {
-          destination = point;
-          document.getElementById("destination").value = point.name;
-          pickState = 0;
-          planRoute();
+    function initMobileMap() {
+      if (mapMobile) return mapMobile;
+      mapMobile = L.map("route-map-mobile", { center: [28.3949, 84.124], zoom: 7, scrollWheelZoom: true });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors", maxZoom: 18,
+      }).addTo(mapMobile);
+      return mapMobile;
+    }
+
+    function clearMapLayers() {
+      routeLayer?.clearLayers();
+      hazardLayer?.clearLayers();
+      districtLayer?.clearLayers();
+    }
+
+    function drawRoute(data) {
+      clearMapLayers();
+      const start = [data.route.start.latitude, data.route.start.longitude];
+      const end = [data.route.end.latitude, data.route.end.longitude];
+
+      // Risk color
+      const riskColors = {
+        CLEAR: '#059669',
+        CAUTION: '#d97706',
+        HIGH: '#e11d48',
+        CRITICAL: '#9f1239',
+      };
+      const color = riskColors[data.risk_status] || riskColors.CLEAR;
+
+      // Follow the real routed path when the backend returned one
+      // (route.provider === "osrm"); otherwise there is only the straight
+      // line between the two points, same as before.
+      const linePoints = (data.route.geometry && data.route.geometry.coordinates)
+        ? data.route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
+        : [start, end];
+
+      // Corridor band (wide, translucent)
+      L.polyline(linePoints, {
+        color: color, weight: 48, opacity: 0.1, lineCap: 'round', className: 'route-line'
+      }).addTo(routeLayer);
+      // Route line
+      L.polyline(linePoints, { color: color, weight: 5, opacity: 0.95, className: 'route-line' }).addTo(routeLayer);
+
+      // Markers
+      L.marker(start).addTo(routeLayer).bindPopup('<strong>Start</strong><br>' + escapeHtml(data.route.start.name || 'Origin'));
+      L.marker(end).addTo(routeLayer).bindPopup('<strong>Destination</strong><br>' + escapeHtml(data.route.end.name || 'Destination'));
+
+      // Hazards
+      data.hazards.forEach(h => {
+        const sevColors = { critical: '#9f1239', high: '#e11d48', medium: '#d97706', low: '#059669' };
+        const marker = L.circleMarker([h.coordinates.latitude, h.coordinates.longitude], {
+          radius: 9, weight: 2, color: '#fff', fillColor: sevColors[h.severity] || '#64748b', fillOpacity: 0.95, className: 'hazard-marker'
+        }).addTo(hazardLayer);
+        marker.bindPopup(`
+          <strong>${escapeHtml(h.title)}</strong><br>
+          <span class="badge badge-neutral">${escapeHtml(h.severity)}</span>
+          ${h.district ? '<br>' + escapeHtml(h.district) : ''}
+          <br><small>${escapeHtml(h.category)}</small>
+          <br><small>${h.distance_from_route_km} km off route</small>
+        `);
+      });
+
+      // Districts along route (as subtle markers)
+      data.districts.forEach(d => {
+        if (d.latitude && d.longitude) {
+          const circle = L.circleMarker([d.latitude, d.longitude], {
+            radius: 6, weight: 1.5, color: '#64748b', fillColor: '#e2e8f0', fillOpacity: 0.7, opacity: 0.6
+          }).addTo(districtLayer);
+          circle.bindPopup(`<strong>${escapeHtml(d.name)}</strong><br>${escapeHtml(d.province || '')}${d.headquarters ? '<br>HQ: ' + escapeHtml(d.headquarters) : ''}`);
+        }
+      });
+
+      // Fit bounds
+      const bounds = L.latLngBounds([start, end]).pad(0.15);
+      data.hazards.forEach(h => bounds.extend([h.coordinates.latitude, h.coordinates.longitude]));
+      // The desktop map is created (initMap, at boot) while #results-section
+      // is still display:none, so Leaflet measures a 0x0 container and never
+      // learns better on its own. The 100ms delay (matching drawMobileMap
+      // below) matters: calling this in the same tick as the display:grid
+      // switch still reads the pre-layout size, because the browser has not
+      // reflowed yet.
+      setTimeout(() => {
+        map.invalidateSize();
+        map.fitBounds(bounds, { maxZoom: 10 });
+      }, 100);
+    }
+
+    function drawMobileMap(data) {
+      const m = initMobileMap();
+      m.eachLayer(l => { if (l instanceof L.TileLayer === false) m.removeLayer(l); });
+      const start = [data.route.start.latitude, data.route.start.longitude];
+      const end = [data.route.end.latitude, data.route.end.longitude];
+      const riskColors = { CLEAR: '#059669', CAUTION: '#d97706', HIGH: '#e11d48', CRITICAL: '#9f1239' };
+      const color = riskColors[data.risk_status] || riskColors.CLEAR;
+      L.polyline([start, end], { color, weight: 48, opacity: 0.1, lineCap: 'round' }).addTo(m);
+      L.polyline([start, end], { color, weight: 5, opacity: 0.95 }).addTo(m);
+      L.marker(start).addTo(m).bindPopup('Start');
+      L.marker(end).addTo(m).bindPopup('Destination');
+      data.hazards.forEach(h => {
+        const sevColors = { critical: '#9f1239', high: '#e11d48', medium: '#d97706', low: '#059669' };
+        L.circleMarker([h.coordinates.latitude, h.coordinates.longitude], {
+          radius: 9, weight: 2, color: '#fff', fillColor: sevColors[h.severity] || '#64748b', fillOpacity: 0.95
+        }).bindPopup(`<strong>${escapeHtml(h.title)}</strong><br>${escapeHtml(h.severity)}`).addTo(m);
+      });
+      const bounds = L.latLngBounds([start, end]).pad(0.15);
+      m.fitBounds(bounds, { maxZoom: 10 });
+      setTimeout(() => m.invalidateSize(), 100);
+    }
+
+    // ========================================================================
+    // UI RENDERING
+    // ========================================================================
+    const RISK_LABELS = { CLEAR: 'travel.clear', CAUTION: 'travel.caution', HIGH: 'travel.high', CRITICAL: 'travel.critical' };
+    const RISK_CLASSES = { CLEAR: 'risk-clear', CAUTION: 'risk-caution', HIGH: 'risk-high', CRITICAL: 'risk-critical' };
+    // Hazard-card severity chip, reusing the badge classes already defined
+    // in css/components.css (same ones used app-wide for report/incident
+    // severity) rather than inventing a parallel set of colors here.
+    const SEVERITY_CHIP = {
+      critical: 'badge badge-critical',
+      high: 'badge badge-critical',
+      medium: 'badge badge-warning',
+      low: 'badge badge-info',
+    };
+
+    function renderStatusBanner(data) {
+      const banner = document.getElementById('status-banner');
+      const badge = document.getElementById('risk-badge');
+      const summary = document.getElementById('route-summary');
+      const updated = document.getElementById('updated-stamp');
+
+      const risk = data.risk_status || 'CLEAR';
+      badge.textContent = t(RISK_LABELS[risk]);
+      badge.className = 'risk-badge ' + RISK_CLASSES[risk];
+
+      const s = data.summary;
+      summary.textContent = `${s.distance_km} km · ~${s.duration_hours}h · ${s.district_count} districts · ${s.active_alerts} alerts`;
+
+      updated.textContent = t('travel.updated') + ': ' + new Date().toLocaleString();
+
+      banner.style.display = 'flex';
+    }
+
+    function renderSummary(data) {
+      const card = document.getElementById('summary-card');
+      document.getElementById('summary-distance').textContent = data.summary.distance_km + ' km';
+      document.getElementById('summary-duration').textContent = '~' + data.summary.duration_hours + 'h';
+      document.getElementById('summary-districts').textContent = data.summary.district_count;
+      document.getElementById('summary-alerts').textContent = data.summary.active_alerts;
+      card.style.display = 'block';
+    }
+
+    function renderDistrictTimeline(data) {
+      const card = document.getElementById('districts-card');
+      const container = document.getElementById('district-timeline');
+      const lang = BN_I18N.language;
+
+      if (!data.districts.length) {
+        container.innerHTML = `<p class="text-sm text-muted">${t('travel.noHazards')}</p>`;
+        card.style.display = 'block';
+        return;
+      }
+
+      container.innerHTML = data.districts.map((d, i) => {
+        const label = districtLabel(d, lang);
+        const isLast = i === data.districts.length - 1;
+        return `
+          <div class="flex items-start gap-sm">
+            <div class="flex flex-col items-center shrink-0">
+              <div class="w-2 h-2 rounded-full bg-forest-600 mt-1"></div>
+              ${!isLast ? '<div class="w-px h-8 bg-border mt-1"></div>' : ''}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm">${escapeHtml(label)}</p>
+              <p class="text-xs text-muted">${escapeHtml(d.province || '')}${d.headquarters ? ' · HQ: ' + escapeHtml(d.headquarters) : ''}${d.distance_from_route_km !== undefined ? ' · ' + d.distance_from_route_km + ' km off route' : ''}</p>
+            </div>
+          </div>`;
+      }).join('');
+      card.style.display = 'block';
+    }
+
+    function renderHazards(data) {
+      const card = document.getElementById('hazards-card');
+      const container = document.getElementById('hazard-list');
+
+      if (!data.hazards.length) {
+        container.innerHTML = `
+          <div class="glass border text-sm text-muted p-md">
+            <p class="font-medium">${t('travel.noHazards')}</p>
+            <p class="mt-xs">${t('travel.noHazardsCaveat')}</p>
+          </div>`;
+        card.style.display = 'block';
+        return;
+      }
+
+      container.innerHTML = data.hazards.map(h => `
+        <article class="card p-sm">
+          <div class="flex items-start justify-between gap-sm">
+            <h4 class="font-semibold text-sm leading-snug">${escapeHtml(h.title)}</h4>
+            <span class="shrink-0 text-xs font-semibold ${SEVERITY_CHIP[h.severity] || 'bg-slate-100 text-slate-700'}">${escapeHtml(h.severity)}</span>
+          </div>
+          <p class="mt-xs text-xs text-muted">
+            ${escapeHtml(humanise(h.category))} · ${escapeHtml(h.district || 'location unresolved')} · ${h.distance_from_route_km} km off route
+          </p>
+          <p class="feed-card-body line-clamp-2 mt-xs">${escapeHtml(h.description || '')}</p>
+          <div class="mt-xs flex items-center gap-sm text-xs">
+            <span>${escapeHtml(humanise(h.status))}</span>
+            ${h.authority ? `<span class="text-muted">${escapeHtml(h.authority.name)}</span>` : ''}
+          </div>
+        </article>`).join('');
+      card.style.display = 'block';
+    }
+
+    function renderEmergency(data) {
+      const card = document.getElementById('emergency-card');
+      const container = document.getElementById('emergency-content');
+      // Only show verified emergency info if available
+      const verified = data.hazards.filter(h => h.status === 'verified' || h.status === 'in_progress');
+      if (!verified.length) {
+        container.innerHTML = `<p class="text-sm">No verified emergency information for this corridor. Contact local authorities for real-time conditions.</p>`;
+      } else {
+        container.innerHTML = verified.map(h => `
+          <div class="p-sm border rounded">
+            <strong>${escapeHtml(h.title)}</strong> — ${escapeHtml(h.district || 'Unknown district')}
+            <br><small class="text-muted">${escapeHtml(h.category)} · ${escapeHtml(h.severity)}</small>
+          </div>`).join('');
+      }
+      card.style.display = 'block';
+    }
+
+    function renderAdvisory(data) {
+      const card = document.getElementById('advisory-card');
+      const container = document.getElementById('advisory-content');
+      // Advisory is fetched separately
+      container.textContent = t('travel.aiFallback');
+      card.style.display = 'block';
+    }
+
+    async function fetchAdvisory(data) {
+      const container = document.getElementById('advisory-content');
+      try {
+        const res = await apiPost('/travel/advisory', data, { auth: false });
+        if (res && res.advisory) {
+          container.textContent = res.advisory.text;
+          container.dataset.generatedBy = res.advisory.generated_by;
+        }
+      } catch (e) {
+        container.textContent = t('travel.aiUnavailable') + '\n\n' + t('travel.aiFallback');
+      }
+    }
+
+    function showResults(data) {
+      document.getElementById('results-section').style.display = 'grid';
+      document.getElementById('mobile-map').style.display = 'block';
+      renderStatusBanner(data);
+      renderSummary(data);
+      renderDistrictTimeline(data);
+      renderHazards(data);
+      renderEmergency(data);
+      renderAdvisory(data);
+      drawRoute(data);
+      drawMobileMap(data);
+      fetchAdvisory(data);
+    }
+
+    // ========================================================================
+    // AUTOCOMPLETE
+    // ========================================================================
+    function bindDistrictSearch(inputId, listId, onSelect) {
+      const input = document.getElementById(inputId);
+      const list = document.getElementById(listId);
+      const lang = BN_I18N.language;
+
+      function render(results) {
+        if (!results.length) { list.classList.add('hidden'); return; }
+        list.innerHTML = results.map(d => {
+          const label = districtLabel(d, lang);
+          const alt = (lang !== 'en' && d.name !== label) ? ` <span class="text-muted text-xs">(${escapeHtml(d.name)})</span>` : '';
+          return `<button type="button" data-name="${escapeHtml(d.name)}" class="w-full text-left px-sm py-xs hover:bg-muted" role="option">
+            ${escapeHtml(label)}${alt}
+          </button>`;
+        }).join('');
+        list.querySelectorAll('button').forEach(b => {
+          b.addEventListener('mousedown', e => {
+            e.preventDefault();
+            const d = DISTRICTS_BY_NAME.get(b.dataset.name.toLowerCase());
+            if (d) {
+              input.value = districtLabel(d, lang);
+              onSelect(d);
+            }
+            list.classList.add('hidden');
+          });
+        });
+        list.classList.remove('hidden');
+      }
+
+      input.addEventListener('focus', () => render(searchDistricts(input.value)));
+      input.addEventListener('input', () => {
+        onSelect(null);
+        render(searchDistricts(input.value));
+      });
+      input.addEventListener('blur', () => setTimeout(() => list.classList.add('hidden'), 120));
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const d = findDistrict(input.value);
+          if (d) { input.value = districtLabel(d, lang); onSelect(d); list.classList.add('hidden'); }
         }
       });
     }
 
-    // --- hub autocomplete ---
-    function bindHubSearch(inputId, listId, assign) {
-      const input = document.getElementById(inputId);
-      const list = document.getElementById(listId);
+    // ========================================================================
+    // ANALYZE
+    // ========================================================================
+    let originDistrict = null, destinationDistrict = null;
 
-      function render(query) {
-        const needle = query.trim().toLowerCase();
-        const matches = needle
-          ? HUBS.filter((h) => h.name.toLowerCase().includes(needle))
-          : HUBS;
-
-        if (!matches.length) { list.classList.add("hidden"); return; }
-        list.innerHTML = matches
-          .map((h) => `<button type="button" data-name="${escapeHtml(h.name)}"
-                 class="text-left text-sm">
-                 ${escapeHtml(h.name)}</button>`)
-          .join("");
-        list.querySelectorAll("button").forEach((b) =>
-          b.addEventListener("mousedown", (e) => {
-            e.preventDefault();
-            const hub = HUBS.find((h) => h.name === b.dataset.name);
-            input.value = hub.name;
-            assign(hub);
-            list.classList.add("hidden");
-          })
-        );
-        list.classList.remove("hidden");
-      }
-
-      input.addEventListener("focus", () => render(input.value));
-      input.addEventListener("input", () => { assign(null); render(input.value); });
-      input.addEventListener("blur", () => setTimeout(() => list.classList.add("hidden"), 120));
-    }
-
-    // --- rendering ---
-    function renderRating(data) {
-      const style = DANGER_STYLE[data.danger_level] || DANGER_STYLE.LOW;
-      const approximate = data.method !== "postgis";
-
-      document.getElementById("rating-card").innerHTML = `
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-xs uppercase tracking-wide text-dim font-semibold" data-i18n="travel.risk">Route risk</p>
-            <p class="text-3xl font-bold">${escapeHtml(data.danger_level)}</p>
-            <p class="text-sm text-muted">
-              ${data.hazard_count} active hazard${data.hazard_count === 1 ? "" : "s"}
-              along ${data.route.length_km} km
-            </p>
-          </div>
-          <span class="shrink-0 border text-xs font-semibold ${style.chip}">
-            score ${data.danger_score}
-          </span>
-        </div>
-
-        <div class="grid-cols-4 gap-sm text-center">
-          ${["critical","high","medium","low"].map((s) => `
-            <div class="border">
-              <p class="text-lg font-bold">${data.by_severity[s]}</p>
-              <p class="text-[10px] uppercase tracking-wide text-muted">${s}</p>
-            </div>`).join("")}
-        </div>
-
-        <p class="text-xs text-muted leading-relaxed">
-          Searched a <strong>${(data.route.corridor_metres / 1000).toFixed(0)} km</strong> band around
-          the straight line between your two points. Nepal's highways follow valleys rather than
-          straight lines, so this is an indication of what is reported nearby — not a check of the
-          road you will actually drive.
-          ${approximate ? "Distances are approximate on this server." : ""}
-        </p>`;
-    }
-
-    function renderHazards(hazards) {
-      const drawer = document.getElementById("hazard-drawer");
-      if (!hazards.length) {
-        drawer.innerHTML = `
-          <div class="glass border text-sm text-muted">
-            Nothing has been reported near this route. That means no one has reported a
-            problem — not that the road is confirmed clear.
-          </div>`;
+    async function analyzeCorridor() {
+      if (!originDistrict || !destinationDistrict) {
+        showToast(t('travel.selectOrigin') + ' / ' + t('travel.selectDestination'), 'error');
         return;
       }
 
-      drawer.innerHTML = hazards.map((h) => `
-        <article class="card">
-          <div class="flex items-start justify-between gap-sm">
-            <h3 class="font-semibold text-sm leading-snug">${escapeHtml(h.title)}</h3>
-            <span class="shrink-0 text-xs font-semibold ${SEVERITY_CHIP[h.severity] ||"bg-slate-100 text-slate-700"}">
-              ${escapeHtml(h.severity)}
-            </span>
-          </div>
-          <p class="mt-sm text-xs text-muted">
-            ${escapeHtml(humanise(h.category))} ·
-            ${escapeHtml(h.district || "location unresolved")} ·
-            ${(h.distance_from_route_metres / 1000).toFixed(1)} km off the line
-          </p>
-          <p class="feed-card-body line-clamp-3">${escapeHtml(h.description || "")}</p>
-          <div class="mt-sm flex items-center gap-sm">
-            <span class="text-xs">
-              ${escapeHtml(humanise(h.status))}
-            </span>
-            ${h.authority ? `<span class="text-xs text-muted">
-              ${escapeHtml(h.authority.name)}</span>` : ""}
-          </div>
-        </article>`).join("");
-    }
-
-    function drawRoute(data) {
-      routeLayer.clearLayers();
-      const style = DANGER_STYLE[data.danger_level] || DANGER_STYLE.LOW;
-      const a = [data.route.start.latitude, data.route.start.longitude];
-      const b = [data.route.end.latitude, data.route.end.longitude];
-
-      // The corridor is drawn as a thick translucent stroke rather than a true
-      // buffer polygon: it is the same shape, and it makes plain that the
-      // search is a band around a line, not a road.
-      L.polyline([a, b], {
-        color: style.line, weight: 44, opacity: 0.12, lineCap: "round",
-      }).addTo(routeLayer);
-      L.polyline([a, b], { color: style.line, weight: 4, opacity: 0.9 }).addTo(routeLayer);
-
-      L.marker(a).addTo(routeLayer).bindPopup("Start");
-      L.marker(b).addTo(routeLayer).bindPopup("Destination");
-
-      data.hazards.forEach((h) => {
-        L.circleMarker([h.coordinates.latitude, h.coordinates.longitude], {
-          radius: 8, color: "#fff", weight: 2,
-          fillColor: DANGER_STYLE[h.severity === "critical" ? "CRITICAL" : "HIGH"].line,
-          fillOpacity: 0.95,
-        })
-          .bindPopup(`<strong>${escapeHtml(h.title)}</strong><br>${escapeHtml(h.severity)}`)
-          .addTo(routeLayer);
-      });
-
-      map.fitBounds(L.latLngBounds([a, b]).pad(0.25));
-    }
-
-    async function planRoute() {
-      if (!origin || !destination) {
-        showToast("Choose a start and a destination.", "error");
-        return;
-      }
-
-      const button = document.getElementById("plan-btn");
-      button.disabled = true;
-      const original = button.textContent;
-      button.textContent = "Checking…";
-      document.getElementById("hazard-drawer").innerHTML = "";
+      const btn = document.getElementById('analyze-btn');
+      btn.disabled = true;
+      btn.querySelector('.btn-text').classList.add('hidden');
+      btn.querySelector('.btn-loading').classList.remove('hidden');
 
       try {
-        const data = await apiGet(
-          `/travel/route${queryString({
-            start_lat: origin.lat, start_lng: origin.lng,
-            end_lat: destination.lat, end_lng: destination.lng,
-          })}`,
-          { auth: false }
-        );
-        renderRating(data);
-        renderHazards(data.hazards);
-        drawRoute(data);
-        document.getElementById("map-note").textContent =
-          `${origin.name} → ${destination.name} · ${data.route.length_km} km straight-line distance`;
-      } catch (error) {
-        document.getElementById("rating-card").innerHTML =
-          `<p class="text-sm">${escapeHtml(
-            reportApiError(error, "Could not check that route.")
-          )}</p>`;
+        const data = await apiPost('/travel/corridor-analysis', {
+          start_lat: originDistrict.latitude,
+          start_lng: originDistrict.longitude,
+          end_lat: destinationDistrict.latitude,
+          end_lng: destinationDistrict.longitude,
+          corridor: parseInt(document.getElementById('buffer').value),
+          transport_mode: document.getElementById('transport').value,
+        }, { auth: false });
+
+        showResults(data);
+      } catch (e) {
+        const msg = e.message || 'Could not analyze corridor.';
+        showToast(msg, 'error');
       } finally {
-        button.disabled = false;
-        button.textContent = original;
+        btn.disabled = false;
+        btn.querySelector('.btn-text').classList.remove('hidden');
+        btn.querySelector('.btn-loading').classList.add('hidden');
       }
     }
 
-    // --- boot ---
-    requireRole("citizen");
-    initMap();
-    bindHubSearch("origin", "origin-list", (hub) => { origin = hub; });
-    bindHubSearch("destination", "destination-list", (hub) => { destination = hub; });
-    document.getElementById("plan-btn").addEventListener("click", planRoute);
+    // ========================================================================
+    // BOOT
+    // ========================================================================
+    // Wrapped in an async IIFE: this is a plain script, not a module, and a
+    // bare top-level `await loadDistricts()` throws a SyntaxError that kills
+    // the whole block silently - the map never initializes, the search boxes
+    // never bind, and the Analyze button never gets its click listener.
+    (async function boot() {
+      requireRole('citizen');
+      await loadDistricts();
+      initMap();
 
+      bindDistrictSearch('origin', 'origin-list', d => { originDistrict = d; });
+      bindDistrictSearch('destination', 'destination-list', d => { destinationDistrict = d; });
+
+      document.getElementById('analyze-btn').addEventListener('click', analyzeCorridor);
+
+      // Language switcher
+      document.getElementById('page-lang').innerHTML = BN_I18N.switcherMarkup().replace('lang-switch', 'lang-switch lang-switch--dark');
+
+      // Update autocomplete labels on language change
+      window.addEventListener('bn:langchange', () => {
+        const lang = BN_I18N.language;
+        if (originDistrict) document.getElementById('origin').value = districtLabel(originDistrict, lang);
+        if (destinationDistrict) document.getElementById('destination').value = districtLabel(destinationDistrict, lang);
+      });
+    })();
+  </script>
+  <script>
     // Scope the assistant to wherever the traveller is registered.
     const currentUser = TokenStore.getUser();
     if (currentUser && (currentUser.temporary_district_id || currentUser.permanent_district_id)) {
-      document.body.dataset.districtId =
-        currentUser.temporary_district_id || currentUser.permanent_district_id;
+      document.body.dataset.districtId = currentUser.temporary_district_id || currentUser.permanent_district_id;
     }
-  </script>
-  <script>
-    // These two pages carry their own header instead of the shared
-    // navbar, so the switcher is mounted here rather than by mountShell.
-    document.getElementById("page-lang").innerHTML =
-      BN_I18N.switcherMarkup().replace("lang-switch", "lang-switch lang-switch--dark");
   </script>
 </body>
 </html>
